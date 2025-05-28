@@ -11,6 +11,11 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
+  <modules>
+    <module>services/eureka-service</module>
+    <module>services/gateway-service</module>
+  </modules>
+
   <groupId>org.com.hcmurs</groupId>
   <artifactId>metro-be</artifactId>
   <version>1.0.0</version>

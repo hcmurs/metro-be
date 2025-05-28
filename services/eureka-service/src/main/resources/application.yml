@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: eureka-service
+
+server:
+  port: 8761  # Eureka server will run on this port by default
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+#health check
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: unrestricted
+    prometheus:
+      access: unrestricted
+
+logging:
+  level:
+    com.netflix.eureka: OFF
+    com.netflix.discovery: OFF
