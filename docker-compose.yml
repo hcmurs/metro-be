@@ -1,0 +1,21 @@
+networks:
+  metro-be:
+    driver: bridge
+
+services:
+  gateway:
+    container_name: gateway-service
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    ports:
+      - "4003:4003"
+    # restart: on-failure
+    volumes:
+      - ./logs/gateway:/logs/gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka
+    networks:
+      - metro-be
