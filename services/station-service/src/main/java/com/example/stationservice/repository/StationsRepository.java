@@ -1,6 +1,6 @@
 package com.example.stationservice.repository;
 
-import com.example.stationservice.entity.Stations;
+import com.example.stationservice.model.Stations;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

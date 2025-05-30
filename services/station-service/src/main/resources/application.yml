@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/stationdb
+    url: jdbc:postgresql://localhost:5432/station-db
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver
@@ -11,3 +11,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+    port: 4004

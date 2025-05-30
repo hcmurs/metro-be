@@ -1,4 +1,4 @@
-package com.example.stationservice.entity;
+package com.example.stationservice.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,23 +12,24 @@ import java.sql.Timestamp;
 public class Stations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer stationId;
-
+    @Column(name = "station_id")
+    private Long stationId;
+    @Column(name = "route_id")
     private Integer routeId;
-    @Column(unique = true)
+    @Column(name = "station_code")
     private Integer stationCode;
-
     private String name;
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;
-
+    @Column(name = "sequence_order")
     private Integer sequenceOrder;
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
+    @Column(name = "created_at")
     private Timestamp createdAt;
+    @Column(name="updated_at")
     private Timestamp updatedAt;
 
     public enum Status {
