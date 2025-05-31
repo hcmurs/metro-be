@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StationsRepository extends JpaRepository<Stations, Integer> {
-    List<Stations> findByRouteId(Integer routeId);
-    List<Stations> findByStationCode(Integer stationCode);
+public interface StationsRepository extends JpaRepository<Stations, Long> {
     List<Stations> findByNameContainingIgnoreCase(String name);
-    List<Stations> findByStatus(Stations.Status status);
+    Boolean  existsByStationCode (String stationCode);
+     List<Stations> findByRouteRouteIdOrderBySequenceOrder (Long routeId);
     }
