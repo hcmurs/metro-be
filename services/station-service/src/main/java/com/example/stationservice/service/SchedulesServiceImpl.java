@@ -1,12 +1,15 @@
 package com.example.stationservice.service;
 
 import com.example.stationservice.dto.SchedulesRequest;
+import com.example.stationservice.dto.SchedulesResponse;
 import com.example.stationservice.model.Schedules;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.repository.RoutesRepository;
 import com.example.stationservice.repository.SchedulesRepository;
 import com.example.stationservice.repository.StationsRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +24,13 @@ public class SchedulesServiceImpl implements SchedulesService {
     @Autowired
     private StationsRepository stationsRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public Schedules createSchedule(SchedulesRequest request) {
+    public SchedulesResponse createSchedule(SchedulesRequest request) {
         Stations station = stationsRepository.findById(request.getStationId())
-                .orElseThrow(() -> new RuntimeException("Station not found with id: " + request.getStationId()));
+                .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + request.getStationId()));
         if (request.getTimeArrival() != null && request.getTimeDeparture() != null &&
                 request.getTimeArrival().isAfter(request.getTimeDeparture())) {
             throw new RuntimeException("Arrival time cannot be after departure time");
@@ -39,39 +44,47 @@ public class SchedulesServiceImpl implements SchedulesService {
         schedule.setCreatedAt(LocalDateTime.now());
         schedule.setUpdatedAt(LocalDateTime.now());
 
-        return schedulesRepository.save(schedule);
+         schedulesRepository.save(schedule);
+         return modelMapper.map(schedule, SchedulesResponse.class);
 
     }
 
     @Override
-    public List<Schedules> getAllSchedules() {
-        return schedulesRepository.findAll();
+    public List<SchedulesResponse> getAllSchedules() {
+        List<Schedules> list=  schedulesRepository.findAll();
+        return list.stream()
+                .map(schedule -> modelMapper.map(schedule, SchedulesResponse.class))
+                .toList();
         }
 
     @Override
-    public Optional<Schedules> getScheduleById(Long id) {
+    public Optional<SchedulesResponse> getScheduleById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Schedule ID cannot be null");
         }
-        return schedulesRepository.findById(id);
+        Optional<Schedules> optional =  schedulesRepository.findById(id);
+        return optional.map(schedule -> modelMapper.map(schedule, SchedulesResponse.class));
     }
 
     @Override
-    public List<Schedules> getSchedulesByStationId(Long stationId) {
+    public List<SchedulesResponse> getSchedulesByStationId(Long stationId) {
         if (stationId == null) {
             throw new IllegalArgumentException("Station ID cannot be null");
         }
-        return schedulesRepository.findByStationStationIdOrderByTimeArrival(stationId);
+        List<Schedules> list = schedulesRepository.findByStationStationIdOrderByTimeArrival(stationId);
+        return list.stream()
+                .map(schedule -> modelMapper.map(schedule, SchedulesResponse.class))
+                .toList();
     }
 
     @Override
-    public Schedules updateSchedule(Long id, Schedules scheduleUpdate) {
+    public SchedulesResponse updateSchedule(Long id, Schedules scheduleUpdate) {
         if (id == null) {
             throw new IllegalArgumentException("Schedule ID cannot be null");
         }
 
         Schedules existingSchedule = schedulesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Schedule not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Schedule not found with id: " + id));
 
         if (scheduleUpdate.getDescription() != null) {
             existingSchedule.setDescription(scheduleUpdate.getDescription().trim());
@@ -101,7 +114,8 @@ public class SchedulesServiceImpl implements SchedulesService {
 
         existingSchedule.setUpdatedAt(LocalDateTime.now());
 
-        return schedulesRepository.save(existingSchedule);
+         schedulesRepository.save(existingSchedule);
+         return modelMapper.map(existingSchedule, SchedulesResponse.class);
     }
 
     @Override
@@ -111,7 +125,7 @@ public class SchedulesServiceImpl implements SchedulesService {
         }
 
         if (!schedulesRepository.existsById(id)) {
-            throw new RuntimeException("Schedule not found with id: " + id);
+            throw new EntityNotFoundException("Schedule not found with id: " + id);
         }
 
         schedulesRepository.deleteById(id);

@@ -1,9 +1,13 @@
 package com.example.stationservice.service;
 
 import com.example.stationservice.dto.RoutesRequest;
+import com.example.stationservice.dto.RoutesResponse;
 import com.example.stationservice.model.Routes;
 import com.example.stationservice.repository.RoutesRepository;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +18,12 @@ import java.util.Optional;
 public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesRepository routesRepository;
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
-    public Routes createRoute(RoutesRequest request) {
+    public RoutesResponse createRoute(RoutesRequest request) {
         if (routesRepository.existsByRouteCode(request.getRouteCode())) {
-            throw new RuntimeException("Route code already exists: " + request.getRouteCode());
+            throw new EntityExistsException("Route code already exists: " + request.getRouteCode());
         }
         Routes route = new Routes();
         route.setRouteCode(request.getRouteCode());
@@ -25,32 +31,40 @@ public class RoutesServiceImpl implements RoutesService {
         route.setDistanceInKm(request.getDistanceInKm());
         route.setCreatedAt(LocalDateTime.now());
         route.setUpdatedAt(LocalDateTime.now());
-        return routesRepository.save(route);
+         routesRepository.save(route);
+         return modelMapper.map(route, RoutesResponse.class);
     }
 
     @Override
-    public List<Routes> getAllRoutes() {
-        return routesRepository.findAll();
+    public List<RoutesResponse> getAllRoutes() {
+        List<Routes> list =  routesRepository.findAll();
+        return list.stream()
+                .map(route -> modelMapper.map(route, RoutesResponse.class))
+                .toList();
     }
 
     @Override
-    public Optional<Routes> getRouteById(Long id) {
+    public Optional<RoutesResponse> getRouteById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Route ID cannot be null");
         }
-        return routesRepository.findById(id);
+        Optional<Routes> optional = routesRepository.findById(id);
+        return optional.map(route -> modelMapper.map(route, RoutesResponse.class));
     }
 
     @Override
-    public List<Routes> getRoutesByName(String name) {
+    public List<RoutesResponse> getRoutesByName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Route name cannot be null or empty");
         }
-        return routesRepository.findByRouteNameContainingIgnoreCase(name.trim());
+        List<Routes> list = routesRepository.findByRouteNameContainingIgnoreCase(name.trim());
+        return list.stream()
+                .map(route -> modelMapper.map(route, RoutesResponse.class))
+                .toList();
     }
 
     @Override
-    public Routes updateRoute(Long id, Routes routeUpdate) {
+    public RoutesResponse updateRoute(Long id, Routes routeUpdate) {
             if (id == null) {
                 throw new IllegalArgumentException("Route ID cannot be null");
             }
@@ -80,7 +94,8 @@ public class RoutesServiceImpl implements RoutesService {
 
             existingRoute.setUpdatedAt(LocalDateTime.now());
 
-            return routesRepository.save(existingRoute);
+             routesRepository.save(existingRoute);
+             return modelMapper.map(existingRoute, RoutesResponse.class);
         }
 
 
@@ -91,7 +106,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
 
         if (!routesRepository.existsById(id)) {
-            throw new RuntimeException("Route not found with id: " + id);
+            throw new EntityNotFoundException("Route not found with id: " + id);
         }
 
         // Check if route has stations before deleting
@@ -112,10 +127,11 @@ public class RoutesServiceImpl implements RoutesService {
     }
 
     @Override
-    public Optional<Routes> getRouteByCode(String routeCode) {
+    public Optional<RoutesResponse> getRouteByCode(String routeCode) {
         if (routeCode == null || routeCode.trim().isEmpty()) {
             throw new IllegalArgumentException("Route code cannot be null or empty");
         }
-        return routesRepository.findByRouteCode(routeCode.trim());
+        Optional<Routes> optional = routesRepository.findByRouteCode(routeCode.trim());
+        return optional.map(route -> modelMapper.map(route, RoutesResponse.class));
         }
 }

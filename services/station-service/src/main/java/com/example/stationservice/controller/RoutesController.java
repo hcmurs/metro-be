@@ -2,6 +2,7 @@ package com.example.stationservice.controller;
 
 import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.RoutesRequest;
+import com.example.stationservice.dto.RoutesResponse;
 import com.example.stationservice.model.Routes;
 import com.example.stationservice.service.RoutesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,20 +24,20 @@ public class RoutesController {
     private RoutesService routesService;
 
     @PostMapping
-    public ApiResponse<Routes> createRoute(@RequestBody RoutesRequest request) {
-        Routes route = routesService.createRoute(request);
+    public ApiResponse<RoutesResponse> createRoute(@RequestBody RoutesRequest request) {
+        RoutesResponse route = routesService.createRoute(request);
         return ApiResponse.success(route, "Route created successfully");
     }
 
     @GetMapping
-    public ApiResponse<List<Routes>> getAllRoutes() {
-        List<Routes> routes = routesService.getAllRoutes();
+    public ApiResponse<List<RoutesResponse>> getAllRoutes() {
+        List<RoutesResponse> routes = routesService.getAllRoutes();
         return ApiResponse.success(routes, "Routes retrieved successfully");
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<Routes> getRouteById(@PathVariable Long id) {
-        Optional<Routes> route = routesService.getRouteById(id);
+    public ApiResponse<RoutesResponse> getRouteById(@PathVariable Long id) {
+        Optional<RoutesResponse> route = routesService.getRouteById(id);
         if (route.isPresent()) {
             return ApiResponse.success(route.get(), "Route found");
         } else {
@@ -45,15 +46,15 @@ public class RoutesController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<List<Routes>> getRoutesByName(@RequestParam String name) {
-        List<Routes> routes = routesService.getRoutesByName(name);
+    public ApiResponse<List<RoutesResponse>> getRoutesByName(@RequestParam String name) {
+        List<RoutesResponse> routes = routesService.getRoutesByName(name);
         return ApiResponse.success(routes, "Routes found by name");
     }
 
 
     @GetMapping("/code/{routeCode}")
-    public ApiResponse<Routes> getRouteByCode(@PathVariable String routeCode) {
-        Optional<Routes> route = routesService.getRouteByCode(routeCode);
+    public ApiResponse<RoutesResponse> getRouteByCode(@PathVariable String routeCode) {
+        Optional<RoutesResponse> route = routesService.getRouteByCode(routeCode);
         if (route.isPresent()) {
             return ApiResponse.success(route.get(), "Route found by code");
         } else {
@@ -63,8 +64,8 @@ public class RoutesController {
 
 
     @PutMapping("/{id}")
-    public ApiResponse<Routes> updateRoute(@PathVariable Long id, @RequestBody Routes route) {
-        Routes updatedRoute = routesService.updateRoute(id, route);
+    public ApiResponse<RoutesResponse> updateRoute(@PathVariable Long id, @RequestBody Routes route) {
+        RoutesResponse updatedRoute = routesService.updateRoute(id, route);
         return ApiResponse.success(updatedRoute, "Route updated successfully");
     }
 

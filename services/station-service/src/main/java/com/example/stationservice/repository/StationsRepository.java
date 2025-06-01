@@ -11,4 +11,5 @@ public interface StationsRepository extends JpaRepository<Stations, Long> {
     List<Stations> findByNameContainingIgnoreCase(String name);
     Boolean  existsByStationCode (String stationCode);
      List<Stations> findByRouteRouteIdOrderBySequenceOrder (Long routeId);
+     boolean existsBySequenceOrder (Integer sequence);
     }

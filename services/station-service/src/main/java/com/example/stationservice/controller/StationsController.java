@@ -2,6 +2,7 @@ package com.example.stationservice.controller;
 
 import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.StationsRequest;
+import com.example.stationservice.dto.StationsResponse;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.service.StationsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,20 +24,20 @@ public class StationsController {
     private StationsService stationsService;
 
     @PostMapping
-    public ApiResponse<Stations> createStation(@RequestBody StationsRequest request) {
-        Stations station = stationsService.createStation(request);
+    public ApiResponse<StationsResponse> createStation(@RequestBody StationsRequest request) {
+        StationsResponse station = stationsService.createStation(request);
         return ApiResponse.success(station, "Station created successfully");
     }
 
     @GetMapping
-    public ApiResponse<List<Stations>> getAllStations() {
-        List<Stations> stations = stationsService.getAllStations();
+    public ApiResponse<List<StationsResponse>> getAllStations() {
+        List<StationsResponse> stations = stationsService.getAllStations();
         return ApiResponse.success(stations, "Stations retrieved successfully");
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<Stations> getStationById(@PathVariable Long id) {
-        Optional<Stations> station = stationsService.getStationById(id);
+    public ApiResponse<StationsResponse> getStationById(@PathVariable Long id) {
+        Optional<StationsResponse> station = stationsService.getStationById(id);
         if (station.isPresent()) {
             return ApiResponse.success(station.get(), "Station found");
         } else {
@@ -45,20 +46,20 @@ public class StationsController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<List<Stations>> getStationsByName(@RequestParam String name) {
-        List<Stations> stations = stationsService.getStationsByName(name);
+    public ApiResponse<List<StationsResponse>> getStationsByName(@RequestParam String name) {
+        List<StationsResponse> stations = stationsService.getStationsByName(name);
         return ApiResponse.success(stations, "Stations found by name");
     }
 
     @GetMapping("/route/{routeId}")
-    public ApiResponse<List<Stations>> getStationsByRouteId(@PathVariable Long routeId) {
-        List<Stations> stations = stationsService.getStationsByRouteId(routeId);
+    public ApiResponse<List<StationsResponse>> getStationsByRouteId(@PathVariable Long routeId) {
+        List<StationsResponse> stations = stationsService.getStationsByRouteId(routeId);
         return ApiResponse.success(stations, "Stations found for route");
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Stations> updateStation(@PathVariable Long id, @RequestBody Stations station) {
-        Stations updatedStation = stationsService.updateStation(id, station);
+    public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody Stations station) {
+        StationsResponse updatedStation = stationsService.updateStation(id, station);
         return ApiResponse.success(updatedStation, "Station updated successfully");
     }
 

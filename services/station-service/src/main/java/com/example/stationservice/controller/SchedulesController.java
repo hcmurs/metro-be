@@ -2,6 +2,7 @@ package com.example.stationservice.controller;
 
 import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.SchedulesRequest;
+import com.example.stationservice.dto.SchedulesResponse;
 import com.example.stationservice.model.Schedules;
 import com.example.stationservice.service.SchedulesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,20 +24,20 @@ public class SchedulesController {
     private SchedulesService schedulesService;
 
     @PostMapping
-    public ApiResponse<Schedules> createSchedule(@RequestBody SchedulesRequest request) {
-        Schedules schedule = schedulesService.createSchedule(request);
+    public ApiResponse<SchedulesResponse> createSchedule(@RequestBody SchedulesRequest request) {
+        SchedulesResponse schedule = schedulesService.createSchedule(request);
         return ApiResponse.success(schedule, "Schedule created successfully");
     }
 
     @GetMapping
-    public ApiResponse<List<Schedules>> getAllSchedules() {
-        List<Schedules> schedules = schedulesService.getAllSchedules();
+    public ApiResponse<List<SchedulesResponse>> getAllSchedules() {
+        List<SchedulesResponse> schedules = schedulesService.getAllSchedules();
         return ApiResponse.success(schedules, "Schedules retrieved successfully");
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<Schedules> getScheduleById(@PathVariable Long id) {
-        Optional<Schedules> schedule = schedulesService.getScheduleById(id);
+    public ApiResponse<SchedulesResponse> getScheduleById(@PathVariable Long id) {
+        Optional<SchedulesResponse> schedule = schedulesService.getScheduleById(id);
         if (schedule.isPresent()) {
             return ApiResponse.success(schedule.get(), "Schedule found");
         } else {
@@ -45,14 +46,14 @@ public class SchedulesController {
     }
 
     @GetMapping("/station/{stationId}")
-    public ApiResponse<List<Schedules>> getSchedulesByStationId(@PathVariable Long stationId) {
-        List<Schedules> schedules = schedulesService.getSchedulesByStationId(stationId);
+    public ApiResponse<List<SchedulesResponse>> getSchedulesByStationId(@PathVariable Long stationId) {
+        List<SchedulesResponse> schedules = schedulesService.getSchedulesByStationId(stationId);
         return ApiResponse.success(schedules, "Schedules found for station");
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Schedules> updateSchedule(@PathVariable Long id, @RequestBody Schedules schedule) {
-        Schedules updatedSchedule = schedulesService.updateSchedule(id, schedule);
+    public ApiResponse<SchedulesResponse> updateSchedule(@PathVariable Long id, @RequestBody Schedules schedule) {
+        SchedulesResponse updatedSchedule = schedulesService.updateSchedule(id, schedule);
         return ApiResponse.success(updatedSchedule, "Schedule updated successfully");
     }
 
