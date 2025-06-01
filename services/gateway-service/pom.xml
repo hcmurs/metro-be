@@ -139,7 +139,6 @@
     <dependency>
       <groupId>io.github.lcaohoanq</groupId>
       <artifactId>brlc</artifactId>
-      <version>1.0.0</version>
     </dependency>
 
   </dependencies>

@@ -4,6 +4,7 @@ import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.StationsRequest;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.service.StationsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/stations")
 @CrossOrigin(origins = "*")
+@Tag(name = "Stations", description = "Operations related to stations")
 public class StationsController {
 
     @Autowired

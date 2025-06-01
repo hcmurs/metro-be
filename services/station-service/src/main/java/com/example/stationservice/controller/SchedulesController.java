@@ -4,6 +4,7 @@ import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.SchedulesRequest;
 import com.example.stationservice.model.Schedules;
 import com.example.stationservice.service.SchedulesService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/schedules")
 @CrossOrigin(origins = "*")
+@Tag(name = "Schedules", description = "Operations related to schedules")
 public class SchedulesController {
 
     @Autowired
