@@ -1,0 +1,3 @@
+### Get All Stations through Gateway
+GET {{gateway-service.host}}/api/stations
+Accept: application/json
