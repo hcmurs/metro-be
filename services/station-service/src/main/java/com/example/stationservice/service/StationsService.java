@@ -20,7 +20,7 @@ public interface StationsService {
 
     // Delete
     void deleteStation(Long id);
-
+    boolean checkStationOnLine(Long startStationId, Long endStationId,Long thisStation);
     // Additional utility methods
     boolean existsById(Long id);
     List<Stations> getStationsByRouteId(Long routeId);

@@ -73,4 +73,11 @@ public class StationsController {
         return ApiResponse.success(exists, "Station existence checked");
     }
 
+    @GetMapping("/check-line")
+    public ApiResponse<Boolean> checkStationOnLine(@RequestParam Long startStationId,
+                                                    @RequestParam Long endStationId,
+                                                    @RequestParam Long thisStation) {
+        boolean isOnLine = stationsService.checkStationOnLine(startStationId, endStationId, thisStation);
+        return ApiResponse.success(isOnLine, "Checked if station is on line");
+    }
 }

@@ -134,6 +134,26 @@ public class StationsServiceImpl implements StationsService {
     }
 
     @Override
+    public boolean checkStationOnLine(Long startStationId, Long endStationId, Long thisStation) {
+        if (startStationId == null || endStationId == null || thisStation == null) {
+            throw new IllegalArgumentException("Station IDs cannot be null");
+        }
+        Stations startStations = stationsRepository.findById(startStationId)
+                .orElseThrow(() -> new RuntimeException("Start station not found with id: " + startStationId));
+        Stations endStations = stationsRepository.findById(endStationId)
+                .orElseThrow(() -> new RuntimeException("End station not found with id: " + endStationId));
+        Stations thisStationObj = stationsRepository.findById(thisStation)
+                .orElseThrow(() -> new RuntimeException("This station not found with id: " + thisStation));
+
+        if( thisStationObj.getSequenceOrder() >= startStations.getSequenceOrder() &&
+            thisStationObj.getSequenceOrder() <= endStations.getSequenceOrder()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean existsById(Long id) {
         if (id == null) {
             return false;
