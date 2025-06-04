@@ -1,3 +1,7 @@
+service:
+  users:
+    version: v1
+
 spring:
   main:
     web-application-type: reactive

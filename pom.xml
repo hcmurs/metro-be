@@ -15,6 +15,7 @@
     <module>services/eureka-service</module>
     <module>services/gateway-service</module>
     <module>services/station-service</module>
+    <module>services/user-service</module>
   </modules>
 
   <groupId>org.com.hcmurs</groupId>
