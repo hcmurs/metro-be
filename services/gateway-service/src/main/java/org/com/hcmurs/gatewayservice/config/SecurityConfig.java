@@ -51,9 +51,8 @@ public class SecurityConfig {
                                        .pathMatchers("/keycloak/**").permitAll()
                                        .pathMatchers("/keycloak/test-member").hasAnyRole(HCMURS_MEMBER)
                                        .pathMatchers("/keycloak/test-admin").hasAnyRole(HCMURS_ADMIN)
-
                                        .pathMatchers("/api/stations/**").permitAll()
-
+                                       .pathMatchers("/api/minh/**").permitAll()
                                        .pathMatchers(HttpMethod.POST, "/qr-login").permitAll()
                                        .pathMatchers(HttpMethod.GET, "/qr-login/**").permitAll()
 

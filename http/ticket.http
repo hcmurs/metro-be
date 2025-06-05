@@ -1,0 +1,2 @@
+GET {{gateway-service.host}}/api/tickets/
+Accept: application/json
