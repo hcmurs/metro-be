@@ -14,6 +14,7 @@
   <modules>
     <module>services/eureka-service</module>
     <module>services/gateway-service</module>
+    <module>services/ticket-service</module>
     <module>services/station-service</module>
   </modules>
 
@@ -37,6 +38,7 @@
     <spring-cloud.feign.version>4.2.1</spring-cloud.feign.version>
     <spring-data-redis.version>3.1.5</spring-data-redis.version>
 
+
     <!-- Database -->
     <postgres.version>42.7.3</postgres.version>
     <h2.version>2.2.224</h2.version>
@@ -56,6 +58,8 @@
     <mapstruct.version>1.5.5.Final</mapstruct.version>
     <dotenv.spring.version>4.0.0</dotenv.spring.version>
     <dotenv.java.version>3.0.1</dotenv.java.version>
+    <google.zxing.version>3.5.3</google.zxing.version>
+    <jackson.version>2.15.2</jackson.version>
 
     <!-- Service Discovery -->
     <eureka.client.version>3.1.5</eureka.client.version>
@@ -220,6 +224,31 @@
         <groupId>me.paulschwarz</groupId>
         <artifactId>spring-dotenv</artifactId>
         <version>${dotenv.spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>core</artifactId>
+        <version>${google.zxing.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>javase</artifactId>
+        <version>${google.zxing.version}</version>
+      </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
       </dependency>
 
       <!-- Custom Libraries -->

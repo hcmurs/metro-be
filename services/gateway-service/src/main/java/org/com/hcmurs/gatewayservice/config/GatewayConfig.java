@@ -13,6 +13,7 @@ public class GatewayConfig {
 
     private final String API_PREFIX = "/api";
     private final String STATION_SERVICE = "lb://station-service";
+     private final String TICKET_SERVICE = "lb://ticket-service";
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
@@ -21,6 +22,9 @@ public class GatewayConfig {
                 .path(API_PREFIX + "/stations/**")
 //                .filters(f -> f.stripPrefix(1))
                 .uri(STATION_SERVICE))
+            .route("ticket_service_route", r -> r
+                .path(API_PREFIX + "/minh/**")
+                .uri(TICKET_SERVICE))
             .build();
     }
 
