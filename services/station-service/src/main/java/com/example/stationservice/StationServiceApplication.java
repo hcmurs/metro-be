@@ -16,7 +16,7 @@ public class StationServiceApplication {
         var env = context.getEnvironment();
         var activeProfiles = env.getActiveProfiles();
         if (!Arrays.asList(activeProfiles).contains("docker")) {
-            JavaBrowserLauncher.openHomePage("http://localhost:4004/swagger-ui.html");
+            JavaBrowserLauncher.openHomePage("http://localhost:4004/swagger-ui/index.html");
         }
     }
 

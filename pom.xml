@@ -11,6 +11,7 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
+  <!-- Default modules (keeps existing behavior when no profile is specified) -->
   <modules>
     <module>services/eureka-service</module>
     <module>services/gateway-service</module>
@@ -69,6 +70,59 @@
     <common-spring.version>1.0.0</common-spring.version>
     <lcaohoanq-brlc.version>1.0.0</lcaohoanq-brlc.version>
   </properties>
+
+  <profiles>
+    <!-- Profile for building all services (default behavior - no changes) -->
+    <profile>
+      <id>all</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>services/eureka-service</module>
+        <module>services/gateway-service</module>
+        <module>services/ticket-service</module>
+        <module>services/station-service</module>
+      </modules>
+    </profile>
+
+    <!-- Profile for Docker builds - minimal modules -->
+    <profile>
+      <id>docker</id>
+      <modules>
+        <!-- Empty - each service will specify what it needs -->
+      </modules>
+    </profile>
+
+    <!-- Individual service profiles for Docker builds -->
+    <profile>
+      <id>eureka</id>
+      <modules>
+        <module>services/eureka-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>gateway</id>
+      <modules>
+        <module>services/gateway-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>ticket</id>
+      <modules>
+        <module>services/ticket-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>station</id>
+      <modules>
+        <module>services/station-service</module>
+      </modules>
+    </profile>
+  </profiles>
 
   <dependencyManagement>
     <dependencies>
@@ -235,11 +289,11 @@
         <artifactId>javase</artifactId>
         <version>${google.zxing.version}</version>
       </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
