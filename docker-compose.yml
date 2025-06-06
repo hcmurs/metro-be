@@ -3,19 +3,49 @@ networks:
     driver: bridge
 
 services:
-  gateway:
-    container_name: gateway-service
+  eureka:
+    container_name: eureka-server
     build:
       context: .
-      dockerfile: gateway-service/Dockerfile
+      dockerfile: services/eureka-service/Dockerfile
     ports:
-      - "4003:4003"
+      - "8761:8761"
     # restart: on-failure
     volumes:
-      - ./logs/gateway:/logs/gateway
+      - ./logs/eureka:/logs/eureka
+    networks:
+      - metro-be
+
+#  gateway:
+#    container_name: gateway-service
+#    build:
+#      context: .
+#      dockerfile: services/gateway-service/Dockerfile
+#    ports:
+#      - "4003:4003"
+#    # restart: on-failure
+#    volumes:
+#      - ./logs/gateway:/logs/gateway
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - eureka
+#    networks:
+#      - metro-be
+
+  station:
+    container_name: station-service
+    build:
+      context: .
+      dockerfile: services/station-service/Dockerfile
+    ports:
+      - "4004:4004"
+    # restart: on-failure
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - eureka
+    volumes:
+      - ./logs/station:/logs/station
     networks:
       - metro-be
