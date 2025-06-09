@@ -35,7 +35,10 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/v3/api-docs",
             "/webjars/swagger-ui/favicon-32x32.png",
             "/webjars/swagger-ui/favicon-16x16.png",
-            "/webjars/swagger-ui/index.html"
+            "/webjars/swagger-ui/index.html",
+
+            //Auth
+            "/api/oauth2/authorize/google"
     };
 
     @NotNull

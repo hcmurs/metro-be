@@ -37,7 +37,7 @@ public class GatewayConfig {
                         .path(API_PREFIX + "/auth/**")
                         .filters(f -> f.rewritePath(
                                 "/api/auth(?<segment>/?.*)",
-                                "/api/v1/auth{segment}"
+                                "/api/v1/auth${segment}"
                         ))
                         .uri("http://localhost:4006"))
 
