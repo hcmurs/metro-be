@@ -1,30 +1,19 @@
 # Build stage
-FROM maven:3.9.9-eclipse-temurin-17-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 
-# Copy the parent pom.xml first
+# Copy full pom.xml and all service folders
 COPY pom.xml ./
-# Copy the gateway-service module
-COPY gateway-service/ ./gateway-service/
+COPY services/ ./services/
 
-# Go to gateway-service directory and download dependencies
-WORKDIR /app/gateway-service
-RUN mvn dependency:go-offline
-
-# Build the project
-RUN mvn clean package -DskipTests
+# Build using gateway profile only
+RUN mvn -Pgateway clean package -DskipTests
 
 # Runtime stage
-FROM openjdk:17-slim
+FROM openjdk:21-slim
 WORKDIR /app
 
-# Copy the jar from the build stage
-COPY --from=build /app/gateway-service/target/gateway-service-1.0.0.jar app.jar
+COPY --from=build /app/services/gateway-service/target/*.jar app.jar
 
-# Add wait-for-it script to ensure database is ready
-ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
-
-EXPOSE 8080
-# Wait for MySQL to be ready before starting the application
+EXPOSE 4003
 CMD ["java", "-jar", "app.jar"]

@@ -3,7 +3,6 @@ spring:
     name: station-service
 
   cloud:
-
     discovery:
       enabled: true
       eureka:

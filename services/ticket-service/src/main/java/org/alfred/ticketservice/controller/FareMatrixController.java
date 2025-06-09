@@ -1,0 +1,81 @@
+package org.alfred.ticketservice.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.alfred.ticketservice.config.ApiResponse;
+import org.alfred.ticketservice.dto.fare_matrix.*;
+import org.alfred.ticketservice.service.FareMatrixService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/minh/fare-matrices")
+@RequiredArgsConstructor
+@Slf4j
+@Validated
+public class FareMatrixController {
+
+    private final FareMatrixService fareMatrixService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<FareMatrixResponse>> getFareMatrixById(@PathVariable Long id) {
+        log.info("Request to get fare matrix by id: {}", id);
+        FareMatrixResponse fareMatrix = fareMatrixService.getFareMatrixById(id);
+        return ResponseEntity.ok(ApiResponse.success(fareMatrix, "Fare matrix retrieved successfully"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<FareMatrixResponse>>> getAllFareMatrices() {
+        log.info("Request to get all fare matrices");
+        List<FareMatrixResponse> fareMatrices = fareMatrixService.getAllFareMatrices();
+        return ResponseEntity.ok(ApiResponse.success(fareMatrices, "Fare matrices retrieved successfully"));
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<FareMatrixResponse>> createFareMatrix(@Valid @RequestBody FareMatrixRequest request) {
+        log.info("Request to create fare matrix between stations: {} and {}",
+                request.startStationId(), request.endStationId());
+        FareMatrixResponse createdFareMatrix = fareMatrixService.createFareMatrix(request);
+        return new ResponseEntity<>(
+                ApiResponse.success(createdFareMatrix, "Fare matrix created successfully"),
+                HttpStatus.CREATED
+        );
+    }
+
+    @PutMapping
+    public ResponseEntity<ApiResponse<FareMatrixResponse>> updateFareMatrix(@Valid @RequestBody FareMatrixUpdateRequest request) {
+        log.info("Request to update fare matrix with ID: {}", request.fareMatrixId());
+        FareMatrixResponse updatedFareMatrix = fareMatrixService.updateFareMatrix(request);
+        return ResponseEntity.ok(ApiResponse.success(updatedFareMatrix, "Fare matrix updated successfully"));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteFareMatrix(@PathVariable Long id) {
+        log.info("Request to delete (deactivate) fare matrix with ID: {}", id);
+        fareMatrixService.deleteFareMatrix(id);
+        return ResponseEntity.ok(ApiResponse.success(null, "Fare matrix deactivated successfully"));
+    }
+
+    @GetMapping("/by-station/{stationId}")
+    public ResponseEntity<ApiResponse<List<FareMatrixResponse>>> getFareMatricesByStartStation(
+            @Valid @PathVariable Long stationId) {
+        log.info("Request to get fare matrices by start station ID: {}", stationId);
+        List<FareMatrixResponse> fareMatrices = fareMatrixService.getFareMatricesByStartStationId(stationId);
+        return ResponseEntity.ok(ApiResponse.success(fareMatrices, "Fare matrices retrieved successfully"));
+    }
+
+    @GetMapping("/{fareMatrixId}/validate-station/{stationId}")
+    public ResponseEntity<ApiResponse<Boolean>> validateStationInFareMatrix(
+            @PathVariable Long fareMatrixId,
+            @PathVariable Long stationId) {
+        log.info("Request to validate if station ID: {} is in fare matrix ID: {}", stationId, fareMatrixId);
+        boolean isValid = fareMatrixService.isStationInFareMatrix(stationId, fareMatrixId);
+        return ResponseEntity.ok(ApiResponse.success(isValid,
+                isValid ? "Station is valid for this fare matrix" : "Station is not valid for this fare matrix"));
+    }
+}

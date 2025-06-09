@@ -6,14 +6,14 @@ WORKDIR /app
 COPY pom.xml ./
 COPY services/ ./services/
 
-# Build using eureka profile only
-RUN mvn -Peureka clean package -DskipTests
+# Build using station profile only
+RUN mvn -Pstation clean package -DskipTests
 
 # Runtime stage
 FROM openjdk:21-slim
 WORKDIR /app
 
-COPY --from=build /app/services/eureka-service/target/*.jar app.jar
+COPY --from=build /app/services/station-service/target/*.jar app.jar
 
-EXPOSE 8761
+EXPOSE 4004
 CMD ["java", "-jar", "app.jar"]
