@@ -13,6 +13,7 @@ public class GatewayConfig {
 
     private final String API_PREFIX = "/api";
     private final String STATION_SERVICE = "lb://station-service";
+    private final String TICKET_SERVICE = "lb://ticket-service";
 
     private final String USER_SERVICE = "lb://user-service";
     private final String AUTH_SERVICE = "lb://auth-service";
@@ -22,8 +23,11 @@ public class GatewayConfig {
         return builder.routes()
                 .route("station_service_route", r -> r
                         .path(API_PREFIX + "/stations/**")
-//                .filters(f -> f.stripPrefix(1))
                         .uri(STATION_SERVICE))
+
+                .route("ticket_service_route", r -> r
+                        .path(API_PREFIX + "/minh/**")
+                        .uri(TICKET_SERVICE))
 
                 .route("user_service_route", r -> r
                         .path(API_PREFIX + "/users/**")
