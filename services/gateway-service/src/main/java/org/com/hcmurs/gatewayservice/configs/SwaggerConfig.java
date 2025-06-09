@@ -1,4 +1,4 @@
-package org.com.hcmurs.gatewayservice.config;
+package org.com.hcmurs.gatewayservice.configs;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestCookieException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,13 +35,13 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(MissingRequestCookieException.class)
-    public ResponseEntity<ApiResponse<Void>> handleMissingRequestCookieException(MissingRequestCookieException e) {
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.error(
-                        ErrorMessage.INVALID_TOKEN.getStatus(),
-                        ErrorMessage.INVALID_TOKEN.getMessage())
+                        ErrorMessage.ALREADY_LOGOUT.getStatus(),
+                        ErrorMessage.ALREADY_LOGOUT.getMessage())
                 );
     }
 }

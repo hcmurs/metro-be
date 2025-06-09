@@ -40,15 +40,4 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(response);
     }
-
-    @GetMapping("/me2")
-    public ResponseEntity<ApiResponse<UserDto>> findUser2(
-            @CookieValue("token") String token
-    ) {
-        UserDto userDto = userService.findUser(token);
-        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
 }

@@ -16,6 +16,7 @@ public enum ErrorMessage {
     INVALID_TOKEN(401, "Invalid JWT token"),
     INVALID_API_KEY(401, "Invalid API key"),
     UNAUTHORIZED(403, "You do not have permission"),
+    ALREADY_LOGOUT(401, "Already logout"),
     LACK_OF_TOKEN(400, "Lack of JWT token"),
     ALREADY_REQUESTED(400, "Already requested");
 
