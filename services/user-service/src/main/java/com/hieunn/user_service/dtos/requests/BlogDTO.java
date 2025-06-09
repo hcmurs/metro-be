@@ -14,7 +14,7 @@ public class BlogDTO {
         String image,
         String content,
         String[] tags,
-        Integer readTime,
+        String readTime,
         String excerpt,
         Integer views,
         String createdAt,
@@ -25,14 +25,32 @@ public class BlogDTO {
 
     }
 
+    public record BlogRes(
+        String id,
+        String category,
+        String title,
+        String author,
+        String date,
+        Integer comments,
+        String image,
+        String content,
+        String[] tags,
+        String readTime,
+        String excerpt,
+        Integer views,
+        String createdAt,
+        String updatedAt
+    ) {
+
+    }
+
     public record BlogPageRes(
         List<BlogReq> items,
-        Integer total,
+        Integer page,
         Integer perPage,
         Integer totalItems,
         Integer totalPages
     ) {
 
     }
-
 }
