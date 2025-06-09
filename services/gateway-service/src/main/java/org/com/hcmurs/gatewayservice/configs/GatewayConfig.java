@@ -13,42 +13,46 @@ public class GatewayConfig {
 
     private final String API_PREFIX = "/api";
     private final String STATION_SERVICE = "lb://station-service";
-
+    private final String TICKET_SERVICE = "lb://ticket-service";
     private final String USER_SERVICE = "lb://user-service";
     private final String AUTH_SERVICE = "lb://auth-service";
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("station_service_route", r -> r
-                        .path(API_PREFIX + "/stations/**")
+            .route("station_service_route", r -> r
+                .path(API_PREFIX + "/stations/**")
 //                .filters(f -> f.stripPrefix(1))
-                        .uri(STATION_SERVICE))
+                .uri(STATION_SERVICE))
 
-                .route("user_service_route", r -> r
-                        .path(API_PREFIX + "/users/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/users(?<segment>/?.*)",
-                                "/api/v1/users${segment}"
-                        ))
-                        .uri("http://localhost:4007"))
+            .route("ticket_service_route", r -> r
+                .path(API_PREFIX + "/minh/**")
+                .uri(TICKET_SERVICE))
 
-                .route("auth_service_route", r -> r
-                        .path(API_PREFIX + "/auth/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/auth(?<segment>/?.*)",
-                                "/api/v1/auth${segment}"
-                        ))
-                        .uri("http://localhost:4006"))
+            .route("user_service_route", r -> r
+                .path(API_PREFIX + "/users/**")
+                .filters(f -> f.rewritePath(
+                    "/api/users(?<segment>/?.*)",
+                    "/api/v1/users${segment}"
+                ))
+                .uri("http://localhost:4007"))
 
-                .route("auth_service_route", r -> r
-                        .path(API_PREFIX + "/oauth2/authorize/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/oauth2/authorize(?<segment>/?.*)",
-                                "/api/v1/oauth2/authorize${segment}"
-                        ))
-                        .uri("http://localhost:4006"))
-                .build();
+            .route("auth_service_route", r -> r
+                .path(API_PREFIX + "/auth/**")
+                .filters(f -> f.rewritePath(
+                    "/api/auth(?<segment>/?.*)",
+                    "/api/v1/auth${segment}"
+                ))
+                .uri("http://localhost:4006"))
+
+            .route("auth_service_route", r -> r
+                .path(API_PREFIX + "/oauth2/authorize/**")
+                .filters(f -> f.rewritePath(
+                    "/api/oauth2/authorize(?<segment>/?.*)",
+                    "/api/v1/oauth2/authorize${segment}"
+                ))
+                .uri("http://localhost:4006"))
+            .build();
     }
 
     @Bean
