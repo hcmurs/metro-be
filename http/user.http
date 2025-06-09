@@ -1,0 +1,3 @@
+### Get All Users through Gateway
+GET {{gateway-service.host}}/api/{{user-service.version}}/users
+Accept: application/json
