@@ -15,9 +15,6 @@ public class GatewayConfig {
     private final String STATION_SERVICE = "lb://station-service";
     private final String TICKET_SERVICE = "lb://ticket-service";
 
-    private final String USER_SERVICE = "lb://user-service";
-    private final String AUTH_SERVICE = "lb://auth-service";
-
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
