@@ -1,11 +1,15 @@
 package com.example.stationservice.config;
 
 
+import com.example.stationservice.dto.RoutesRequest;
+import com.example.stationservice.dto.RoutesResponse;
 import com.example.stationservice.model.Routes;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.repository.RoutesRepository;
 import com.example.stationservice.repository.StationsRepository;
+import com.example.stationservice.service.RoutesService;
 import jakarta.annotation.PostConstruct;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,15 +24,22 @@ public class DataInitializer implements CommandLineRunner {
     private StationsRepository stationsRepository;
 
     @Autowired
-    private RoutesRepository routesRepository;
+    private ModelMapper modelMapper;
+    @Autowired
+    private RoutesService routesService;
 
     @Override
     public void run(String... args) throws Exception {
         if (stationsRepository.count() > 0) return;
 
-        Routes route = new Routes();
-        route.setRouteName("Tuyến số 1: Bến Thành - Suối Tiên");
-        routesRepository.save(route);
+        RoutesRequest routesRequest = new RoutesRequest(
+                "R1",
+                "Bến xe Miền Đông - Bến Thành",
+                20
+        );
+
+       RoutesResponse routesResponse = routesService.createRoute(routesRequest);
+        Routes route = modelMapper.map(routesResponse, Routes.class);
 
         List<Stations> stations = List.of(
                 create("BXMD", "Bến xe Miền Đông", "Xa lộ Hà Nội, P. Tân Phú, TP Thủ Đức", 10.870, 106.807, 1, route),
