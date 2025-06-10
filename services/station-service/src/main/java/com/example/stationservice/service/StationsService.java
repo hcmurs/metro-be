@@ -17,7 +17,7 @@ public interface StationsService {
     List<StationsResponse> getStationsByName(String name);
 
     // Update
-    StationsResponse updateStation(Long id, Stations station);
+    StationsResponse updateStation(Long id, StationsRequest station);
 
     // Delete
     void deleteStation(Long id);
@@ -25,4 +25,5 @@ public interface StationsService {
     // Additional utility methods
     boolean existsById(Long id);
     List<StationsResponse> getStationsByRouteId(Long routeId);
+    StationsResponse updateStationStatus( Long id, Stations.Status status);
 }

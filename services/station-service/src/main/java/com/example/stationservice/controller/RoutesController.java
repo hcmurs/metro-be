@@ -64,7 +64,7 @@ public class RoutesController {
 
 
     @PutMapping("/{id}")
-    public ApiResponse<RoutesResponse> updateRoute(@PathVariable Long id, @RequestBody Routes route) {
+    public ApiResponse<RoutesResponse> updateRoute(@PathVariable Long id, @RequestBody RoutesRequest route) {
         RoutesResponse updatedRoute = routesService.updateRoute(id, route);
         return ApiResponse.success(updatedRoute, "Route updated successfully");
     }

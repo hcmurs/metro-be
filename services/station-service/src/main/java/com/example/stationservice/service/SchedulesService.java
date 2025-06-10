@@ -13,7 +13,7 @@ public interface SchedulesService {
     List<SchedulesResponse> getAllSchedules();
     Optional<SchedulesResponse> getScheduleById(Long id);
     List<SchedulesResponse> getSchedulesByStationId(Long stationId);
-    SchedulesResponse updateSchedule(Long id, Schedules schedule);
+    SchedulesResponse updateSchedule(Long id, SchedulesRequest schedule);
     void deleteSchedule(Long id);
     boolean existsById(Long id);
 

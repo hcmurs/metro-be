@@ -6,10 +6,10 @@ import com.example.stationservice.model.Routes;
 import com.example.stationservice.repository.RoutesRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +20,7 @@ public class RoutesServiceImpl implements RoutesService {
     private RoutesRepository routesRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Transactional
     @Override
     public RoutesResponse createRoute(RoutesRequest request) {
         if (routesRepository.existsByRouteCode(request.getRouteCode())) {
@@ -62,9 +63,9 @@ public class RoutesServiceImpl implements RoutesService {
                 .map(route -> modelMapper.map(route, RoutesResponse.class))
                 .toList();
     }
-
+    @Transactional
     @Override
-    public RoutesResponse updateRoute(Long id, Routes routeUpdate) {
+    public RoutesResponse updateRoute(Long id, RoutesRequest routeUpdate) {
             if (id == null) {
                 throw new IllegalArgumentException("Route ID cannot be null");
             }
@@ -98,7 +99,7 @@ public class RoutesServiceImpl implements RoutesService {
              return modelMapper.map(existingRoute, RoutesResponse.class);
         }
 
-
+    @Transactional
     @Override
     public void deleteRoute(Long id) {
         if (id == null) {
