@@ -12,12 +12,16 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.server.PathContainer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -26,25 +30,25 @@ public class JwtAuthenticationFilter implements WebFilter {
     JwtUtil jwtUtil;
     RedisTemplate<String, String> redisTemplate;
     ObjectMapper objectMapper;
+    PathPatternParser patternParser;
 
-    private final String[] PUBLIC_ENDPOINTS = {
+    List<String> PUBLIC_ENDPOINTS = List.of(
             //Swagger
             "/swagger-ui.html",
             "/favicon.ico",
-            "/v3/api-docs/swagger-config",
-            "/v3/api-docs",
-            "/webjars/swagger-ui/favicon-32x32.png",
-            "/webjars/swagger-ui/favicon-16x16.png",
-            "/webjars/swagger-ui/index.html",
-
+            "/v3/api-docs/**",
+            "/webjars/swagger-ui/**",
             //Auth
-            "/api/oauth2/authorize/google"
-    };
+            "/api/oauth2/authorize/**",
+            "/api/auth/register",
+            "/api/auth/local-login"
+    );
 
     @NotNull
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, @NotNull WebFilterChain chain) {
         String path = exchange.getRequest().getPath().value();
+        System.out.println(path);
         if (isPublicPath(path)) {
             return chain.filter(exchange);
         }
@@ -105,11 +109,9 @@ public class JwtAuthenticationFilter implements WebFilter {
     }
 
     private boolean isPublicPath(String path) {
-        for (String url : PUBLIC_ENDPOINTS) {
-            if (path.equalsIgnoreCase((url))) {
-                return true;
-            }
-        }
-        return false;
+        PathContainer pathContainer = PathContainer.parsePath(path);
+        return PUBLIC_ENDPOINTS.stream()
+                .map(patternParser::parse)
+                .anyMatch(pattern -> pattern.matches(pathContainer));
     }
 }

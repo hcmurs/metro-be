@@ -1,6 +1,6 @@
 package com.hieunn.auth_service.exceptions;
 
-import com.hieunn.auth_service.dtos.ApiResponse;
+import com.hieunn.auth_service.dtos.responses.ApiResponse;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

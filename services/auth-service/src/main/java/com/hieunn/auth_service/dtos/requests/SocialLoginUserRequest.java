@@ -1,4 +1,4 @@
-package com.hieunn.auth_service.dtos;
+package com.hieunn.auth_service.dtos.requests;
 
 import com.hieunn.auth_service.models.AuthProvider;
 import lombok.AccessLevel;

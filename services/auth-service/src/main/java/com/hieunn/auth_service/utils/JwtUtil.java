@@ -1,6 +1,6 @@
 package com.hieunn.auth_service.utils;
 
-import com.hieunn.auth_service.dtos.UserDto;
+import com.hieunn.auth_service.dtos.responses.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

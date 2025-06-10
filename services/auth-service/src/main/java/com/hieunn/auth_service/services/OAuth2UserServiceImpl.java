@@ -1,7 +1,7 @@
 package com.hieunn.auth_service.services;
 
-import com.hieunn.auth_service.dtos.SocialLoginUserRequest;
-import com.hieunn.auth_service.dtos.UserDto;
+import com.hieunn.auth_service.dtos.requests.SocialLoginUserRequest;
+import com.hieunn.auth_service.dtos.responses.UserDto;
 import com.hieunn.auth_service.exceptions.CustomException;
 import com.hieunn.auth_service.exceptions.ErrorMessage;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
