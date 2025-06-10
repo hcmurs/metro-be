@@ -12,6 +12,7 @@ import jakarta.ws.rs.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class StationsServiceImpl implements StationsService {
     private RoutesRepository routesRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Transactional
     @Override
     public StationsResponse createStation(StationsRequest request) {
         Routes route = routesRepository.findById(request.getRouteId())
@@ -78,9 +80,9 @@ public class StationsServiceImpl implements StationsService {
                 .map(station -> modelMapper.map(station, StationsResponse.class))
                 .toList();
     }
-
+    @Transactional
     @Override
-    public StationsResponse updateStation(Long id, Stations stationUpdate) {
+    public StationsResponse updateStation(Long id, StationsRequest stationUpdate) {
         if (id == null) {
             throw new EntityNotFoundException("Station ID cannot be null");
         }
@@ -118,22 +120,23 @@ public class StationsServiceImpl implements StationsService {
             existingStation.setSequenceOrder(stationUpdate.getSequenceOrder());
         }
 
-        if (stationUpdate.getRoute() != null && stationUpdate.getRoute().getRouteId() != null) {
-            Routes route = routesRepository.findById(stationUpdate.getRoute().getRouteId())
-                    .orElseThrow(() -> new EntityNotFoundException("Route not found with id: " + stationUpdate.getRoute().getRouteId()));
+        if (stationUpdate.getRouteId() != null &&
+                (existingStation.getRoute() == null ||
+                        !existingStation.getRoute().getRouteId().equals(stationUpdate.getRouteId()))) {
+
+            Routes route = routesRepository.findById(stationUpdate.getRouteId())
+                    .orElseThrow(() -> new EntityNotFoundException("Route not found with id: " + stationUpdate.getRouteId()));
             existingStation.setRoute(route);
         }
 
-        if (stationUpdate.getStatus() != null) {
-            existingStation.setStatus(stationUpdate.getStatus());
-        }
+
 
         existingStation.setUpdatedAt(LocalDateTime.now());
 
          stationsRepository.save(existingStation);
          return modelMapper.map(existingStation, StationsResponse.class);
     }
-
+    @Transactional
     @Override
     public void deleteStation(Long id) {
         if (id == null) {
@@ -196,6 +199,22 @@ public class StationsServiceImpl implements StationsService {
             return list.stream()
                 .map(station -> modelMapper.map(station, StationsResponse.class))
                 .toList();
+    }
+    @Transactional
+    @Override
+    public StationsResponse updateStationStatus(Long id, Stations.Status status) {
+        if (id == null) {
+            throw new EntityNotFoundException("Station ID cannot be null");
+        }
+
+        Stations existingStation = stationsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + id));
+
+        existingStation.setStatus(status);
+        existingStation.setUpdatedAt(LocalDateTime.now());
+
+         stationsRepository.save(existingStation);
+         return modelMapper.map(existingStation, StationsResponse.class);
     }
 
 }

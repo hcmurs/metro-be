@@ -52,7 +52,7 @@ public class SchedulesController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<SchedulesResponse> updateSchedule(@PathVariable Long id, @RequestBody Schedules schedule) {
+    public ApiResponse<SchedulesResponse> updateSchedule(@PathVariable Long id, @RequestBody SchedulesRequest schedule) {
         SchedulesResponse updatedSchedule = schedulesService.updateSchedule(id, schedule);
         return ApiResponse.success(updatedSchedule, "Schedule updated successfully");
     }

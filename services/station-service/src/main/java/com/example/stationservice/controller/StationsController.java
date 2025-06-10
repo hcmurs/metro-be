@@ -58,7 +58,7 @@ public class StationsController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody Stations station) {
+    public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody StationsRequest station) {
         StationsResponse updatedStation = stationsService.updateStation(id, station);
         return ApiResponse.success(updatedStation, "Station updated successfully");
     }

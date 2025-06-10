@@ -12,7 +12,7 @@ public interface RoutesService {
     List<RoutesResponse> getAllRoutes();
     Optional<RoutesResponse> getRouteById(Long id);
     List<RoutesResponse> getRoutesByName(String name);
-    RoutesResponse updateRoute(Long id, Routes route);
+    RoutesResponse updateRoute(Long id, RoutesRequest route);
     void deleteRoute(Long id);
     boolean existsById(Long id);
 
