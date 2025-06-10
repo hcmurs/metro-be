@@ -85,6 +85,8 @@
         <module>services/gateway-service</module>
         <module>services/ticket-service</module>
         <module>services/station-service</module>
+        <module>services/user-service</module>
+        <module>services/auth-service</module>
       </modules>
     </profile>
 
@@ -122,6 +124,20 @@
       <id>station</id>
       <modules>
         <module>services/station-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>user</id>
+      <modules>
+        <module>services/user-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>auth</id>
+      <modules>
+        <module>services/auth-service</module>
       </modules>
     </profile>
   </profiles>

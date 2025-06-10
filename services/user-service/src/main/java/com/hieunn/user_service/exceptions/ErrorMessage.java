@@ -18,7 +18,9 @@ public enum ErrorMessage {
     UNAUTHORIZED(403, "You do not have permission"),
     ALREADY_LOGOUT(401, "Already logout"),
     LACK_OF_TOKEN(400, "Lack of JWT token"),
-    ALREADY_REQUESTED(400, "Already requested");
+    ALREADY_REQUESTED(400, "Already requested"),
+    EMAIL_ALREADY_USED(400, "Email already used"),
+    INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password");
 
     int status;
     String message;

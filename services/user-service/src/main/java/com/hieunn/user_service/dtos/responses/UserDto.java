@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
     Long userId;
+    String username;
+    @JsonIgnore
+    String password;
     String email;
     String name;
     String role;

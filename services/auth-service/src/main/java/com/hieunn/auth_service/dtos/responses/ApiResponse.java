@@ -1,4 +1,4 @@
-package com.hieunn.auth_service.dtos;
+package com.hieunn.auth_service.dtos.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

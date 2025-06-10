@@ -1,6 +1,6 @@
 package com.hieunn.auth_service.handlers;
 
-import com.hieunn.auth_service.dtos.UserDto;
+import com.hieunn.auth_service.dtos.responses.UserDto;
 import com.hieunn.auth_service.models.OAuth2UserImpl;
 import com.hieunn.auth_service.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;

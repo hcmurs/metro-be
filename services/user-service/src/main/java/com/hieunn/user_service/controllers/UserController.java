@@ -1,8 +1,11 @@
 package com.hieunn.user_service.controllers;
 
+import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
+import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
-import com.hieunn.user_service.dtos.requests.SocialLoginUserRequest;
+import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
+import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,12 +24,12 @@ public class UserController {
 
     @PostMapping("/social-login")
     public ResponseEntity<ApiResponse<UserDto>> processSocialLogin(
-            @Valid @RequestBody SocialLoginUserRequest socialLoginRequest
+            @Valid @RequestBody SocialLoginRequest socialLoginRequest
     ) {
         UserDto userDto = userService.processSocialLogin(socialLoginRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(response);
     }
 
@@ -36,6 +39,28 @@ public class UserController {
     ) {
         UserDto userDto = userService.findUser(token.substring(7));
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<UserDto>> register(
+            @Valid @RequestBody RegisterRequest registerRequest
+    ) {
+        UserDto userDto = userService.register(registerRequest);
+        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Register successfully");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @PostMapping("/local-login")
+    public ResponseEntity<ApiResponse<User>> register(
+            @Valid @RequestBody LocalLoginRequest localLoginRequest
+    ) {
+        User user = userService.processLocalLogin(localLoginRequest);
+        ApiResponse<User> response = ApiResponse.success(user, "Login successfully");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);

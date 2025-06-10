@@ -1,6 +1,6 @@
 package com.hieunn.auth_service.models;
 
-import com.hieunn.auth_service.dtos.UserDto;
+import com.hieunn.auth_service.dtos.responses.UserDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;

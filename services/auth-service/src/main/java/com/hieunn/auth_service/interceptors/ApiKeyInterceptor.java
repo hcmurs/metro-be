@@ -1,7 +1,6 @@
 package com.hieunn.auth_service.interceptors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hieunn.auth_service.dtos.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;

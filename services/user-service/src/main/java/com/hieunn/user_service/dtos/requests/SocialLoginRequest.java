@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SocialLoginUserRequest {
+public class SocialLoginRequest {
     @Email
     String email;
     String name;

@@ -1,5 +1,10 @@
 package com.hieunn.auth_service.services;
 
+import com.hieunn.auth_service.dtos.requests.LocalLoginRequest;
+import com.hieunn.auth_service.dtos.responses.ApiResponse;
+import com.hieunn.auth_service.dtos.responses.UserDto;
+import com.hieunn.auth_service.dtos.requests.RegisterRequest;
+import com.hieunn.auth_service.feignClients.UserServiceClient;
 import com.hieunn.auth_service.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -19,6 +25,9 @@ import java.util.Date;
 public class AuthServiceImpl implements AuthService {
     JwtUtil jwtUtil;
     RedisTemplate<String, String> redisTemplate;
+    UserServiceClient userServiceClient;
+    PasswordEncoder passwordEncoder;
+    HttpServletResponse response;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -54,4 +63,29 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
+    public ApiResponse<UserDto> register(RegisterRequest registerRequest) {
+        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        return userServiceClient.register(registerRequest);
+    }
+
+    @Override
+    public ApiResponse<UserDto> processLocalLogin(LocalLoginRequest localLoginRequest) {
+        ApiResponse<UserDto> apiResponse = userServiceClient.processLocalLogin(localLoginRequest);
+
+        if (apiResponse.getData() != null) {
+            UserDto userDto = apiResponse.getData();
+
+            String token = jwtUtil.generateToken(userDto);
+
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(7 * 24 * 60 * 60);
+            response.addCookie(cookie);
+        }
+
+        return apiResponse;
+    }
 }
