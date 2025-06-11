@@ -5,9 +5,12 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.LocalTime;
 
 @Configuration
 public class OpenAPIConfig {
@@ -28,6 +31,11 @@ public class OpenAPIConfig {
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT")));
+                                        .bearerFormat("JWT")))
+                .components(new Components()
+                        .addSchemas("LocalTime", new Schema<LocalTime>()
+                                .type("string")
+                                .pattern("HH:mm")
+                                .example("00:00")));
     }
 }
