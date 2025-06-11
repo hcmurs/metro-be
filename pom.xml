@@ -17,6 +17,8 @@
     <module>services/gateway-service</module>
     <module>services/ticket-service</module>
     <module>services/station-service</module>
+    <module>services/user-service</module>
+    <module>services/auth-service</module>
   </modules>
 
   <groupId>org.com.hcmurs</groupId>
@@ -83,6 +85,8 @@
         <module>services/gateway-service</module>
         <module>services/ticket-service</module>
         <module>services/station-service</module>
+        <module>services/user-service</module>
+        <module>services/auth-service</module>
       </modules>
     </profile>
 
@@ -122,6 +126,20 @@
         <module>services/station-service</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>user</id>
+      <modules>
+        <module>services/user-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>auth</id>
+      <modules>
+        <module>services/auth-service</module>
+      </modules>
+    </profile>
   </profiles>
 
   <dependencyManagement>
@@ -149,11 +167,6 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-validation</artifactId>
-        <version>${spring-boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-security</artifactId>
         <version>${spring-boot.version}</version>
       </dependency>
       <dependency>
