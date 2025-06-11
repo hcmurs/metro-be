@@ -31,9 +31,8 @@ package org.alfred.ticketservice.model;
         @Column(name = "name", nullable = false)
         private String name;
 
-        @NotNull(message = "Fare matrix is required")
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "fare_matrix_id", nullable = false)
+        @JoinColumn(name = "fare_matrix_id")
         private FareMatrix fareMatrix;
 
         @NotBlank(message = "Ticket code is required")

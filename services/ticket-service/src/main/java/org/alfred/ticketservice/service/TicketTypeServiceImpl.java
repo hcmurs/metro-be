@@ -23,6 +23,12 @@ public class TicketTypeServiceImpl implements TicketTypeService{
 
     @Override
     public TicketTypeResponse createTicketType(TicketTypeRequest ticketType) {
+        if (ticketTypeRepository.findByName(ticketType.name()) != null) {
+            throw new IllegalArgumentException("Ticket type with this name already exists");
+        }
+        if (ticketTypeRepository.findByValidityDuration(ticketType.validityDuration()) != null) {
+            throw new IllegalArgumentException("Ticket type with this validity duration already exists");
+        }
         TicketTypes ticketTypes = TicketTypes.builder()
                 .name(ticketType.name())
                 .description(ticketType.description())

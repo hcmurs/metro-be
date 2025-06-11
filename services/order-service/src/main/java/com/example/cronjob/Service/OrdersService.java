@@ -1,0 +1,20 @@
+package com.example.cronjob.Service;
+
+import com.example.cronjob.DTO.Request.OrderTicketDaysRequest;
+import com.example.cronjob.DTO.Request.OrderTicketSingleRequest;
+import com.example.cronjob.DTO.Response.ApiResponse;
+import com.example.cronjob.DTO.Response.OrderResponse;
+import com.example.cronjob.DTO.Response.TransactionResponse;
+
+import java.util.List;
+
+
+public interface OrdersService {
+    ApiResponse<OrderResponse> generateOrderTicketSingle(OrderTicketSingleRequest orderTicketSingleRequest);
+    ApiResponse<OrderResponse> generateOrderTicketDays(OrderTicketDaysRequest orderTicketSingleRequest);
+    ApiResponse<List<OrderResponse>> getAllOrders();
+    ApiResponse<OrderResponse> getOrderById(Long orderId);
+    ApiResponse<OrderResponse> updateOrder(Long orderId);
+    ApiResponse<TransactionResponse> updateTransaction(Long orderId);
+
+}

@@ -11,7 +11,6 @@ public record TicketResponse(
         Long ticketTypeId,
         String name,
         String ticketCode,
-        String qrCodeData,
         float actualPrice,
         LocalDateTime validFrom,
         LocalDateTime validUntil,

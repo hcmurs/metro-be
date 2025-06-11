@@ -23,7 +23,7 @@ public class GatewayConfig {
                         .uri(STATION_SERVICE))
 
                 .route("ticket_service_route", r -> r
-                        .path(API_PREFIX + "/minh/**")
+                        .path(API_PREFIX + "/ts/**")
                         .uri(TICKET_SERVICE))
 
                 .route("user_service_route", r -> r

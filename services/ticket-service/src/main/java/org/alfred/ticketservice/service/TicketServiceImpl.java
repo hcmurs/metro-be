@@ -71,21 +71,51 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    @Transactional
-    public TicketResponse createTicket(TicketRequest ticket) {
-        if (ticket == null || ticket.ticketTypeId() == null || ticket.fareMatrixId() == null) {
-            throw new IllegalArgumentException("Ticket request must contain valid ticketTypeId and fareMatrixId");
+    public TicketResponse createTicketType(TicketRequest.TicketType ticket) {
+        if (ticket == null || ticket.id() == null  ) {
+            throw new IllegalArgumentException("Ticket request must contain valid fareMatrixId");
         }
-        TicketTypes ticketType = ticketTypeRepository.findById(ticket.ticketTypeId()).orElseThrow(() -> new EntityNotFoundException("Ticket type not found with id: " + ticket.ticketTypeId()));
+        TicketTypes ticketType = ticketTypeRepository.findById(ticket.id()).orElseThrow(() -> new EntityNotFoundException("Ticket type not found with id: " + ticket.id()));
         if( !ticketType.isActive()) {
-            throw new EntityNotFoundException("Ticket type is not active with id: " + ticket.ticketTypeId());
+            throw new EntityNotFoundException("Ticket type is not active with id: " + ticket.id());
         }
-        FareMatrix fareMatrix = fareMatrixRepository.findById(ticket.fareMatrixId()).orElseThrow(() -> new EntityNotFoundException("Fare matrix not found with id: " + ticket.fareMatrixId()));
+        if( ticketType.getValidityDuration() == 0) {
+            throw new IllegalArgumentException("Ticket type must have a valid validity duration on days");
+        }
+        String prefix = "MT";
+        String datePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String randomPart = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+        String ticketCode = prefix + datePart + randomPart;
+        Tickets newTicket = Tickets.builder()
+                .ticketType(ticketType)
+                .ticketCode(ticketCode)
+                .status(TicketStatus.PENDING)
+                .inTrip(false)
+                .build();
+        newTicket.setValidFrom(LocalDateTime.now());
+        newTicket.setValidUntil(LocalDateTime.now().plusDays(30));
+        newTicket.setActualPrice(ticketType.getPrice());
+        newTicket.setName(ticketType.getName());
+        Tickets savedTicket = ticketRepository.save(newTicket);
+        return mapToResponse2(savedTicket);
+    }
+
+    @Override
+    @Transactional
+    public TicketResponse createTicketFare(TicketRequest.FareMatrix ticket) {
+        if (ticket == null || ticket.id() == null  ) {
+            throw new IllegalArgumentException("Ticket request must contain valid fareMatrixId");
+        }
+        TicketTypes ticketType = ticketTypeRepository.findByValidityDuration(0);
+        if (ticketType == null) {
+            throw new EntityNotFoundException("Default ticket type not found");
+        }
+        FareMatrix fareMatrix = fareMatrixRepository.findById(ticket.id()).orElseThrow(() -> new EntityNotFoundException("Fare matrix not found with id: " + ticket.id()));
         if( fareMatrix.getStartStationId() == null || fareMatrix.getEndStationId() == null) {
             throw new EntityNotFoundException("Fare matrix must have valid start and end station IDs");
         }
         if(!fareMatrix.isActive()){
-            throw new EntityNotFoundException("Fare matrix is not active with id: " + ticket.fareMatrixId());
+            throw new EntityNotFoundException("Fare matrix is not active with id: " + ticket.id());
         }
         String prefix = "MT";
         String datePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -98,34 +128,10 @@ public class TicketServiceImpl implements TicketService{
                 .status(TicketStatus.PENDING)
                 .inTrip(false)
                 .build();
-        switch (ticketType.getValidityDuration()) {
-            case 0:
-                newTicket.setValidFrom(LocalDateTime.now());
-                newTicket.setValidUntil(LocalDateTime.now().plusDays(30));
-                newTicket.setActualPrice(fareMatrix.getPrice());
-                newTicket.setName(fareMatrix.getName());
-                break;
-            case 1:
-                newTicket.setValidFrom(LocalDateTime.now());
-                newTicket.setValidUntil(LocalDateTime.now().plusDays(30));
-                newTicket.setActualPrice(ticketType.getPrice());
-                newTicket.setName(ticketType.getName());
-                break;
-            case 3, 7:
-                newTicket.setValidFrom(LocalDateTime.now());
-                newTicket.setValidUntil(LocalDateTime.now().plusDays(90));
-                newTicket.setActualPrice(ticketType.getPrice());
-                newTicket.setName(ticketType.getName());
-                break;
-            case 30:
-                newTicket.setValidFrom(LocalDateTime.now());
-                newTicket.setValidUntil(LocalDateTime.now().plusDays(180));
-                newTicket.setActualPrice(ticketType.getPrice());
-                newTicket.setName(ticketType.getName());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid validity duration: " + ticketType.getValidityDuration());
-        }
+        newTicket.setValidFrom(LocalDateTime.now());
+        newTicket.setValidUntil(LocalDateTime.now().plusDays(30));
+        newTicket.setActualPrice(fareMatrix.getPrice());
+        newTicket.setName(fareMatrix.getName());
         Tickets savedTicket = ticketRepository.save(newTicket);
         return mapToResponse(savedTicket);
     }
@@ -265,16 +271,15 @@ public class TicketServiceImpl implements TicketService{
             if (!ticket.isInTrip()) {
                 throw new TicketProcessingException("Must enter before exit");
             }
-
-            if (!fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getFareMatrix().getFareMatrixId())) {
-                throw new TicketProcessingException("Ticket is not valid for exit at this station");
-            }
             ticket.setInTrip(false);
             switch (ticket.getTicketType().getValidityDuration()) {
                 case 0 -> {
                     // Single-use ticket: mark as expired after exit
                     if (ticket.getStatus() != TicketStatus.USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for exit");
+                    }
+                    if (!fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getFareMatrix().getFareMatrixId())) {
+                        throw new TicketProcessingException("Ticket is not valid for exit at this station");
                     }
                     ticket.setStatus(TicketStatus.EXPIRED);
                 }
@@ -345,7 +350,22 @@ public class TicketServiceImpl implements TicketService{
         return TicketResponse.builder()
                 .id(ticket.getTicketId())
                 .ticketTypeId(ticket.getTicketType().getTicketTypeId())
-                .fareMatrixId(ticket.getFareMatrix().getFareMatrixId())
+                .fareMatrixId(ticket.getFareMatrix().getFareMatrixId() == null ? null : ticket.getFareMatrix().getFareMatrixId())
+                .ticketCode(ticket.getTicketCode())
+                .name(ticket.getName())
+                .actualPrice(ticket.getActualPrice())
+                .validFrom(ticket.getValidFrom())
+                .validUntil(ticket.getValidUntil())
+                .status(ticket.getStatus())
+                .createdAt(ticket.getCreatedAt())
+                .updatedAt(ticket.getUpdatedAt())
+                .build();
+    }
+
+    private TicketResponse mapToResponse2(Tickets ticket) {
+        return TicketResponse.builder()
+                .id(ticket.getTicketId())
+                .ticketTypeId(ticket.getTicketType().getTicketTypeId())
                 .ticketCode(ticket.getTicketCode())
                 .name(ticket.getName())
                 .actualPrice(ticket.getActualPrice())
@@ -396,7 +416,7 @@ public class TicketServiceImpl implements TicketService{
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())
                     .ticketTypeName(ticket.getTicketType().getName())
-                    .name(ticket.getFareMatrix().getName())
+                    .name(ticket.getName())
                     .validFrom(nowStr)
                     .validUntil(untilStr)
                     .ticketCode(ticket.getTicketCode())
@@ -410,7 +430,7 @@ public class TicketServiceImpl implements TicketService{
             TicketQrData completeQrData = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())
                     .ticketTypeName(ticket.getTicketType().getName())
-                    .name(ticket.getFareMatrix().getName())
+                    .name(ticket.getName())
                     .validFrom(nowStr)
                     .validUntil(untilStr)
                     .ticketCode(ticket.getTicketCode())

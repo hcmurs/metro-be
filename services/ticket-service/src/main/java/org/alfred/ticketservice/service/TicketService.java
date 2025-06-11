@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface TicketService {
     TicketResponse getTicketById(Long ticketId);
-    TicketResponse createTicket(TicketRequest ticket);
+    TicketResponse createTicketType(TicketRequest.TicketType ticket);
+    TicketResponse createTicketFare(TicketRequest.FareMatrix ticket);
     TicketResponse updateTicket(TicketStatus status, Long id);
     TicketResponse getTicketByCode(String code);
     TicketResponse getTicketByQr(String code);

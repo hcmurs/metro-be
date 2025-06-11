@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TicketTypeRepository extends JpaRepository<TicketTypes, Long> {
     // Custom query methods can be defined here if needed
+    TicketTypes findByName(String name);
+    TicketTypes findByValidityDuration(int validityDuration);
 }
