@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ticket-usage-logs")
+@RequestMapping("/api/ts/ticket-usage-logs")
 @RequiredArgsConstructor
 @Slf4j
 @Validated

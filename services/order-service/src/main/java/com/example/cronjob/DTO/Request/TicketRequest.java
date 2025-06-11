@@ -1,8 +1,9 @@
-package org.alfred.ticketservice.dto.ticket;
+package com.example.cronjob.DTO.Request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
-public class TicketRequest{
+public class TicketRequest {
     public record TicketType(
         @Positive @NotNull(message = "Ticket type ID cannot be null")
         Long id

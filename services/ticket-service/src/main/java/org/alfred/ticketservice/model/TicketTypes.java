@@ -35,7 +35,7 @@ package org.alfred.ticketservice.model;
 
         @NotNull(message = "Validity duration is required")
         @Min(value = 0, message = "Validity duration must be at least 1 minute")
-        @Column(name = "validity_duration", nullable = false)
+        @Column(name = "validity_duration", nullable = false,unique = true)
         private int validityDuration; // in minutes
 
         @Column(name = "is_active", nullable = false)

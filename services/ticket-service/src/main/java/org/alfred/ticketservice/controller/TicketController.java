@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/minh/tickets")
+@RequestMapping("/api/ts/tickets")
 @RequiredArgsConstructor
 @Slf4j
 @Validated
@@ -35,11 +35,20 @@ public class TicketController {
         return ResponseEntity.ok(ApiResponse.success(ticket, "Ticket retrieved successfully"));
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<TicketResponse>> createTicket(@Valid @RequestBody TicketRequest request) {
-        log.info("Request to create ticket for type ID: {}, fare matrix ID: {}",
-                request.ticketTypeId(), request.fareMatrixId());
-        TicketResponse createdTicket = ticketService.createTicket(request);
+    @PostMapping("/ticket-type")
+    public ResponseEntity<ApiResponse<TicketResponse>> createTicketType(@Valid @RequestBody TicketRequest.TicketType request) {
+        log.info("Request to create ticket for type ID: {}",
+                request.id());
+        TicketResponse createdTicket = ticketService.createTicketType(request);
+        return new ResponseEntity<>(ApiResponse.success(createdTicket, "Ticket created successfully"),
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping("/fare-matrix")
+    public ResponseEntity<ApiResponse<TicketResponse>> createTicketFare(@Valid @RequestBody TicketRequest.FareMatrix request) {
+        log.info("Request to create ticket for type ID: {}",
+                request.id());
+        TicketResponse createdTicket = ticketService.createTicketFare(request);
         return new ResponseEntity<>(ApiResponse.success(createdTicket, "Ticket created successfully"),
                 HttpStatus.CREATED);
     }

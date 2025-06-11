@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ticket-types")
+@RequestMapping("/api/ts/ticket-types")
 @RequiredArgsConstructor
 @Slf4j
 @Validated

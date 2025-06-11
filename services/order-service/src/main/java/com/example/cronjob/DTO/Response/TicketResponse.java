@@ -1,9 +1,10 @@
-package org.alfred.ticketservice.dto.ticket;
+package com.example.cronjob.DTO.Response;
 
 import lombok.Builder;
-import org.alfred.ticketservice.model.enums.TicketStatus;
+import com.example.cronjob.Enum.TicketStatus;
 
 import java.time.LocalDateTime;
+
 @Builder
 public record TicketResponse(
         Long id,
