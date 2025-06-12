@@ -1,0 +1,144 @@
+networks:
+  metro-be:
+    driver: bridge
+
+services:
+  postgresql:
+    container_name: metro_pg_sql
+    image: docker.io/library/postgres:17.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: metro_db
+      PGDATA: /data/postgres
+    volumes:
+      - /DATA/AppData/metro_application/postgres/data:/data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "${POSTGRES_USER:-postgres}"']
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5433:5432"
+    networks:
+      - metro-be
+    restart: unless-stopped
+
+  redis:
+    image: docker.io/redis:7.2.3
+    container_name: redis-container
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /DATA/AppData/metro_application/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - metro-be
+
+  eureka:
+    container_name: metro_eureka_service
+    image: lcaohoanq/metro-eureka
+    ports:
+      - "8761:8761"
+    # restart: on-failure
+    networks:
+      - metro-be
+
+  gateway:
+    container_name: metro_gateway_service
+    image: lcaohoanq/metro-gateway
+    ports:
+      - "4003:4003"
+    # restart: on-failure
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      eureka:
+        condition: service_started
+    networks:
+      - metro-be
+
+  auth:
+    container_name: metro_auth_service
+    image: lcaohoanq/metro-auth
+    ports:
+      - "4006:4006"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      eureka:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  user:
+    container_name: metro_user_service
+    image: lcaohoanq/metro-user
+    ports:
+      - "4007:4007"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  order:
+    container_name: metro_order_service
+    image: lcaohoanq/metro-order
+    ports:
+      - "4008:4008"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  ticket:
+    container_name: metro_ticket_service
+    image: lcaohoanq/metro-ticket
+    ports:
+      - "4005:4005"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  station:
+    container_name: metro_station_service
+    image: lcaohoanq/metro-station
+    ports:
+      - "4004:4004"
+    # restart: on-failure
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
