@@ -1,5 +1,6 @@
 package com.hieunn.user_service.services;
 
+import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
@@ -13,6 +14,7 @@ import com.hieunn.user_service.utils.JwtUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     JwtUtil jwtUtil;
+    PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -120,14 +123,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsernameOrEmail(String usernameOrEmail) {
-        Optional<User> userByUsername = userRepository.findByUsername(usernameOrEmail);
-        Optional<User> userByEmail = userRepository.findByEmail(usernameOrEmail);
+    public UserDto processLocalLogin(LocalLoginRequest localLoginRequest) {
+        Optional<User> userByUsername = userRepository.findByUsername(localLoginRequest.getUsernameOrEmail());
+        Optional<User> userByEmail = userRepository.findByEmail(localLoginRequest.getUsernameOrEmail());
         if (userByUsername.isEmpty() && userByEmail.isEmpty()) {
             throw new CustomException(
                     ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
                     ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
         }
-        return userByUsername.orElseGet(userByEmail::get);
+
+        User user = userByUsername.orElseGet(userByEmail::get);
+        if (!passwordEncoder.matches(localLoginRequest.getPassword(), user.getPassword())) {
+            throw new CustomException(
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
+        }
+
+        return userMapper.toUserDto(user);
     }
 }

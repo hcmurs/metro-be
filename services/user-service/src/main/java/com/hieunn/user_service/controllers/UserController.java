@@ -1,5 +1,6 @@
 package com.hieunn.user_service.controllers;
 
+import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
@@ -47,15 +48,15 @@ public class UserController {
         UserDto userDto = userService.register(registerRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Register successfully");
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(response);
     }
 
-    @GetMapping("/{usernameOrEmail}")
-    public ResponseEntity<ApiResponse<User>> findByUsernameOrEmail(
-            @PathVariable String usernameOrEmail) {
-        User user = userService.findByUsernameOrEmail(usernameOrEmail);
-        ApiResponse<User> response = ApiResponse.success(user, "Login successfully");
+    @PostMapping("/local-login")
+    public ResponseEntity<ApiResponse<UserDto>> findByUsernameOrEmail(
+            @RequestBody LocalLoginRequest localLoginRequest) {
+        UserDto userDto = userService.processLocalLogin(localLoginRequest);
+        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
