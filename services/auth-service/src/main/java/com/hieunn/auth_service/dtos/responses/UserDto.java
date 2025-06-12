@@ -1,6 +1,7 @@
 package com.hieunn.auth_service.dtos.responses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hieunn.auth_service.models.AuthProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class UserDto {
     Long userId;
     String username;
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     String password;
     String email;
     String name;

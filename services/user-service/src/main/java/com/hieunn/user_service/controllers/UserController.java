@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/local-login")
-    public ResponseEntity<ApiResponse<User>> register(
+    public ResponseEntity<ApiResponse<User>> localLogin(
             @Valid @RequestBody LocalLoginRequest localLoginRequest
     ) {
         User user = userService.processLocalLogin(localLoginRequest);

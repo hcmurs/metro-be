@@ -14,7 +14,9 @@ public enum ErrorMessage {
     UNAUTHORIZED(401, "Username or password incorrect"),
     LACK_OF_TOKEN(400, "Lack of token"),
     UNSUPPORTED_AUTH_PROVIDER(404, "Unsupported authentication provider: "),
-    USER_NOT_FOUND(404, "User does not exist"),;
+    USER_NOT_FOUND(404, "User does not exist"),
+    INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password"),
+    INVALID_API_KEY(401, "Invalid API key");
 
     int status;
     String message;
