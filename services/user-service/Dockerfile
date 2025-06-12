@@ -7,13 +7,13 @@ COPY pom.xml ./
 COPY services/ ./services/
 
 # Build using eureka profile only
-RUN mvn -Porder clean package -DskipTests
+RUN mvn -Puser clean package -DskipTests
 
 # Runtime stage
 FROM openjdk:21-slim
 WORKDIR /app
 
-COPY --from=build /app/services/order-service/target/*.jar app.jar
+COPY --from=build /app/services/user-service/target/*.jar app.jar
 
-EXPOSE 4008
+EXPOSE 4007
 CMD ["java", "-jar", "app.jar"]

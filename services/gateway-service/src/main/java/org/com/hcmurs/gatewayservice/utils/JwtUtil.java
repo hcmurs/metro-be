@@ -17,10 +17,10 @@ import java.util.function.Function;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtUtil {
-    @Value("${security.jwt.secret-key}")
+    @Value("${jwt.secretKey}")
     String secretKey;
 
-    @Value("${security.jwt.expiration}")
+    @Value("${jwt.expiration}")
     long jwtExpiration;
 
     Key signingKey;

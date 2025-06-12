@@ -17,20 +17,19 @@ spring:
   #          jwk-set-uri: http://localhost:8080/realms/hcmurs/protocol/openid-connect/certs
 
   cloud:
-
     discovery:
       enabled: true
-      eureka:
-        client:
-          serviceUrl:
-            defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+
     gateway:
       globalcors:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - "http://localhost:4000"
-              - "http://localhost:4003"
+              - "http://station:4004"
+              - "http://ticket:4005"
+              - "http://auth:4006"
+              - "http://user:4007"
+              - "http://order:4008"
               # Add any other specific origins you need
             allowedMethods: "*"
             allowedHeaders: "*"
@@ -40,6 +39,11 @@ spring:
     ansi:
       enabled: ALWAYS
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+
 rate-limiting:
   rules:
     - path: /api/v1/auth/login
@@ -48,11 +52,6 @@ rate-limiting:
     - path: /api/v1/products
       capacity: 50
       refillPerSec: 20
-
-keycloak:
-  url: http://localhost:8080
-  realm: hcmurs
-  client-id: react-app
 
 jwt:
   auth:

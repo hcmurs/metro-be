@@ -1,13 +1,6 @@
 spring:
-  application:
-    name: station-service
-
-  cloud:
-    discovery:
-      enabled: true
-
   datasource:
-    url: jdbc:postgresql://postgresql:5432/stationdb
+    url: jdbc:postgresql://postgresql:5432/ticketdb
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
@@ -20,9 +13,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 4004
+  port: 4005
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
