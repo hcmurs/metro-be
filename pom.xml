@@ -138,6 +138,13 @@
     </profile>
 
     <profile>
+      <id>order</id>
+      <modules>
+        <module>services/order-service</module>
+      </modules>
+    </profile>
+
+    <profile>
       <id>auth</id>
       <modules>
         <module>services/auth-service</module>

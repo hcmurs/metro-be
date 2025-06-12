@@ -8,8 +8,8 @@ services:
     container_name: metro_pg_sql
     image: docker.io/library/postgres:17.4
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
       POSTGRES_DB: metro_db
       PGDATA: /data/postgres
     volumes:
@@ -22,25 +22,7 @@ services:
       timeout: 10s
       retries: 5
     ports:
-      - "5432:5432"
-    networks:
-      - metro-be
-    restart: unless-stopped
-
-  pgadmin:
-    container_name: metro_pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    depends_on:
-      postgresql:
-        condition: service_healthy
+      - "5433:5432"
     networks:
       - metro-be
     restart: unless-stopped
@@ -70,7 +52,7 @@ services:
       - "8761:8761"
     # restart: on-failure
     volumes:
-      - ./logs/eureka:/logs/eureka
+      - logs/eureka:/logs/eureka
     networks:
       - metro-be
 
@@ -83,9 +65,9 @@ services:
       - "4003:4003"
     # restart: on-failure
     volumes:
-      - ./logs/gateway:/logs/gateway
+      - logs/gateway:/logs/gateway
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
         condition: service_started
@@ -106,7 +88,7 @@ services:
       postgresql:
         condition: service_healthy
     volumes:
-      - ./logs/station:/logs/station
+      - logs/station:/logs/station
     networks:
       - metro-be
 
@@ -119,14 +101,14 @@ services:
       - "4006:4006"
     # restart: on-failure
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
         condition: service_started
       redis:
         condition: service_healthy
     volumes:
-      - ./logs/auth:/logs/auth
+      - logs/auth:/logs/auth
     networks:
       - metro-be
 
@@ -139,7 +121,7 @@ services:
       - "4008:4008"
     # restart: on-failure
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
         condition: service_started
@@ -157,7 +139,7 @@ services:
       - "4005:4005"
     # restart: on-failure
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
         condition: service_started
@@ -175,7 +157,7 @@ services:
       - "4007:4007"
     # restart: on-failure
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
         condition: service_started
@@ -185,6 +167,4 @@ services:
       - metro-be
 
 volumes:
-  postgres:
-  pgadmin:
   redis-data:
