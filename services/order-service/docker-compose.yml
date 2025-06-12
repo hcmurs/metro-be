@@ -16,7 +16,7 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_DB: Metro
+      POSTGRES_DB: order-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 2707
     volumes:
