@@ -7,7 +7,7 @@ spring:
       enabled: true
 
   profiles:
-    active: docker
+    active: zimaos
 
 eureka:
   client:
