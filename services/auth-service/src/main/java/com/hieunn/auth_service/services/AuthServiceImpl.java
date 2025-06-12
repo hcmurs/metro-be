@@ -73,15 +73,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ApiResponse<UserDto> processLocalLogin(LocalLoginRequest localLoginRequest) {
-        ApiResponse<UserDto> apiResponse = userServiceClient.processLocalLogin(localLoginRequest);
+        ApiResponse<UserDto> apiResponse = userServiceClient.findByUsernameOrEmail(localLoginRequest.getUsernameOrEmail());
 
         if (apiResponse.getData() != null) {
             UserDto userDto = apiResponse.getData();
             if (!passwordEncoder.matches(localLoginRequest.getPassword(), userDto.getPassword())) {
                 throw new CustomException(
                         ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
-                        ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage()
-                );
+                        ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
             }
             userDto.setPassword(null);
 

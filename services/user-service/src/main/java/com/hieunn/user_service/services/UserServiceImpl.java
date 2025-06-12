@@ -1,6 +1,5 @@
 package com.hieunn.user_service.services;
 
-import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
@@ -121,14 +120,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User processLocalLogin(LocalLoginRequest localLoginRequest) {
-        Optional<User> userByUsername = userRepository.findByUsername(localLoginRequest.getUsername());
-        if (userByUsername.isEmpty()) {
+    public User findByUsernameOrEmail(String usernameOrEmail) {
+        Optional<User> userByUsername = userRepository.findByUsername(usernameOrEmail);
+        Optional<User> userByEmail = userRepository.findByEmail(usernameOrEmail);
+        if (userByUsername.isEmpty() && userByEmail.isEmpty()) {
             throw new CustomException(
                     ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
-                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage()
-            );
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
         }
-        return userByUsername.get();
+        return userByUsername.orElseGet(userByEmail::get);
     }
 }
