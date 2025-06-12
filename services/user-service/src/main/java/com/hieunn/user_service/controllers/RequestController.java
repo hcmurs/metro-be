@@ -45,19 +45,11 @@ public class RequestController {
                 .body(ApiResponse.success(request));
     }
 
-//    @GetMapping
-//    public ResponseEntity<ApiResponse<List<RequestDto>>> findAll(
-//            @RequestHeader("Authorization") String token
-//    ) {
-//        List<RequestDto> requests = requestService.findAll(token);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(ApiResponse.success(requests));
-//    }
-
     @GetMapping
-    public ResponseEntity<ApiResponse<List<RequestDto>>> findAll() {
-        List<RequestDto> requests = requestService.findAll();
+    public ResponseEntity<ApiResponse<List<RequestDto>>> findAll(
+            @RequestHeader("Authorization") String token
+    ) {
+        List<RequestDto> requests = requestService.findAll(token);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(requests));

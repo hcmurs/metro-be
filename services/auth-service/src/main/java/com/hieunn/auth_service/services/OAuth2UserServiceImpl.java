@@ -27,14 +27,14 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
     UserServiceClient userServiceClient;
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
-        return processOAuth2User(userRequest, oAuth2User);
+    public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(oAuth2UserRequest);
+        return processOAuth2User(oAuth2UserRequest, oAuth2User);
     }
 
-    private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
+    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         // Registration ID is Google, Facebook, etc.
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
 
         //Attributes from the OAuth2 user
         Map<String, Object> attributes = oAuth2User.getAttributes();

@@ -20,18 +20,18 @@ public class ApiKeyInterceptor implements HandlerInterceptor {
     String expectedApiKey;
 
     @Value("${security.api.header}")
-    String header;
+    String apiHeader;
 
     final ResponseUtil responseUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
-        String apiKey = request.getHeader(header);
+        String apiKey = request.getHeader(apiHeader);
         if (expectedApiKey.equals(apiKey)) {
             return true;
         }
 
-        responseUtil.sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, ErrorMessage.INVALID_API_KEY);
+        responseUtil.sendErrorResponse(response, HttpServletResponse.SC_OK, ErrorMessage.INVALID_API_KEY);
         return false;
     }
 }

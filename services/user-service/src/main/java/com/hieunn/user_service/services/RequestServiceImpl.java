@@ -76,19 +76,10 @@ public class RequestServiceImpl implements RequestService {
         return requestMapper.toRequestDto(savedRequest);
     }
 
-//    @Override
-//    public List<RequestDto> findAll(String token) {
-//        validationUtil.checkAdmin(token);
-//
-//        List<Request> requests = requestRepository.findAll();
-//        return requests
-//                .stream()
-//                .map(requestMapper::toRequestDto)
-//                .toList();
-//    }
-
     @Override
-    public List<RequestDto> findAll() {
+    public List<RequestDto> findAll(String token) {
+        validationUtil.checkAdmin(token);
+
         List<Request> requests = requestRepository.findAll();
         return requests
                 .stream()

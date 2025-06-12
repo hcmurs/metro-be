@@ -42,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/local-login")
-    public ResponseEntity<ApiResponse<UserDto>> register(@RequestBody LocalLoginRequest localLoginRequest) {
+    public ResponseEntity<ApiResponse<UserDto>> localLogin(@RequestBody LocalLoginRequest localLoginRequest) {
         ApiResponse<UserDto> apiResponse = authService.processLocalLogin(localLoginRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
