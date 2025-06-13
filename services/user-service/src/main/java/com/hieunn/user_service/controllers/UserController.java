@@ -5,6 +5,7 @@ import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
+import com.hieunn.user_service.exceptions.ErrorMessage;
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.services.UserService;
 import jakarta.validation.Valid;
@@ -60,5 +61,29 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+
+    @GetMapping("/is-username-exist")
+    public ResponseEntity<ApiResponse<?>> isUsernameExist(
+            @RequestParam String username) {
+        boolean isUsernameExist = userService.isUsernameExist(username);
+        ApiResponse<?> response = isUsernameExist ?
+                ApiResponse.success(true) :
+                ApiResponse.error(
+                        ErrorMessage.USERNAME_ALREADY_EXISTS.getStatus(),
+                        ErrorMessage.USERNAME_ALREADY_EXISTS.getMessage());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/is-email-exist")
+    public ResponseEntity<ApiResponse<?>> isEmailExist(
+            @RequestParam String email) {
+        boolean isEmailExist = userService.isEmailExist(email);
+        ApiResponse<?> response = isEmailExist ?
+                ApiResponse.success(true) :
+                ApiResponse.error(
+                        ErrorMessage.EMAIL_ALREADY_EXISTS.getStatus(),
+                        ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
+        return ResponseEntity.ok(response);
     }
 }

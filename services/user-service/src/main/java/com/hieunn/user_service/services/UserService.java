@@ -10,4 +10,6 @@ public interface UserService {
     UserDto processLocalLogin(LocalLoginRequest localLoginRequest);
     UserDto findUser(String token);
     UserDto register(RegisterRequest registerRequest);
+    boolean isUsernameExist(String username);
+    boolean isEmailExist(String email);
 }

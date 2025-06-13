@@ -1,5 +1,5 @@
 package com.hieunn.notificationservice.services;
 
 public interface EmailService {
-    void sendEmail(String to, String subject, String content);
+    void sendOtpEmail(String to, String otp);
 }

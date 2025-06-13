@@ -20,20 +20,20 @@ spring:
     discovery:
       enabled: true
 
-    gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins:
-              - "http://station:4004"
-              - "http://ticket:4005"
-              - "http://auth:4006"
-              - "http://user:4007"
-              - "http://order:4008"
-              # Add any other specific origins you need
-            allowedMethods: "*"
-            allowedHeaders: "*"
-            allowCredentials: true
+#    gateway:
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins:
+#              - "http://station:4004"
+#              - "http://ticket:4005"
+#              - "http://auth:4006"
+#              - "http://user:4007"
+#              - "http://order:4008"
+#              # Add any other specific origins you need
+#            allowedMethods: "*"
+#            allowedHeaders: "*"
+#            allowCredentials: true
 
   output:
     ansi:
