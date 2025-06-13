@@ -1,6 +1,7 @@
 package com.hieunn.notificationservice.controllers;
 
 import com.hieunn.notificationservice.dtos.requests.OtpRequest;
+import com.hieunn.notificationservice.dtos.responses.ApiResponse;
 import com.hieunn.notificationservice.services.OtpService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -18,17 +19,20 @@ public class NotificationController {
     OtpService otpService;
 
     @PostMapping("/send-otp")
-    public ResponseEntity<?> sendOtp(@RequestBody @Valid OtpRequest request) {
+    public ResponseEntity<ApiResponse<Void>> sendOtp(@RequestBody @Valid OtpRequest request) {
         otpService.generateAndSendOtp(request.getEmail(), request.getPurpose());
-        return ResponseEntity.ok("OTP sent");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Send OTP successfully"));
     }
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<?> verifyOtp(@RequestParam String email,
-                                       @RequestParam String otp,
-                                       @RequestParam String purpose) {
+    public ResponseEntity<ApiResponse<Void>> verifyOtp(
+            @RequestParam String email,
+            @RequestParam String otp,
+            @RequestParam String purpose) {
         boolean result = otpService.verifyOtp(email, otp, purpose);
-        return result ? ResponseEntity.ok("OTP verified")
-                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid OTP");
+        return result ? ResponseEntity.ok(ApiResponse.success("Token verified"))
+                : ResponseEntity.ok(ApiResponse.error(401, "Invalid API"));
     }
 }

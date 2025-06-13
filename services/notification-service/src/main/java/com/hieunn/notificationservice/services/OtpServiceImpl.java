@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -27,10 +26,7 @@ public class OtpServiceImpl implements OtpService {
 
         redisTemplate.opsForValue().set(key, otp, OTP_EXPIRE_SECONDS, TimeUnit.SECONDS);
 
-        String subject = "Your OTP Code";
-        String content = "Your OTP is: " + otp;
-
-        emailService.sendEmail(email, subject, content);
+        emailService.sendOtpEmail(email, otp);
     }
 
     public boolean verifyOtp(String email, String otp, String purpose) {
@@ -38,7 +34,8 @@ public class OtpServiceImpl implements OtpService {
         String storedOtp = redisTemplate.opsForValue().get(key);
 
         if (otp.equals(storedOtp)) {
-            redisTemplate.delete(key); // one-time use
+            redisTemplate.delete(key);
+            redisTemplate.opsForValue().set(email, "Verified", OTP_EXPIRE_SECONDS, TimeUnit.SECONDS);
             return true;
         }
 
@@ -46,6 +43,6 @@ public class OtpServiceImpl implements OtpService {
     }
 
     private String buildKey(String email, String purpose) {
-        return "otp:" + purpose + ":" + email;
+        return "OTP:" + purpose + ":" + email;
     }
 }
