@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
         return User.builder()
                 .email(request.getEmail())
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .authProvider(AuthProvider.LOCAL)
                 .role("ROLE_CUSTOMER")
                 .build();

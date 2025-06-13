@@ -26,7 +26,6 @@ public class AuthServiceImpl implements AuthService {
     JwtUtil jwtUtil;
     RedisTemplate<String, String> redisTemplate;
     UserServiceClient userServiceClient;
-    PasswordEncoder passwordEncoder;
     HttpServletResponse response;
 
     @Override
@@ -61,12 +60,6 @@ public class AuthServiceImpl implements AuthService {
                 break;
             }
         }
-    }
-
-    @Override
-    public ApiResponse<UserDto> register(RegisterRequest registerRequest) {
-        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        return userServiceClient.register(registerRequest);
     }
 
     @Override
