@@ -6,22 +6,22 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: discovery-cd-flow
+name: order-cd-flow
 
 on:
   push:
     branches: ["main-deployment"]
     paths:
-      - "services/eureka-service/**"
-      - ".github/workflows/discovery-service-cd.yml"
+      - "services/order-service/**"
+      - ".github/workflows/order-service-cd.yml"
       - "pom.xml"
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: lcaohoanq/metro-eureka
+  IMAGE_NAME: lcaohoanq/metro-order
 
 jobs:
-  build-discovery:
+  build-order:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main-deployment' }}
         id: pom-version
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout -f services/eureka-service/pom.xml)
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout -f services/order-service/pom.xml)
           echo "POM_VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
@@ -66,7 +66,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./services/eureka-service/Dockerfile
+          file: ./services/order-service/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/${{secrets.IMAGE_NAME}}:latest
