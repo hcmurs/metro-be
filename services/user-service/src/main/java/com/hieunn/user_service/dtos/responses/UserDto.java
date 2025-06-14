@@ -26,7 +26,7 @@ public class UserDto {
     String pictureUrl;
     @JsonIgnore
     String googleId;
-    boolean isStudent;
+    Boolean isStudent;
     LocalDateTime studentExpiredDate;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
