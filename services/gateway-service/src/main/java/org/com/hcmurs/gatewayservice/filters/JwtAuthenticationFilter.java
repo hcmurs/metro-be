@@ -53,8 +53,8 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/users/is-email-exist",
             "/api/users/register",
             //Notification
-            "/api/notification/send-otp",
-            "/api/notification/verify-otpat"
+            "/api/notifications/send-otp",
+            "/api/notifications/verify-otp"
     );
 
     @NotNull
