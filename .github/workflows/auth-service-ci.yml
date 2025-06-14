@@ -1,0 +1,25 @@
+name: auth-ci-flow
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main", "main-deployment", "develop"]
+    paths:
+      - "services/auth-service/**"
+      - ".github/workflows/auth-service-ci.yml"
+      - "pom.xml"
+#   push:
+#     branches: ["main", "main-deployment"]
+#     paths:
+#       - "services/auth-service/**"
+#       - ".github/workflows/auth-service-ci.yml"
+#       - "pom.xml"
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-service-ci.yml
+    with:
+      service_name: auth
+      service_path: services/auth-service
+      run_sonar: false
+    secrets: inherit
