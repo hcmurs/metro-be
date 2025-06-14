@@ -1,14 +1,7 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: ticket-cd-flow
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main-deployment"]
     paths:
@@ -16,60 +9,15 @@ on:
       - ".github/workflows/ticket-service-cd.yml"
       - "pom.xml"
 
-env:
-  REGISTRY: docker.io
-  IMAGE_NAME: lcaohoanq/metro-ticket
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
-  build-ticket:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: maven
-
-      # Extract version from pom.xml
-      - name: Get version from pom.xml
-        if: ${{ github.ref == 'refs/heads/main-deployment' }}
-        id: pom-version
-        run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout -f services/ticket-service/pom.xml)
-          echo "POM_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-
-      # Set date-based version
-      - name: Set date-based version
-        if: ${{ github.ref == 'refs/heads/main-deployment' }}
-        id: date
-        run: echo "DATE=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
-
-      # Set Git SHA-based version
-      - name: Set Git SHA version
-        if: ${{ github.ref == 'refs/heads/main-deployment' }}
-        id: git-sha
-        run: echo "GIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-      - name: Log in to the Container registry
-        if: ${{ github.ref == 'refs/heads/main-deployment' }}
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push Docker images
-        if: ${{ github.ref == 'refs/heads/main-deployment' }}
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./services/ticket-service/Dockerfile
-          push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ env.POM_VERSION }}
-            ${{ env.IMAGE_NAME }}:${{ env.GIT_SHORT_SHA }}
-            ${{ env.IMAGE_NAME }}:${{ env.DATE }}
+  build:
+    uses: ./.github/workflows/reusable-service-cd.yml
+    with:
+      service_name: ticket
+      service_path: services/ticket-service
+      image_name: lcaohoanq/metro-ticket
+    secrets: inherit

@@ -1,0 +1,70 @@
+name: Reusable Service CI Workflow
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+        description: "Name of the service (e.g., user, auth)"
+      service_path:
+        required: true
+        type: string
+        description: "Path to the service directory (e.g., services/user-service)"
+      run_sonar:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to run SonarCloud analysis"
+      publish_test_report:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to publish test reports"
+      java_version:
+        required: false
+        type: string
+        default: "21"
+        description: "Java version to use"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed for SonarCloud analysis
+
+      - name: Set up JDK ${{ inputs.java_version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ inputs.java_version }}
+          distribution: "temurin"
+          cache: maven
+
+      # Install parent project dependencies
+      - name: Install parent project
+        run: mvn clean install -N
+
+      # Run tests
+      - name: Run tests
+        run: mvn clean test -f ${{ inputs.service_path }}/pom.xml -Dspring.profiles.active=test
+
+      # Optional - Generate and publish test report
+      - name: Publish test report
+        uses: dorny/test-reporter@v1
+        if: ${{ inputs.publish_test_report == true }}
+        with:
+          name: ${{ inputs.service_name }} Tests
+          path: ${{ inputs.service_path }}/target/surefire-reports/*.xml
+          reporter: java-junit
+
+      # Optional - SonarCloud analysis
+      - name: SonarCloud Scan
+        if: ${{ inputs.run_sonar == true }}
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: ${{ inputs.service_path }}

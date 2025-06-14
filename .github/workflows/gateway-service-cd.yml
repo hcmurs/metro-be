@@ -1,14 +1,7 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: gateway-cd-flow
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main-deployment"]
     paths:
@@ -16,149 +9,18 @@ on:
       - ".github/workflows/gateway-service-cd.yml"
       - "pom.xml"
 
-env:
-  REGISTRY: docker.io
-  IMAGE_NAME: lcaohoanq/metro-gateway
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
-  build-gw:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.meta.outputs.version }}
-      tags: ${{ steps.meta.outputs.tags }}
-      labels: ${{ steps.meta.outputs.labels }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetch full history for better version calculation
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: maven
-
-      # Generate comprehensive metadata and tags
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            # Branch-based tags
-            type=ref,event=branch
-            type=ref,event=pr
-
-            # Semantic versioning from Maven pom.xml
-            type=raw,value={{branch}}-{{sha}},enable={{is_default_branch}}
-
-            # Date-based versioning
-            type=raw,value={{date 'YYYYMMDD-HHmmss'}},enable={{is_default_branch}}
-
-            # Latest tag for main branch
-            type=raw,value=latest,enable={{is_default_branch}}
-
-            # Semantic version if tag exists
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-          labels: |
-            org.opencontainers.image.title=Metro Gateway Service
-            org.opencontainers.image.description=Spring Cloud Gateway Service
-            org.opencontainers.image.vendor=lcaohoanq
-            org.opencontainers.image.version={{version}}
-            org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
-            org.opencontainers.image.revision={{sha}}
-            org.opencontainers.image.url=https://github.com/${{ github.repository }}
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-
-      # Extract Maven version for additional tagging
-      - name: Get Maven version
-        if: github.ref == 'refs/heads/main-deployment'
-        id: maven-version
-        run: |
-          POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout -f services/gateway-service/pom.xml)
-          echo "pom-version=$POM_VERSION" >> $GITHUB_OUTPUT
-          echo "Maven version: $POM_VERSION"
-
-      # Set up Docker Buildx for multi-platform builds
-      - name: Set up Docker Buildx
-        if: github.ref == 'refs/heads/main-deployment'
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Docker Hub
-        if: github.ref == 'refs/heads/main-deployment'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push Docker image
-        if: github.ref == 'refs/heads/main-deployment'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./services/gateway-service/Dockerfile
-          platforms: linux/amd64,linux/arm64 # Multi-platform build
-          push: true
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ env.IMAGE_NAME }}:maven-${{ steps.maven-version.outputs.pom-version }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
-            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
-
-      # Create GitHub release for semantic versions
-      - name: Create GitHub Release
-        if: github.ref == 'refs/heads/main-deployment' && startsWith(github.ref, 'refs/tags/v')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          body: |
-            ## Docker Images
-            - `${{ env.IMAGE_NAME }}:${{ github.ref_name }}`
-            - `${{ env.IMAGE_NAME }}:latest`
-
-            ## Changes
-            ${{ github.event.head_commit.message }}
-          draft: false
-          prerelease: false
-
-  # Security scanning job
-  security-scan:
-    runs-on: ubuntu-latest
-    needs: build-gw
-    if: github.ref == 'refs/heads/main-deployment'
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-  
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ env.IMAGE_NAME }}:latest
-          format: "sarif"
-          output: "trivy-results.sarif"
-  
-      - name: Verify SARIF file exists
-        run: test -f trivy-results.sarif
-  
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: "trivy-results.sarif"
+  build:
+    uses: ./.github/workflows/reusable-service-cd.yml
+    with:
+      service_name: gateway
+      service_path: services/gateway-service
+      image_name: lcaohoanq/metro-gateway
+      platforms: linux/amd64,linux/arm64
+      use_metadata_action: true
+      run_security_scan: true
+    secrets: inherit

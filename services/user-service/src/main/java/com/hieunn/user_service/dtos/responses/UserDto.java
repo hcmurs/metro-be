@@ -28,7 +28,7 @@ public class UserDto {
     @JsonIgnore
     String googleId;
     boolean isStudent;
-    LocalDate studentExpiredDate;
+    LocalDateTime studentExpiredDate;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

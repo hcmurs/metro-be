@@ -1,0 +1,73 @@
+server:
+  port: 4003
+
+spring:
+  main:
+    web-application-type: reactive
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  application:
+    name: gateway-service
+  cloud:
+    discovery:
+      enabled: true
+      eureka:
+        client:
+          serviceUrl:
+            defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+jwt:
+  secretKey: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
+  expiration: 3600000 # 1 hour in milliseconds
+
+security:
+  api:
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    configUrl: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: Gateway API
+    use-root-path: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: info
+    org.springframework: DEBUG
+    springframework.security: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.cloud.gateway.filter.ratelimit: DEBUG
+
+#health check
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: unrestricted
+    prometheus:
+      access: unrestricted
