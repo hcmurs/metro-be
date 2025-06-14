@@ -53,7 +53,7 @@ public class GatewayConfig {
                 .route("notification_service_route", r -> r
                         .path(API_PREFIX + "/notifications/**")
                         .filters(f -> f.rewritePath(
-                                "/api/notification(?<segment>/?.*)",
+                                "/api/notifications(?<segment>/?.*)",
                                 "/api/v1/notifications${segment}"
                         ))
                         .uri("http://localhost:4008"))
