@@ -2,6 +2,7 @@ package org.com.hcmurs.eurekaservice;
 
 import io.github.lcaohoanq.JavaBrowserLauncher;
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
@@ -15,10 +16,10 @@ public class EurekaServiceApplication {
 
 		var env = context.getEnvironment();
 		var activeProfiles = env.getActiveProfiles();
-		if (!Arrays.asList(activeProfiles).contains("docker", "test")) {
+		List<String> profilesList = Arrays.asList(activeProfiles);
+
+		if (!profilesList.contains("docker") && !profilesList.contains("test")) {
 			JavaBrowserLauncher.openHomePage("http://localhost:8761");
 		}
-
 	}
-
 }
