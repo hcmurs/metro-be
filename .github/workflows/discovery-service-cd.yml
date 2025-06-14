@@ -80,7 +80,7 @@ jobs:
           file: ./services/eureka-service/Dockerfile
           push: true
           tags: |
-            laohoanq/metro-eureka:latest
-            laohoanq/metro-eureka:${{ env.POM_VERSION }}
-            laohoanq/metro-eureka:${{ env.GIT_SHORT_SHA }}
-            laohoanq/metro-eureka:${{ env.DATE }}
+            ${{ secrets.DOCKER_USERNAME }}/metro-eureka:latest
+            ${{ secrets.DOCKER_USERNAME }}/metro-eureka:${{ env.POM_VERSION }}
+            ${{ secrets.DOCKER_USERNAME }}/metro-eureka:${{ env.GIT_SHORT_SHA }}
+            ${{ secrets.DOCKER_USERNAME }}/metro-eureka:${{ env.DATE }}
