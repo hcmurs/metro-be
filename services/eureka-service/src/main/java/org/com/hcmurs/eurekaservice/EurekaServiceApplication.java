@@ -15,7 +15,7 @@ public class EurekaServiceApplication {
 
 		var env = context.getEnvironment();
 		var activeProfiles = env.getActiveProfiles();
-		if (!Arrays.asList(activeProfiles).contains("docker")) {
+		if (!Arrays.asList(activeProfiles).contains("docker", "test")) {
 			JavaBrowserLauncher.openHomePage("http://localhost:8761");
 		}
 

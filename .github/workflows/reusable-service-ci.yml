@@ -16,6 +16,11 @@ on:
         type: boolean
         default: false
         description: "Whether to run SonarCloud analysis"
+      publish_test_report:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to publish test reports"
       java_version:
         required: false
         type: string
@@ -60,8 +65,8 @@ jobs:
 
       # Optional - Generate and publish test report
       - name: Publish test report
+        if: ${{ inputs.publish_test_report != false }}
         uses: dorny/test-reporter@v1
-        if: success() || failure()
         with:
           name: ${{ inputs.service_name }} Tests
           path: ${{ inputs.service_path }}/target/surefire-reports/*.xml
