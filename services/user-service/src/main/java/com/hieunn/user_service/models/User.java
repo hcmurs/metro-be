@@ -1,5 +1,6 @@
 package com.hieunn.user_service.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -58,13 +60,16 @@ public class User {
     boolean isStudent = false;
 
     @Column(name = "student_expired_date")
-    LocalDateTime studentExpiredDate;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    LocalDate studentExpiredDate;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime updatedAt;
 }

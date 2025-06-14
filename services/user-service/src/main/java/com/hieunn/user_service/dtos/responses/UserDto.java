@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -27,7 +28,7 @@ public class UserDto {
     @JsonIgnore
     String googleId;
     boolean isStudent;
-    LocalDateTime studentExpiredDate;
+    LocalDate studentExpiredDate;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

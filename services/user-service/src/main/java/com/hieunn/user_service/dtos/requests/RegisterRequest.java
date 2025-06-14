@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
     @Email
     String email;
+    String name;
     String username;
     String password;
     AuthProvider authProvider;

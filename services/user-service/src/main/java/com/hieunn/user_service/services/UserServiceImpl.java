@@ -136,6 +136,7 @@ public class UserServiceImpl implements UserService {
     private User createNewUserFromLocal(RegisterRequest request) {
         return User.builder()
                 .email(request.getEmail())
+                .name(request.getName())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .authProvider(AuthProvider.LOCAL)

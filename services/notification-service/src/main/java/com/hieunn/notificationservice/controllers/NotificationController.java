@@ -32,7 +32,7 @@ public class NotificationController {
             @RequestParam String otp,
             @RequestParam String purpose) {
         boolean result = otpService.verifyOtp(email, otp, purpose);
-        return result ? ResponseEntity.ok(ApiResponse.success("Token verified"))
-                : ResponseEntity.ok(ApiResponse.error(401, "Invalid API"));
+        return result ? ResponseEntity.ok(ApiResponse.success("OTP verified"))
+                : ResponseEntity.ok(ApiResponse.error(401, "Invalid or expired OTP"));
     }
 }

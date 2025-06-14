@@ -21,7 +21,9 @@ public enum ErrorMessage {
     LACK_OF_TOKEN(400, "Lack of JWT token"),
     ALREADY_REQUESTED(400, "Already requested"),
     EMAIL_NOT_VERIFIED(401, "Email is not verified"),
-    INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password");
+    INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password"),
+
+    REQUEST_NOT_FOUND(404, "Request does not exist");
 
     int status;
     String message;
