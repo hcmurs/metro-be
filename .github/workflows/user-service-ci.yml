@@ -22,4 +22,5 @@ jobs:
       service_name: user
       service_path: services/user-service
       run_sonar: true
+      need_eureka: true
     secrets: inherit
