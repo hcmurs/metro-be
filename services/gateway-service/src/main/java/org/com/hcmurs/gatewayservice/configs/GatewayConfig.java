@@ -56,7 +56,7 @@ public class GatewayConfig {
                                 "/api/notification(?<segment>/?.*)",
                                 "/api/v1/notification${segment}"
                         ))
-                        .uri("http://localhost:4006"))
+                        .uri("http://localhost:4008"))
 
                 .build();
     }
