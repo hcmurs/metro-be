@@ -24,8 +24,7 @@ public class RequestController {
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<List<RequestDto>>> findRequestByUser(
             @RequestHeader("Authorization") String token,
-            @PathVariable Long userId
-    ) {
+            @PathVariable Long userId) {
         List<RequestDto> requests = requestService.findByUser(userId, token.substring(7));
 
         return ResponseEntity
@@ -36,8 +35,7 @@ public class RequestController {
     @PostMapping
     public ResponseEntity<ApiResponse<RequestDto>> createRequest(
             @RequestHeader("Authorization") String token,
-            @Valid @RequestBody RequestCreationRequest requestCreationRequest
-    ) {
+            @Valid @RequestBody RequestCreationRequest requestCreationRequest) {
         RequestDto request = requestService.createRequest(requestCreationRequest, token.substring(7));
 
         return ResponseEntity
@@ -45,11 +43,21 @@ public class RequestController {
                 .body(ApiResponse.success(request));
     }
 
+    @PostMapping("/verify")
+    public ResponseEntity<ApiResponse<Void>> verifyRequest(
+            @RequestHeader("Authorization") String token,
+            @RequestParam Long requestId,
+            @RequestParam boolean isApproved) {
+        requestService.verifyRequest(requestId, isApproved, token.substring(7));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success("Request has been verified"));
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<RequestDto>>> findAll(
-            @RequestHeader("Authorization") String token
-    ) {
-        List<RequestDto> requests = requestService.findAll(token);
+            @RequestHeader("Authorization") String token) {
+        List<RequestDto> requests = requestService.findAll(token.substring(7));
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(requests));

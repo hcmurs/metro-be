@@ -15,11 +15,10 @@ public class ValidationUtil {
 
     public void checkAdmin(String token) {
         String role = jwtUtil.extractRole(token);
-        if (!role.equals("ROLE_ADMIN")) {
+        if (!role.equalsIgnoreCase("ROLE_ADMIN")) {
             throw new CustomException(
                     ErrorMessage.UNAUTHORIZED.getStatus(),
-                    ErrorMessage.UNAUTHORIZED.getMessage()
-            );
+                    ErrorMessage.UNAUTHORIZED.getMessage());
         }
     }
 
@@ -27,8 +26,7 @@ public class ValidationUtil {
         if (!userIdFromRequest.equals(jwtUtil.extractUserId(token))) {
             throw new CustomException(
                     ErrorMessage.UNAUTHORIZED.getStatus(),
-                    ErrorMessage.UNAUTHORIZED.getMessage()
-            );
+                    ErrorMessage.UNAUTHORIZED.getMessage());
         }
     }
 }
