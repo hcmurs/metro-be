@@ -51,7 +51,10 @@ public class JwtAuthenticationFilter implements WebFilter {
             //User
             "/api/users/is-username-exist",
             "/api/users/is-email-exist",
-            "/api/users/register"
+            "/api/users/register",
+            //Notification
+            "/api/notification/send-otp",
+            "/api/notification/verify-otpat"
     );
 
     @NotNull
