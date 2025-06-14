@@ -1,6 +1,7 @@
 name: station-cd-flow
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main-deployment"]
     paths:
