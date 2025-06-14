@@ -69,7 +69,7 @@ jobs:
           file: ./services/ticket-service/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{secrets.IMAGE_NAME}}:latest
-            ${{ secrets.DOCKER_USERNAME }}/${{secrets.IMAGE_NAME}}:${{ env.POM_VERSION }}
-            ${{ secrets.DOCKER_USERNAME }}/${{secrets.IMAGE_NAME}}:${{ env.GIT_SHORT_SHA }}
-            ${{ secrets.DOCKER_USERNAME }}/${{secrets.IMAGE_NAME}}:${{ env.DATE }}
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ env.POM_VERSION }}
+            ${{ env.IMAGE_NAME }}:${{ env.GIT_SHORT_SHA }}
+            ${{ env.IMAGE_NAME }}:${{ env.DATE }}
