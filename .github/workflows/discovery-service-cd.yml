@@ -76,7 +76,8 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main-deployment' }}
         uses: docker/build-push-action@v6
         with:
-          context: ./services/eureka-service
+          context: .
+          file: ./services/eureka-service/Dockerfile
           push: true
           tags: |
             laohoanq/metro-eureka:latest
