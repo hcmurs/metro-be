@@ -8,6 +8,6 @@ import java.util.List;
 public interface RequestService {
     List<RequestDto> findByUser(Long userId, String token);
     RequestDto createRequest(RequestCreationRequest requestCreationRequest, String token);
-//    List<RequestDto> findAll(String token);
-    List<RequestDto> findAll();
+    List<RequestDto> findAll(String token);
+    void verifyRequest(Long requestId, boolean isApproved, String token);
 }

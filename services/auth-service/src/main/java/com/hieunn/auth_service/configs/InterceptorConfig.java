@@ -15,18 +15,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer {
     ApiKeyInterceptor apiKeyInterceptor;
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(apiKeyInterceptor)
-//                .addPathPatterns("/**");
-//    }
-
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(apiKeyInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                );
     }
 }

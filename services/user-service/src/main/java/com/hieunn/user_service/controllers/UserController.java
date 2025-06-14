@@ -5,6 +5,7 @@ import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
+import com.hieunn.user_service.exceptions.ErrorMessage;
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.services.UserService;
 import jakarta.validation.Valid;
@@ -24,8 +25,7 @@ public class UserController {
 
     @PostMapping("/social-login")
     public ResponseEntity<ApiResponse<UserDto>> processSocialLogin(
-            @Valid @RequestBody SocialLoginRequest socialLoginRequest
-    ) {
+            @Valid @RequestBody SocialLoginRequest socialLoginRequest) {
         UserDto userDto = userService.processSocialLogin(socialLoginRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
         return ResponseEntity
@@ -35,8 +35,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDto>> findUser(
-            @RequestHeader("Authorization") String token
-    ) {
+            @RequestHeader("Authorization") String token) {
         UserDto userDto = userService.findUser(token.substring(7));
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
         return ResponseEntity
@@ -46,23 +45,45 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDto>> register(
-            @Valid @RequestBody RegisterRequest registerRequest
-    ) {
+            @Valid @RequestBody RegisterRequest registerRequest) {
         UserDto userDto = userService.register(registerRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Register successfully");
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(response);
     }
 
     @PostMapping("/local-login")
-    public ResponseEntity<ApiResponse<User>> register(
-            @Valid @RequestBody LocalLoginRequest localLoginRequest
-    ) {
-        User user = userService.processLocalLogin(localLoginRequest);
-        ApiResponse<User> response = ApiResponse.success(user, "Login successfully");
+    public ResponseEntity<ApiResponse<UserDto>> findByUsernameOrEmail(
+            @RequestBody LocalLoginRequest localLoginRequest) {
+        UserDto userDto = userService.processLocalLogin(localLoginRequest);
+        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+
+    @GetMapping("/is-username-exist")
+    public ResponseEntity<ApiResponse<?>> isUsernameExist(
+            @RequestParam String username) {
+        boolean isUsernameExist = userService.isUsernameExist(username);
+        ApiResponse<?> response = isUsernameExist ?
+                ApiResponse.success(true) :
+                ApiResponse.error(
+                        ErrorMessage.USERNAME_ALREADY_EXISTS.getStatus(),
+                        ErrorMessage.USERNAME_ALREADY_EXISTS.getMessage());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/is-email-exist")
+    public ResponseEntity<ApiResponse<?>> isEmailExist(
+            @RequestParam String email) {
+        boolean isEmailExist = userService.isEmailExist(email);
+        ApiResponse<?> response = isEmailExist ?
+                ApiResponse.success(true) :
+                ApiResponse.error(
+                        ErrorMessage.EMAIL_ALREADY_EXISTS.getStatus(),
+                        ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
+        return ResponseEntity.ok(response);
     }
 }

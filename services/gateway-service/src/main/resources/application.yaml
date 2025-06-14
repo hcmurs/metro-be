@@ -7,4 +7,4 @@ spring:
     gw-config-version: v2
 
   profiles:
-    active: zimaos
+    active: dev

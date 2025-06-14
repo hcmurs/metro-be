@@ -33,16 +33,8 @@ public class AuthController {
                 .body(ApiResponse.success("Logout successfully"));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserDto>> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        ApiResponse<UserDto> apiResponse = authService.register(registerRequest);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(apiResponse);
-    }
-
     @PostMapping("/local-login")
-    public ResponseEntity<ApiResponse<UserDto>> register(@RequestBody LocalLoginRequest localLoginRequest) {
+    public ResponseEntity<ApiResponse<UserDto>> localLogin(@RequestBody LocalLoginRequest localLoginRequest) {
         ApiResponse<UserDto> apiResponse = authService.processLocalLogin(localLoginRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)

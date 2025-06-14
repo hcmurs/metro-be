@@ -13,14 +13,17 @@ public enum ErrorMessage {
     USER_NOT_FOUND(404, "User does not exist"),
     INTERNAL_SERVER_ERROR(500, "Internal server error"),
     EMAIL_ALREADY_EXISTS(400, "Email already exists"),
+    USERNAME_ALREADY_EXISTS(400, "Username already exists"),
     INVALID_TOKEN(401, "Invalid JWT token"),
     INVALID_API_KEY(401, "Invalid API key"),
     UNAUTHORIZED(403, "You do not have permission"),
     ALREADY_LOGOUT(401, "Already logout"),
     LACK_OF_TOKEN(400, "Lack of JWT token"),
     ALREADY_REQUESTED(400, "Already requested"),
-    EMAIL_ALREADY_USED(400, "Email already used"),
-    INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password");
+    EMAIL_NOT_VERIFIED(401, "Email is not verified"),
+    INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password"),
+
+    REQUEST_NOT_FOUND(404, "Request does not exist");
 
     int status;
     String message;

@@ -14,6 +14,8 @@ import com.hieunn.user_service.utils.JwtUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     JwtUtil jwtUtil;
+    PasswordEncoder passwordEncoder;
+    RedisTemplate<String, String> redisTemplate;
 
     @Override
     @Transactional
@@ -104,31 +108,59 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto register(RegisterRequest registerRequest) {
+        if (redisTemplate.opsForValue().get(registerRequest.getEmail()) == null) {
+            throw new CustomException(
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getMessage());
+        }
         User newUser = createNewUserFromLocal(registerRequest);
         User savedUser = userRepository.save(newUser);
+
+        redisTemplate.delete(registerRequest.getEmail());
+
         return userMapper.toUserDto(savedUser);
+    }
+
+    @Override
+    public boolean isUsernameExist(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     private User createNewUserFromLocal(RegisterRequest request) {
         return User.builder()
                 .email(request.getEmail())
+                .name(request.getName())
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .authProvider(AuthProvider.LOCAL)
                 .role("ROLE_CUSTOMER")
                 .build();
     }
 
     @Override
-    public User processLocalLogin(LocalLoginRequest localLoginRequest) {
-        Optional<User> userByUsername = userRepository.findByUsername(localLoginRequest.getUsername());
-        if (userByUsername.isEmpty()) {
+    public UserDto processLocalLogin(LocalLoginRequest localLoginRequest) {
+        Optional<User> userByUsername = userRepository.findByUsername(localLoginRequest.getUsernameOrEmail());
+        Optional<User> userByEmail = userRepository.findByEmail(localLoginRequest.getUsernameOrEmail());
+        if (userByUsername.isEmpty() && userByEmail.isEmpty()) {
             throw new CustomException(
                     ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
-                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage()
-            );
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
         }
-        return userByUsername.get();
+
+        User user = userByUsername.orElseGet(userByEmail::get);
+        if (!passwordEncoder.matches(localLoginRequest.getPassword(), user.getPassword())) {
+            throw new CustomException(
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
+        }
+
+        return userMapper.toUserDto(user);
     }
 }

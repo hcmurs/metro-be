@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.com.hcmurs.gatewayservice.dtos.ApiResponse;
 import org.com.hcmurs.gatewayservice.utils.JwtUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,20 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtAuthenticationFilter implements WebFilter {
-    JwtUtil jwtUtil;
-    RedisTemplate<String, String> redisTemplate;
-    ObjectMapper objectMapper;
-    PathPatternParser patternParser;
+    final JwtUtil jwtUtil;
+    final RedisTemplate<String, String> redisTemplate;
+    final ObjectMapper objectMapper;
+    final PathPatternParser patternParser;
 
-    List<String> PUBLIC_ENDPOINTS = List.of(
+    @Value("${security.api.header}")
+    String apiHeader;
+
+    @Value("${security.api.key}")
+    String apiKey;
+
+    final List<String> PUBLIC_ENDPOINTS = List.of(
             //Swagger
             "/swagger-ui.html",
             "/favicon.ico",
@@ -40,25 +47,43 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/webjars/swagger-ui/**",
             //Auth
             "/api/oauth2/authorize/**",
-            "/api/auth/register",
-            "/api/auth/local-login"
+            "/api/auth/local-login",
+            //User
+            "/api/users/is-username-exist",
+            "/api/users/is-email-exist",
+            "/api/users/register",
+            //Notification
+            "/api/notifications/send-otp",
+            "/api/notifications/verify-otp"
     );
 
     @NotNull
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, @NotNull WebFilterChain chain) {
         String path = exchange.getRequest().getPath().value();
-        System.out.println(path);
-        if (isPublicPath(path)) {
-            return chain.filter(exchange);
-        }
 
         HttpCookie jwtCookie = exchange.getRequest().getCookies().getFirst("token");
-        if (jwtCookie == null) {
-            return unauthorized(exchange);
+        String token = jwtCookie != null ? jwtCookie.getValue() : null;
+
+        ServerHttpRequest.Builder requestBuilder = exchange.getRequest().mutate()
+                .header(apiHeader, apiKey);
+
+        if (token != null) {
+            requestBuilder.header("Authorization", "Bearer " + token);
         }
 
-        String token = jwtCookie.getValue();
+        ServerHttpRequest modifiedRequest = requestBuilder.build();
+        ServerWebExchange modifiedExchange = exchange.mutate()
+                .request(modifiedRequest)
+                .build();
+
+        if (isPublicPath(path)) {
+            return chain.filter(modifiedExchange);
+        }
+
+        if (token == null) {
+            return unauthorized(exchange);
+        }
 
         try {
             String jti = jwtUtil.extractJti(token);
@@ -67,16 +92,8 @@ public class JwtAuthenticationFilter implements WebFilter {
                 return unauthorized(exchange);
             }
 
-            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
-                    .header("Authorization", "Bearer " + token)
-                    .build();
-
-            ServerWebExchange modifiedExchange = exchange.mutate()
-                    .request(modifiedRequest)
-                    .build();
-
             return chain.filter(modifiedExchange);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             return unauthorized(exchange);
         }
     }
@@ -84,11 +101,6 @@ public class JwtAuthenticationFilter implements WebFilter {
     private Mono<Void> unauthorized(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-        exchange.getResponse().getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
-        exchange.getResponse().getHeaders().add("Access-Control-Allow-Credentials", "true");
-        exchange.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-        exchange.getResponse().getHeaders().add("Access-Control-Allow-Headers", "*");
 
         exchange.getResponse()
                 .addCookie(ResponseCookie.from("token", "")

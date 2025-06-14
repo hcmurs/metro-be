@@ -9,6 +9,5 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
     void logout(HttpServletRequest request, HttpServletResponse response);
-    ApiResponse<UserDto> register(RegisterRequest registerRequest);
     ApiResponse<UserDto> processLocalLogin(LocalLoginRequest localLoginRequest);
 }
