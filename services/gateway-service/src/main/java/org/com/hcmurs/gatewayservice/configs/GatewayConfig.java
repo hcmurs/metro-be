@@ -49,6 +49,15 @@ public class GatewayConfig {
                                 "/api/v1/oauth2/authorize${segment}"
                         ))
                         .uri("http://localhost:4006"))
+
+                .route("notification_service_route", r -> r
+                        .path(API_PREFIX + "/notification/**")
+                        .filters(f -> f.rewritePath(
+                                "/api/notification(?<segment>/?.*)",
+                                "/api/v1/notification${segment}"
+                        ))
+                        .uri("http://localhost:4006"))
+
                 .build();
     }
 
