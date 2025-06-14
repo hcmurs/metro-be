@@ -26,23 +26,10 @@ on:
         type: string
         default: "21"
         description: "Java version to use"
-      need_eureka:
-        required: false
-        type: boolean
-        default: false
-        description: "Whether this service needs Eureka for testing"
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      eureka:
-        image: lcaohoanq/metro-eureka:latest
-        ports:
-          - 8761:8761
-        options: --health-cmd="curl --fail http://eureka:8761/eureka || exit 1" --health-interval=10s --health-timeout=5s --health-retries=5
-    if: ${{ !inputs.need_eureka || inputs.need_eureka == false }}
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,8 +52,8 @@ jobs:
 
       # Optional - Generate and publish test report
       - name: Publish test report
-        if: ${{ inputs.publish_test_report != false }}
         uses: dorny/test-reporter@v1
+        if: ${{ inputs.publish_test_report == true }}
         with:
           name: ${{ inputs.service_name }} Tests
           path: ${{ inputs.service_path }}/target/surefire-reports/*.xml

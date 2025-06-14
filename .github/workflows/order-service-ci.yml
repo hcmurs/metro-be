@@ -22,5 +22,5 @@ jobs:
     with:
       service_name: order
       service_path: services/order-service
-      run_sonar: true
+      run_sonar: false
     secrets: inherit

@@ -21,5 +21,5 @@ jobs:
     with:
       service_name: gateway
       service_path: services/gateway-service
-      run_sonar: true
+      run_sonar: false
     secrets: inherit

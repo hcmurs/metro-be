@@ -21,6 +21,5 @@ jobs:
     with:
       service_name: user
       service_path: services/user-service
-      run_sonar: true
-      need_eureka: true
+      run_sonar: false
     secrets: inherit

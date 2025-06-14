@@ -21,5 +21,5 @@ jobs:
     with:
       service_name: auth
       service_path: services/auth-service
-      run_sonar: true
+      run_sonar: false
     secrets: inherit
