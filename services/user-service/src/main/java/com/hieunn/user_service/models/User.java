@@ -56,8 +56,8 @@ public class User {
     @Column(name = "role", nullable = false)
     String role;
 
-    @Column(name = "is_student", nullable = false, columnDefinition = "boolean default false")
-    Boolean isStudent;
+    @Column(name = "is_student", nullable = false)
+    boolean isStudent = false;
 
     @Column(name = "student_expired_date")
     @JsonFormat(pattern = "dd/MM/yyyy")
