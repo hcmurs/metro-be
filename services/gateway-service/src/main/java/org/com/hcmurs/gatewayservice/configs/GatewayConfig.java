@@ -43,10 +43,10 @@ public class GatewayConfig {
                         .uri("http://localhost:4006"))
 
                 .route("auth_service_route", r -> r
-                        .path(API_PREFIX + "/oauth2/authorize/**")
+                        .path(API_PREFIX + "/oauth2/authorization/**")
                         .filters(f -> f.rewritePath(
-                                "/api/oauth2/authorize(?<segment>/?.*)",
-                                "/api/v1/oauth2/authorize${segment}"
+                                "/api/oauth2/authorization(?<segment>/?.*)",
+                                "/api/v1/oauth2/authorization${segment}"
                         ))
                         .uri("http://localhost:4006"))
 
