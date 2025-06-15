@@ -8,7 +8,7 @@ import com.example.stationservice.repository.RoutesRepository;
 import com.example.stationservice.repository.StationsRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.ws.rs.NotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

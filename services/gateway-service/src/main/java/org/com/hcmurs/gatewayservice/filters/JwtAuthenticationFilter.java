@@ -46,12 +46,13 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/v3/api-docs/**",
             "/webjars/swagger-ui/**",
             //Auth
-            "/api/oauth2/authorize/**",
+            "/api/oauth2/authorization/**",
             "/api/auth/local-login",
             //User
             "/api/users/is-username-exist",
             "/api/users/is-email-exist",
             "/api/users/register",
+            "/api/users/reset-password",
             //Notification
             "/api/notifications/send-otp",
             "/api/notifications/verify-otp",
