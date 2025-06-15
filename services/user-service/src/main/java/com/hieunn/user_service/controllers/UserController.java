@@ -2,6 +2,7 @@ package com.hieunn.user_service.controllers;
 
 import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.user_service.dtos.requests.RegisterRequest;
+import com.hieunn.user_service.dtos.requests.ResetPasswordRequest;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
@@ -28,9 +29,7 @@ public class UserController {
             @Valid @RequestBody SocialLoginRequest socialLoginRequest) {
         UserDto userDto = userService.processSocialLogin(socialLoginRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
@@ -38,9 +37,7 @@ public class UserController {
             @RequestHeader("Authorization") String token) {
         UserDto userDto = userService.findUser(token.substring(7));
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
@@ -48,9 +45,7 @@ public class UserController {
             @Valid @RequestBody RegisterRequest registerRequest) {
         UserDto userDto = userService.register(registerRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Register successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/local-login")
@@ -58,9 +53,7 @@ public class UserController {
             @RequestBody LocalLoginRequest localLoginRequest) {
         UserDto userDto = userService.processLocalLogin(localLoginRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/is-username-exist")
@@ -85,5 +78,12 @@ public class UserController {
                         ErrorMessage.EMAIL_ALREADY_EXISTS.getStatus(),
                         ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(
+            @RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+        userService.resetPassword(resetPasswordRequest.getEmail(), resetPasswordRequest.getNewPassword());
+        return ResponseEntity.ok(ApiResponse.success("Reset password successfully"));
     }
 }

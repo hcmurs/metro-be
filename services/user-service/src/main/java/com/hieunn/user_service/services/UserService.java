@@ -12,4 +12,5 @@ public interface UserService {
     UserDto register(RegisterRequest registerRequest);
     boolean isUsernameExist(String username);
     boolean isEmailExist(String email);
+    void resetPassword(String email, String newPassword);
 }

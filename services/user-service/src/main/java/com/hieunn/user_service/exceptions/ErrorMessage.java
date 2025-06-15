@@ -22,6 +22,7 @@ public enum ErrorMessage {
     ALREADY_REQUESTED(400, "Already requested"),
     EMAIL_NOT_VERIFIED(401, "Email is not verified"),
     INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password"),
+    NEW_PASSWORD_EQUALS_OLD_PASSWORD(400, "New password are the same with old password"),
 
     REQUEST_NOT_FOUND(404, "Request does not exist");
 
