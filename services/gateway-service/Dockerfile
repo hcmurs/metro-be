@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Copy full pom.xml and all service folders
@@ -10,7 +10,7 @@ COPY services/ ./services/
 RUN mvn -Pgateway clean package -DskipTests
 
 # Runtime stage
-FROM openjdk:21-slim
+FROM openjdk:21-jdk
 WORKDIR /app
 
 COPY --from=build /app/services/gateway-service/target/*.jar app.jar

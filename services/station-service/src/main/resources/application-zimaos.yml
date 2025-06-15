@@ -25,4 +25,4 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://metro_eureka:8762/eureka/ # Eureka Server URL
+      defaultZone: http://metro-eureka:8762/eureka/ # Eureka Server URL
