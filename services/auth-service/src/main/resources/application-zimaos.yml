@@ -21,7 +21,7 @@ spring:
             client-secret: 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
             client-name: Google
             authorization-grant-type: authorization_code
-            redirect-uri: http://auth:4006/api/v1/login/oauth2/code/google
+            redirect-uri: http://metro-auth:4006/api/v1/login/oauth2/code/google
             scope:
               - email
               - profile
@@ -37,7 +37,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+      defaultZone: http://metro_eureka:8762/eureka/ # Eureka Server URL
 
 server:
   port: 4006
@@ -52,7 +52,7 @@ security:
     key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
     header: X-API-KEY
   oauth2:
-    authorized-redirect-url-frontend: https://metro-fe.vercel.app/oauth2/redirect
+    authorized-redirect-url-frontend: http://localhost:3000/oauth2/redirect
 
 service:
   users:

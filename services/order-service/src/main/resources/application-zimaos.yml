@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.88.154:5433/orderdb
-    username: postgres
-    password: 12345
+    url: jdbc:postgresql://metro_postgresql:5432/orderdb
+    username: admin
+    password: admin
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -15,6 +15,11 @@ spring:
 server:
   port: 4008
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://metro_eureka:8762/eureka/ # Eureka Server URL
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -22,3 +27,4 @@ springdoc:
     tags-sorter: alpha
   api-docs:
     path: /v3/api-docs
+

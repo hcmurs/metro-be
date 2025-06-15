@@ -3,7 +3,7 @@ networks:
     driver: bridge
 
 services:
-  postgresql:
+  metro_postgresql:
     container_name: metro_pg_sql
     image: docker.io/library/postgres:17.4
     environment:
@@ -41,103 +41,144 @@ services:
     networks:
       - metro-be
 
-  eureka:
-    container_name: metro_eureka_service
-    image: lcaohoanq/metro-eureka
+  metro_zipkin:
+    container_name: metro_zipkin
+    image: openzipkin/zipkin:latest
+    hostname: zipkin
     ports:
-      - "8761:8761"
-    # restart: on-failure
+      - "9412:9411"
+    networks:
+      - microservices-net
+    restart: unless-stopped
+    # Resource limits for Zipkin
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    environment:
+      - STORAGE_TYPE=mem
+      - JAVA_OPTS=-Xms256m -Xmx512m
+
+  metro_eureka:
+    container_name: metro_eureka_service
+    hostname: metro_eureka_service
+    image: lcaohoanq/metro-eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://metro_eureka_service:8762/eureka/apps" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "8762:8761"
+    restart: always
     networks:
       - metro-be
 
-  gateway:
+  metro_gateway:
     container_name: metro_gateway_service
+    hostname: metro_gateway_service
     image: lcaohoanq/metro-gateway
     ports:
       - "4003:4003"
-    # restart: on-failure
-
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://metro_gateway_service:4003/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
-        condition: service_started
+        condition: service_healthy
     networks:
       - metro-be
 
-  auth:
+  metro_auth:
     container_name: metro_auth_service
     image: lcaohoanq/metro-auth
     ports:
       - "4006:4006"
-    # restart: on-failure
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
-        condition: service_started
+        condition: service_healthy
+      metro_gateway:
+        condition: service_healthy
       redis:
         condition: service_healthy
     networks:
       - metro-be
 
-  user:
+  metro_user:
     container_name: metro_user_service
     image: lcaohoanq/metro-user
     ports:
       - "4007:4007"
-    # restart: on-failure
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
-        condition: service_started
+        condition: service_healthy
+      metro_gateway:
+        condition: service_healthy
       postgresql:
         condition: service_healthy
     networks:
       - metro-be
 
-  order:
+  metro_order:
     container_name: metro_order_service
     image: lcaohoanq/metro-order
     ports:
       - "4008:4008"
-    # restart: on-failure
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
-        condition: service_started
+        condition: service_healthy
+      metro_gateway:
+        condition: service_healthy
       postgresql:
         condition: service_healthy
     networks:
       - metro-be
 
-  ticket:
+  metro_ticket:
     container_name: metro_ticket_service
     image: lcaohoanq/metro-ticket
     ports:
       - "4005:4005"
-    # restart: on-failure
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
       eureka:
-        condition: service_started
+        condition: service_healthy
+      metro_gateway:
+        condition: service_healthy
       postgresql:
         condition: service_healthy
     networks:
       - metro-be
 
-  station:
+  metro_station:
     container_name: metro_station_service
     image: lcaohoanq/metro-station
     ports:
       - "4004:4004"
-    # restart: on-failure
+    restart: always
     depends_on:
       eureka:
-        condition: service_started
+        condition: service_healthy
+      metro_gateway:
+        condition: service_healthy
       postgresql:
         condition: service_healthy
     networks:

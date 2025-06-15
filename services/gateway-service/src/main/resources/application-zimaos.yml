@@ -20,20 +20,20 @@ spring:
     discovery:
       enabled: true
 
-#    gateway:
-#      globalcors:
-#        cors-configurations:
-#          '[/**]':
-#            allowedOrigins:
-#              - "http://station:4004"
-#              - "http://ticket:4005"
-#              - "http://auth:4006"
-#              - "http://user:4007"
-#              - "http://order:4008"
-#              # Add any other specific origins you need
-#            allowedMethods: "*"
-#            allowedHeaders: "*"
-#            allowCredentials: true
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://metro_station:4004"
+              - "http://metro_ticket:4005"
+              - "http://metro_auth:4006"
+              - "http://metro_user:4007"
+              - "http://metro_order:4008"
+              # Add any other specific origins you need
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
 
   output:
     ansi:
@@ -42,7 +42,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+      defaultZone: http://metro_eureka:8762/eureka/ # Eureka Server URL
 
 rate-limiting:
   rules:
