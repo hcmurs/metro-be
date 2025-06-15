@@ -21,7 +21,7 @@ public class StudentStatusScheduler {
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void disableExpiredStudents() {
-        List<User> users = userRepository.findAllByStudentTrue();
+        List<User> users = userRepository.findAllByIsStudentTrue();
         LocalDate today = LocalDate.now();
         for (User user : users) {
             if (user.getStudentExpiredDate() != null &&
