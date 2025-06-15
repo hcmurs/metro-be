@@ -3,6 +3,10 @@
 networks:
   metro-be:
     driver: bridge
+    
+volumes:
+  postgres:
+    driver: local
 
 services:
   metro_postgresql:
@@ -14,7 +18,9 @@ services:
       POSTGRES_DB: metro_db
       PGDATA: /data/postgres
     volumes:
-      - /DATA/AppData/metro_application/postgres/data:/data/postgres
+      - postgres:/data/postgres
+#      - /DATA/AppData/metro_application/postgres/data:/data/postgres
+      - ./postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql
     healthcheck:
       test: ["CMD-SHELL", 'pg_isready -U "${POSTGRES_USER:-postgres}"']
       start_period: 30s
@@ -136,6 +142,27 @@ services:
     ports:
       - "4007:4007"
     restart: always
+    env_file:
+      - .env
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-notification:
+    container_name: metro-notification-service
+    hostname: metro-notification-service
+    build:
+      context: .
+      dockerfile: ./services/notification-service/Dockerfile
+    ports:
+      - "4009:4009"
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
     depends_on:
@@ -157,8 +184,8 @@ services:
     ports:
       - "4008:4008"
     restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=zimaos
+    env_file:
+      - .env
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -178,8 +205,8 @@ services:
     ports:
       - "4005:4005"
     restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=zimaos
+    env_file:
+      - .env
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -199,6 +226,8 @@ services:
     ports:
       - "4004:4004"
     restart: always
+    env_file:
+      - .env
     depends_on:
       metro-eureka:
         condition: service_healthy

@@ -1,19 +1,30 @@
-# Build stage
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+# Stage 1: Build the application
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 
-# Copy full pom.xml and all service folders
-COPY pom.xml ./
-COPY services/ ./services/
+# Copy service files
+COPY services/gateway-service/pom.xml ./
+COPY services/gateway-service/src ./src
 
-# Build using gateway profile only
-RUN mvn -Pgateway clean package -DskipTests
+# Build
+RUN mvn clean package -DskipTests
 
-# Runtime stage
-FROM openjdk:21-jdk
+# Extract layers for better caching
+RUN mkdir -p extracted && \
+    java -Djarmode=layertools -jar target/*.jar extract --destination extracted
+
+# Stage 2: Runtime image
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-COPY --from=build /app/services/gateway-service/target/*.jar app.jar
+# Copy layers
+COPY --from=builder /app/extracted/dependencies/ ./
+COPY --from=builder /app/extracted/spring-boot-loader/ ./
+COPY --from=builder /app/extracted/snapshot-dependencies/ ./
+COPY --from=builder /app/extracted/application/ ./
+
+# Install curl for health checks
+RUN apk add --no-cache curl
 
 EXPOSE 4003
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

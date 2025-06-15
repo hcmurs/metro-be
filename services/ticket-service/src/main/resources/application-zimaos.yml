@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://metro_postgresql:5432/ticketdb
-    username: admin
-    password: admin
+    username: postgres
+    password: 12345
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -26,4 +26,4 @@ springdoc:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://metro-eureka:8762/eureka/ # Eureka Server URL
+      defaultZone: http://metro-eureka:8761/eureka/ # Eureka Server URL
