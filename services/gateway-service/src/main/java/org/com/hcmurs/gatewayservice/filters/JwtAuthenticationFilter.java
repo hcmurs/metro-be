@@ -55,7 +55,8 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/users/reset-password",
             //Notification
             "/api/notifications/send-otp",
-            "/api/notifications/verify-otp"
+            "/api/notifications/verify-otp",
+            "/actuator/health"
     );
 
     @NotNull

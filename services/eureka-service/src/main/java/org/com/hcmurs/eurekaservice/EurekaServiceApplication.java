@@ -18,7 +18,7 @@ public class EurekaServiceApplication {
 		var activeProfiles = env.getActiveProfiles();
 		List<String> profilesList = Arrays.asList(activeProfiles);
 
-		if (!profilesList.contains("docker") && !profilesList.contains("test")) {
+		if (!profilesList.contains("docker") && !profilesList.contains("test") && !profilesList.contains("zimaos")) {
 			JavaBrowserLauncher.openHomePage("http://localhost:8761");
 		}
 	}

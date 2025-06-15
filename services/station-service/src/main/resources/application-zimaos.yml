@@ -7,7 +7,7 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:postgresql://192.168.88.154:5433/stationdb
+    url: jdbc:postgresql://metro_postgresql:5432/stationdb
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver
@@ -25,4 +25,4 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+      defaultZone: http://metro-eureka:8761/eureka/ # Eureka Server URL

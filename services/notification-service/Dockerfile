@@ -3,8 +3,8 @@ FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 
 # Copy service files
-COPY services/station-service/pom.xml ./
-COPY services/station-service/src ./src
+COPY services/notification-service/pom.xml ./
+COPY services/notification-service/src ./src
 
 # Build
 RUN mvn clean package -DskipTests
@@ -26,5 +26,5 @@ COPY --from=builder /app/extracted/application/ ./
 # Install curl for health checks
 RUN apk add --no-cache curl
 
-EXPOSE 4004
+EXPOSE 4009
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

@@ -1,6 +1,12 @@
+# Require to change host name healthcheck to container name when using on portainer
+
 networks:
   metro-be:
     driver: bridge
+    
+volumes:
+  postgres:
+    driver: local
 
 services:
   metro_postgresql:
@@ -12,7 +18,9 @@ services:
       POSTGRES_DB: metro_db
       PGDATA: /data/postgres
     volumes:
-      - /DATA/AppData/metro_application/postgres/data:/data/postgres
+      - postgres:/data/postgres
+#      - /DATA/AppData/metro_application/postgres/data:/data/postgres
+      - ./postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql
     healthcheck:
       test: ["CMD-SHELL", 'pg_isready -U "${POSTGRES_USER:-postgres}"']
       start_period: 30s
@@ -64,12 +72,18 @@ services:
   metro-eureka:
     container_name: metro-eureka-service
     hostname: metro-eureka-service
-    image: lcaohoanq/metro-eureka
+    build:
+      context: .
+      dockerfile: ./services/eureka-service/Dockerfile
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://metro-eureka-service:8762/eureka/apps" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 5
+      start_period: 40s
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - EUREKA_INSTANCE_HOSTNAME=metro-eureka-service  # Override hostname via env var
     ports:
       - "8762:8761"
     restart: always
@@ -79,12 +93,14 @@ services:
   metro-gateway:
     container_name: metro-gateway-service
     hostname: metro-gateway-service
-    image: lcaohoanq/metro-gateway
+    build:
+      context: .
+      dockerfile: ./services/gateway-service/Dockerfile
     ports:
       - "4003:4003"
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://metro-gateway-service:4003/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4003/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -98,7 +114,10 @@ services:
 
   metro-auth:
     container_name: metro-auth-service
-    image: lcaohoanq/metro-auth
+    hostname: metro-auth-service
+    build:
+      context: .
+      dockerfile: ./services/auth-service/Dockerfile
     ports:
       - "4006:4006"
     restart: always
@@ -116,9 +135,33 @@ services:
 
   metro-user:
     container_name: metro-user-service
-    image: lcaohoanq/metro-user
+    hostname: metro-user-service
+    build:
+      context: .
+      dockerfile: ./services/user-service/Dockerfile
     ports:
       - "4007:4007"
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-notification:
+    container_name: metro-notification-service
+    hostname: metro-notification-service
+    build:
+      context: .
+      dockerfile: ./services/notification-service/Dockerfile
+    ports:
+      - "4009:4009"
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=zimaos
@@ -134,12 +177,15 @@ services:
 
   metro_order:
     container_name: metro-order-service
-    image: lcaohoanq/metro-order
+    hostname: metro-order-service
+    build:
+      context: .
+      dockerfile: ./services/order-service/Dockerfile
     ports:
       - "4008:4008"
     restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=zimaos
+    env_file:
+      - .env
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -152,12 +198,15 @@ services:
 
   metro-ticket:
     container_name: metro-ticket-service
-    image: lcaohoanq/metro-ticket
+    hostname: metro-ticket-service
+    build:
+      context: .
+      dockerfile: ./services/ticket-service/Dockerfile
     ports:
       - "4005:4005"
     restart: always
-    environment:
-      - SPRING_PROFILES_ACTIVE=zimaos
+    env_file:
+      - .env
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -170,10 +219,15 @@ services:
 
   metro-station:
     container_name: metro-station-service
-    image: lcaohoanq/metro-station
+    hostname: metro-station-service
+    build:
+      context: .
+      dockerfile: ./services/station-service/Dockerfile
     ports:
       - "4004:4004"
     restart: always
+    env_file:
+      - .env
     depends_on:
       metro-eureka:
         condition: service_healthy

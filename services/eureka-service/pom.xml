@@ -3,17 +3,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!-- Use Spring Boot as parent directly -->
 	<parent>
-		<groupId>org.com.hcmurs</groupId>
-		<artifactId>metro-be</artifactId>
-		<version>1.0.0</version>
-		<relativePath>../../pom.xml</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<groupId>org.com.hcmurs</groupId>
 	<artifactId>eureka-service</artifactId>
 	<version>1.0.0</version>
 	<name>eureka-service</name>
-	<description>eureka-service</description>
+	<description>Service Discovery for Metro Application</description>
+
+	<properties>
+		<java.version>21</java.version>
+		<spring-cloud.version>2024.0.1</spring-cloud.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -29,24 +36,36 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.github.lcaohoanq</groupId>
 			<artifactId>brlc</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
-		<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-		<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

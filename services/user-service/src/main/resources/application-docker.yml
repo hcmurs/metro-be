@@ -2,7 +2,7 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:postgresql://postgresql:5432/userdb
+    url: jdbc:postgresql://metro_postgresql:5432/userdb
     driver-class-name: org.postgresql.Driver
     username: admin
     password: admin
@@ -26,7 +26,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+      defaultZone: http://metro-eureka:8761/eureka/ # Eureka Server URL
 
 server:
   port: 4007

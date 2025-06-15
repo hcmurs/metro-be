@@ -44,7 +44,7 @@ services:
       - metro-be
 
   eureka:
-    container_name: metro_eureka_service
+    container_name: metro-eureka-service
     build:
       context: .
       dockerfile: services/eureka-service/Dockerfile
@@ -57,7 +57,7 @@ services:
       - metro-be
 
   gateway:
-    container_name: metro_gateway_service
+    container_name: metro-gateway-service
     build:
       context: .
       dockerfile: services/gateway-service/Dockerfile
@@ -75,7 +75,7 @@ services:
       - metro-be
 
   station:
-    container_name: metro_station_service
+    container_name: metro-station-service
     build:
       context: .
       dockerfile: services/station-service/Dockerfile
@@ -93,7 +93,7 @@ services:
       - metro-be
 
   auth:
-    container_name: metro_auth_service
+    container_name: metro-auth-service
     build:
       context: .
       dockerfile: services/auth-service/Dockerfile
@@ -113,7 +113,7 @@ services:
       - metro-be
 
   order:
-    container_name: metro_order_service
+    container_name: metro-order-service
     build:
       context: .
       dockerfile: services/order-service/Dockerfile
@@ -131,7 +131,7 @@ services:
       - metro-be
 
   ticket:
-    container_name: metro_ticket_service
+    container_name: metro-ticket-service
     build:
       context: .
       dockerfile: services/ticket-service/Dockerfile
@@ -149,7 +149,7 @@ services:
       - metro-be
 
   user:
-    container_name: metro_user_service
+    container_name: metro-user-service
     build:
       context: .
       dockerfile: services/user-service/Dockerfile
