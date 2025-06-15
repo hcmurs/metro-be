@@ -3,11 +3,14 @@ package com.example.stationservice.config;
 
 import com.example.stationservice.dto.RoutesRequest;
 import com.example.stationservice.dto.RoutesResponse;
+import com.example.stationservice.dto.SchedulesRequest;
 import com.example.stationservice.model.Routes;
+import com.example.stationservice.model.Schedules;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.repository.RoutesRepository;
 import com.example.stationservice.repository.StationsRepository;
 import com.example.stationservice.service.RoutesService;
+import com.example.stationservice.service.SchedulesService;
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -27,6 +31,8 @@ public class DataInitializer implements CommandLineRunner {
     private ModelMapper modelMapper;
     @Autowired
     private RoutesService routesService;
+    @Autowired
+    private SchedulesService schedulesService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -58,7 +64,10 @@ public class DataInitializer implements CommandLineRunner {
                 create("BT", "Bến Thành", "Lê Lợi, P. Bến Thành, Q.1", 10.772, 106.698, 14, route)
         );
 
-        stationsRepository.saveAll(stations);
+       List<Stations> savedStations= stationsRepository.saveAll(stations);
+
+        createSchedulesForStations(savedStations);
+
     }
 
     private Stations create(String code, String name, String address, double lat, double lng, int order, Routes route) {
@@ -74,6 +83,65 @@ public class DataInitializer implements CommandLineRunner {
         station.setUpdatedAt(LocalDateTime.now());
         station.setRoute(route);
         return station;
+    }
+
+    private void createSchedulesForStations(List<Stations> stations) {
+        // Thời gian bắt đầu và kết thúc hoạt động
+        LocalTime startTime = LocalTime.of(5, 0); // 5:00 AM
+        LocalTime endTime = LocalTime.of(22, 0);  // 10:00 PM
+
+        // Tạo schedule cho hướng đi (forward)
+        createSchedulesForDirection(stations, startTime, endTime, Schedules.Direction.forward);
+
+        // Tạo schedule cho hướng về (backward)
+        createSchedulesForDirection(stations, startTime, endTime, Schedules.Direction.backward);
+    }
+    private void createSchedulesForDirection(List<Stations> stations, LocalTime startTime, LocalTime endTime, Schedules.Direction direction) {
+        LocalTime currentTime = startTime;
+
+        while (currentTime.isBefore(endTime) || currentTime.equals(endTime)) {
+            // Tính toán thời gian cho từng trạm
+            LocalTime tripStartTime = currentTime;
+
+            for (int i = 0; i < stations.size(); i++) {
+                Stations station = stations.get(i);
+
+                // Tính thời gian đến và đi dựa trên thứ tự trạm
+                LocalTime arrivalTime;
+                LocalTime departureTime;
+
+                if (direction == Schedules.Direction.forward) {
+                    // Hướng đi: từ trạm đầu đến trạm cuối
+                    arrivalTime = tripStartTime.plusMinutes(i * 2L); // Mỗi trạm cách nhau 2 phút
+                    departureTime = arrivalTime.plusMinutes(1); // Dừng 1 phút tại mỗi trạm
+                } else {
+                    // Hướng về: từ trạm cuối về trạm đầu
+                    int reverseIndex = stations.size() - 1 - i;
+                    arrivalTime = tripStartTime.plusMinutes(reverseIndex * 2L);
+                    departureTime = arrivalTime.plusMinutes(1);
+                }
+
+                // Tạo schedule request
+                SchedulesRequest scheduleRequest = new SchedulesRequest();
+                scheduleRequest.setStationId(station.getStationId());
+                scheduleRequest.setTimeArrival(arrivalTime);
+                scheduleRequest.setTimeDeparture(departureTime);
+                scheduleRequest.setDirection(direction);
+                scheduleRequest.setDescription(String.format("Chuyến %s lúc %s - Trạm %s",
+                        direction == Schedules.Direction.forward ? "đi" : "về",
+                        tripStartTime.toString(),
+                        station.getName()));
+
+                try {
+                    schedulesService.createSchedule(scheduleRequest);
+                } catch (Exception e) {
+                    System.err.println("Error creating schedule for station " + station.getName() + ": " + e.getMessage());
+                }
+            }
+
+            // Chuyến tiếp theo sau 30 phút
+            currentTime = currentTime.plusMinutes(30);
+        }
     }
 }
 
