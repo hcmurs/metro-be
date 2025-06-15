@@ -1,0 +1,104 @@
+server:
+  port: 4003
+
+spring:
+  main:
+    web-application-type: reactive
+
+  application:
+    name: gateway-service
+    gw-config-version: v2
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/hcmurs
+  #          jwk-set-uri: http://localhost:8080/realms/hcmurs/protocol/openid-connect/certs
+
+  cloud:
+    discovery:
+      enabled: true
+
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://station:4004"
+              - "http://ticket:4005"
+              - "http://auth:4006"
+              - "http://user:4007"
+              - "http://order:4008"
+              # Add any other specific origins you need
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+
+rate-limiting:
+  rules:
+    - path: /api/v1/auth/login
+      capacity: 3
+      refillPerSec: 1
+    - path: /api/v1/products
+      capacity: 50
+      refillPerSec: 20
+
+jwt:
+  auth:
+    converter:
+      resource-id: react-app
+      principal-attribute: preferred_username
+  expiration: ${JWT_EXPIRATION:2592000}
+  expiration-refresh-token: ${JWT_EXPIRATION_REFRESH_TOKEN:5184000}
+  secretKey: ${JWT_SECRET_KEY:TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    configUrl: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: Gateway API
+    use-root-path: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: info
+    org.springframework: DEBUG
+    springframework.security: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.cloud.gateway.filter.ratelimit: DEBUG
+
+#health check
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: unrestricted
+    prometheus:
+      access: unrestricted

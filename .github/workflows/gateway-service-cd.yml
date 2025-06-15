@@ -1,0 +1,26 @@
+name: gateway-cd-flow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main-deployment"]
+    paths:
+      - "services/gateway-service/**"
+      - ".github/workflows/gateway-service-cd.yml"
+      - "pom.xml"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusable-service-cd.yml
+    with:
+      service_name: gateway
+      service_path: services/gateway-service
+      image_name: lcaohoanq/metro-gateway
+      platforms: linux/amd64,linux/arm64
+      use_metadata_action: true
+      run_security_scan: true
+    secrets: inherit

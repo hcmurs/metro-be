@@ -1,0 +1,101 @@
+server:
+  port: 4003
+
+spring:
+  main:
+    web-application-type: reactive
+
+  data:
+    redis:
+      host: redis-container
+      port: 6379
+
+  application:
+    name: gateway-service
+    gw-config-version: v2
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://kc.lch.id.vn/realms/hcmurs
+  #          jwk-set-uri: https://kc.lch.id.vn/realms/hcmurs/protocol/openid-connect/certs
+
+  cloud:
+    discovery:
+      enabled: true
+
+    client:
+      hostname: metro-gateway-service
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+eureka:
+  instance:
+    instanceId: ${spring.cloud.client.hostname}:${spring.application.name}:${server.port}
+    preferIpAddress: false
+    hostname: ${spring.cloud.client.hostname}
+  client:
+    serviceUrl:
+      defaultZone: http://metro-eureka-service:8761/eureka/
+
+rate-limiting:
+  rules:
+    - path: /api/v1/auth/login
+      capacity: 3
+      refillPerSec: 1
+    - path: /api/v1/products
+      capacity: 50
+      refillPerSec: 20
+
+jwt:
+  secretKey: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
+  expiration: 3600000 # 1 hour in milliseconds
+
+security:
+  api:
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    configUrl: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: Gateway API
+    use-root-path: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: info
+    org.springframework: DEBUG
+    springframework.security: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.cloud.gateway.filter.ratelimit: DEBUG
+
+#health check
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: unrestricted
+    prometheus:
+      access: unrestricted

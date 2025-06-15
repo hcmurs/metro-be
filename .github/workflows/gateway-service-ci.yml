@@ -1,0 +1,25 @@
+name: gateway-ci-flow
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main", "main-deployment", "develop"]
+    paths:
+      - "services/gateway-service/**"
+      - ".github/workflows/gateway-service-ci.yml"
+      - "pom.xml"
+#   push:
+#     branches: ["main", "main-deployment"]
+#     paths:
+#       - "services/gateway-service/**"
+#       - ".github/workflows/gateway-service-ci.yml"
+#       - "pom.xml"
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-service-ci.yml
+    with:
+      service_name: gateway
+      service_path: services/gateway-service
+      run_sonar: false
+    secrets: inherit

@@ -1,0 +1,190 @@
+networks:
+  metro-be:
+    driver: bridge
+
+services:
+
+  postgresql:
+    container_name: metro_pg_sql
+    image: docker.io/library/postgres:17.4
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: metro_db
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+      - ./postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U "${POSTGRES_USER:-admin}"' ]
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5432:5432"
+    networks:
+      - metro-be
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: metro_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+    restart: unless-stopped
+
+  redis:
+    image: docker.io/redis:7.2.3
+    container_name: redis-container
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - metro-be
+
+  eureka:
+    container_name: metro-eureka-service
+    build:
+      context: .
+      dockerfile: services/eureka-service/Dockerfile
+    ports:
+      - "8761:8761"
+    # restart: on-failure
+    volumes:
+      - ./logs/eureka:/logs/eureka
+    networks:
+      - metro-be
+
+  gateway:
+    container_name: metro-gateway-service
+    build:
+      context: .
+      dockerfile: services/gateway-service/Dockerfile
+    ports:
+      - "4003:4003"
+    # restart: on-failure
+    volumes:
+      - ./logs/gateway:/logs/gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      eureka:
+        condition: service_started
+    networks:
+      - metro-be
+
+  station:
+    container_name: metro-station-service
+    build:
+      context: .
+      dockerfile: services/station-service/Dockerfile
+    ports:
+      - "4004:4004"
+    # restart: on-failure
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    volumes:
+      - ./logs/station:/logs/station
+    networks:
+      - metro-be
+
+  auth:
+    container_name: metro-auth-service
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    ports:
+      - "4006:4006"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      eureka:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs/auth:/logs/auth
+    networks:
+      - metro-be
+
+  order:
+    container_name: metro-order-service
+    build:
+      context: .
+      dockerfile: services/order-service/Dockerfile
+    ports:
+      - "4008:4008"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  ticket:
+    container_name: metro-ticket-service
+    build:
+      context: .
+      dockerfile: services/ticket-service/Dockerfile
+    ports:
+      - "4005:4005"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  user:
+    container_name: metro-user-service
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile
+    ports:
+      - "4007:4007"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      eureka:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+volumes:
+  postgres:
+  pgadmin:
+  redis-data:

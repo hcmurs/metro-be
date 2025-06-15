@@ -1,0 +1,10 @@
+spring:
+  main:
+    web-application-type: reactive
+
+  application:
+    name: gateway-service
+    gw-config-version: v2
+
+  profiles:
+    active: dev

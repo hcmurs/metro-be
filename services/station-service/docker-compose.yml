@@ -1,0 +1,27 @@
+#version: '3.8'
+#services:
+#  station-service:
+#    build: .
+#    ports:
+#      - "4004:4004"
+#    depends_on:
+#      - postgres
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/station-db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: 12345
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#
+#  postgres:
+#    image: postgres:14
+#    environment:
+#      POSTGRES_DB: station-db
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: 12345
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+#
+#volumes:
+#  pgdata:

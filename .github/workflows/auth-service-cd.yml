@@ -1,0 +1,23 @@
+name: auth-cd-flow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main-deployment"]
+    paths:
+      - "services/auth-service/**"
+      - ".github/workflows/auth-service-cd.yml"
+      - "pom.xml"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusable-service-cd.yml
+    with:
+      service_name: auth
+      service_path: services/auth-service
+      image_name: lcaohoanq/metro-auth
+    secrets: inherit

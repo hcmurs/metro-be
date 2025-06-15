@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: auth-service
+  data:
+    redis:
+      host: redis
+      port: 6379
+  cloud:
+    discovery:
+      enabled: true
+
+  jackson:
+    date-format: dd/MM/yyyy HH:mm:ss
+    time-zone: Asia/Ho_Chi_Minh
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 634675406739-vsrau9upvljnlemslcrubdad6jrngfli.apps.googleusercontent.com
+            client-secret: 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
+            client-name: Google
+            authorization-grant-type: authorization_code
+            redirect-uri: http://auth:4006/api/v1/login/oauth2/code/google
+            scope:
+              - email
+              - profile
+            provider: google_custom
+            #url to login: "http://localhost:port/{context-path}/oauth2/authorization/google"
+        provider:
+          google_custom:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+
+server:
+  port: 4006
+  servlet:
+    context-path: /api/${app.version}
+
+security:
+  jwt:
+    secret-key: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
+    expiration: 3600000 # 1 hour in milliseconds
+  api:
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY
+  oauth2:
+    authorized-redirect-url-frontend: http://localhost:3000/oauth2/redirect
+
+service:
+  users:
+    url: http://user:${service.users.port}/api/${service.users.version}/users
+    port: 4007
+    version: v1
+
+app:
+  version: v1

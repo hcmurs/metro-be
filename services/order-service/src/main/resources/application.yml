@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+
+  cloud:
+    discovery:
+      enabled: true
+
+  profiles:
+    active: zimaos
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+

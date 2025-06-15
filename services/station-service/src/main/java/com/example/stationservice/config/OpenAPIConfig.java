@@ -1,0 +1,41 @@
+package com.example.stationservice.config;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.LocalTime;
+
+@Configuration
+public class OpenAPIConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Station Service API")
+                        .version("1.0")
+                        .description("API Documentation for Station Service")
+                        .contact(new Contact().name("Station Service Team")))
+                .externalDocs(new ExternalDocumentation()
+                        .description("Additional Documentation")
+                        .url("https://example.com"))
+                .components(new Components()
+                        .addSecuritySchemes("bearer-key",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")))
+                .components(new Components()
+                        .addSchemas("LocalTime", new Schema<LocalTime>()
+                                .type("string")
+                                .pattern("HH:mm")
+                                .example("00:00")));
+    }
+}

@@ -1,0 +1,25 @@
+name: station-ci-flow
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main", "main-deployment", "develop"]
+    paths:
+      - "services/station-service/**"
+      - ".github/workflows/station-service-ci.yml"
+      - "pom.xml"
+#   push:
+#     branches: ["main", "main-deployment"]
+#     paths:
+#       - "services/station-service/**"
+#       - ".github/workflows/station-service-ci.yml"
+#       - "pom.xml"
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-service-ci.yml
+    with:
+      service_name: station
+      service_path: services/station-service
+      run_sonar: false
+    secrets: inherit
