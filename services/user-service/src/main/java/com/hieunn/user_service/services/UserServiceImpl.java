@@ -115,10 +115,10 @@ public class UserServiceImpl implements UserService {
                     ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
                     ErrorMessage.EMAIL_NOT_VERIFIED.getMessage());
         }
+        redisTemplate.delete(registerRequest.getEmail());
+
         User newUser = createNewUserFromLocal(registerRequest);
         User savedUser = userRepository.save(newUser);
-
-        redisTemplate.delete(registerRequest.getEmail());
 
         return userMapper.toUserDto(savedUser);
     }
@@ -131,6 +131,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isEmailExist(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(String email, String newPassword) {
+        Optional<User> userByEmail = userRepository.findByEmail(email);
+        if (userByEmail.isEmpty()) {
+            throw new CustomException(
+                    ErrorMessage.USER_NOT_FOUND.getStatus(),
+                    ErrorMessage.USER_NOT_FOUND.getMessage());
+        }
+
+        User user = userByEmail.get();
+
+        if (user.getPassword() != null && user.getPassword().equals(newPassword)) {
+            throw new CustomException(
+                    ErrorMessage.NEW_PASSWORD_EQUALS_OLD_PASSWORD.getStatus(),
+                    ErrorMessage.NEW_PASSWORD_EQUALS_OLD_PASSWORD.getMessage());
+        }
+
+        if (redisTemplate.opsForValue().get(email) == null) {
+            throw new CustomException(
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getMessage());
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     private User createNewUserFromLocal(RegisterRequest request) {
