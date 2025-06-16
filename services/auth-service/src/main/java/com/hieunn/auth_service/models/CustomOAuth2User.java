@@ -16,7 +16,7 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @Builder
-public class OAuth2UserImpl implements OAuth2User {
+public class CustomOAuth2User implements OAuth2User {
     UserDto userDto;
     Map<String, Object> attributes;
 
