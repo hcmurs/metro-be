@@ -6,9 +6,15 @@ server:
   port: 8761  # Eureka server will run on this port by default
 
 eureka:
+  instance:
+    hostname: localhost  # Use the hostname from docker-compose
+    preferIpAddress: true
   client:
     register-with-eureka: false
     fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/ # URL for the Eureka server
+
 
 #health check
 management:

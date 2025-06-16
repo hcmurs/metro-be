@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.4</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <!-- Default modules (keeps existing behavior when no profile is specified) -->
+  <modules>
+    <module>services/eureka-service</module>
+    <module>services/gateway-service</module>
+    <module>services/ticket-service</module>
+    <module>services/station-service</module>
+    <module>services/user-service</module>
+    <module>services/auth-service</module>
+    <module>services/order-service</module>
+    <module>services/notification-service</module>
+  </modules>
+
+  <groupId>org.com.hcmurs</groupId>
+  <artifactId>metro-be</artifactId>
+  <version>1.0.0</version>
+  <name>metro-be</name>
+  <description>Metro Backend Application</description>
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- Java & Kotlin -->
+    <java.version>21</java.version>
+    <kotlin.version>2.1.20</kotlin.version>
+    <kotlin.logging.version>3.0.5</kotlin.logging.version>
+
+    <!-- Spring Framework -->
+    <spring-boot.version>3.4.4</spring-boot.version>
+    <spring-cloud.version>2024.0.1</spring-cloud.version>
+    <spring-cloud.loadbalancer.version>4.2.0</spring-cloud.loadbalancer.version>
+    <spring-cloud.feign.version>4.2.1</spring-cloud.feign.version>
+    <spring-data-redis.version>3.1.5</spring-data-redis.version>
+
+
+    <!-- Database -->
+    <postgres.version>42.7.3</postgres.version>
+    <h2.version>2.2.224</h2.version>
+    <lettuce.version>6.2.7.RELEASE</lettuce.version>
+
+    <!-- Security & JWT -->
+    <jwt.version>0.11.5</jwt.version>
+
+    <!-- Documentation -->
+    <springdoc.version>2.7.0</springdoc.version>
+
+    <!-- Validation -->
+    <hibernate-validator.version>9.0.0.CR1</hibernate-validator.version>
+
+    <!-- Utilities -->
+    <lombok.version>1.18.30</lombok.version>
+    <mapstruct.version>1.5.5.Final</mapstruct.version>
+    <dotenv.spring.version>4.0.0</dotenv.spring.version>
+    <dotenv.java.version>3.0.1</dotenv.java.version>
+    <google.zxing.version>3.5.3</google.zxing.version>
+    <jackson.version>2.15.2</jackson.version>
+
+    <!-- Service Discovery -->
+    <eureka.client.version>3.1.5</eureka.client.version>
+
+    <!-- Custom Libraries -->
+    <common-lib.version>1.0.0</common-lib.version>
+    <common-spring.version>1.0.0</common-spring.version>
+    <lcaohoanq-brlc.version>1.0.0</lcaohoanq-brlc.version>
+  </properties>
+
+  <profiles>
+    <!-- Profile for building all services (default behavior - no changes) -->
+    <profile>
+      <id>all</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>services/eureka-service</module>
+        <module>services/gateway-service</module>
+        <module>services/ticket-service</module>
+        <module>services/station-service</module>
+        <module>services/user-service</module>
+        <module>services/auth-service</module>
+        <module>services/notification-service</module>
+      </modules>
+    </profile>
+
+    <!-- Profile for Docker builds - minimal modules -->
+    <profile>
+      <id>docker</id>
+      <modules>
+        <!-- Empty - each service will specify what it needs -->
+      </modules>
+    </profile>
+
+    <!-- Individual service profiles for Docker builds -->
+    <profile>
+      <id>eureka</id>
+      <modules>
+        <module>services/eureka-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>gateway</id>
+      <modules>
+        <module>services/gateway-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>ticket</id>
+      <modules>
+        <module>services/ticket-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>station</id>
+      <modules>
+        <module>services/station-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>user</id>
+      <modules>
+        <module>services/user-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>order</id>
+      <modules>
+        <module>services/order-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>auth</id>
+      <modules>
+        <module>services/auth-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>notification</id>
+      <modules>
+        <module>services/notification-service</module>
+      </modules>
+    </profile>
+  </profiles>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Spring Cloud BOM -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Spring Boot Starters -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-graphql</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>${spring-boot.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- Spring Data Redis -->
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-redis</artifactId>
+        <version>${spring-data-redis.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.lettuce</groupId>
+        <artifactId>lettuce-core</artifactId>
+        <version>${lettuce.version}</version>
+      </dependency>
+
+      <!-- Spring Cloud -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        <version>${spring-cloud.loadbalancer.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-openfeign</artifactId>
+        <version>${spring-cloud.feign.version}</version>
+      </dependency>
+
+      <!-- Database Drivers -->
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgres.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${h2.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- JWT -->
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>${jwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>${jwt.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId>
+        <version>${jwt.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+
+      <!-- Documentation -->
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>${springdoc.version}</version>
+      </dependency>
+
+      <!-- Validation -->
+      <dependency>
+        <groupId>org.hibernate.validator</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate-validator.version}</version>
+      </dependency>
+
+      <!-- Utilities -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${mapstruct.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct-processor</artifactId>
+        <version>${mapstruct.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Environment Configuration -->
+      <dependency>
+        <groupId>io.github.cdimascio</groupId>
+        <artifactId>dotenv-java</artifactId>
+        <version>${dotenv.java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>me.paulschwarz</groupId>
+        <artifactId>spring-dotenv</artifactId>
+        <version>${dotenv.spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>core</artifactId>
+        <version>${google.zxing.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>javase</artifactId>
+        <version>${google.zxing.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <!-- Custom Libraries -->
+      <dependency>
+        <groupId>io.github.lcaohoanq</groupId>
+        <artifactId>brlc</artifactId>
+        <version>${lcaohoanq-brlc.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+              </exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
