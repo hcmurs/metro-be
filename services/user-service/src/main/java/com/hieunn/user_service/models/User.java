@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "google_id"),
+        @UniqueConstraint(columnNames = "facebook_id"),
         @UniqueConstraint(columnNames = "username")
 })
 @Data
@@ -45,6 +46,9 @@ public class User {
 
     @Column(name = "google_id", unique = true)
     String googleId;
+
+    @Column(name = "facebook_id", unique = true)
+    String facebookId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider", nullable = false)

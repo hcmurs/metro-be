@@ -1,7 +1,7 @@
 package com.hieunn.auth_service.handlers;
 
 import com.hieunn.auth_service.dtos.responses.UserDto;
-import com.hieunn.auth_service.models.OAuth2UserImpl;
+import com.hieunn.auth_service.models.CustomOAuth2User;
 import com.hieunn.auth_service.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
+public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
     final JwtUtil jwtUtil;
 
     @Value("${security.oauth2.authorized-redirect-url-frontend}")
@@ -29,8 +29,8 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
 
-        if (!(authentication.getPrincipal() instanceof OAuth2UserImpl oauthUser)) {
-            response.sendRedirect("/login?error");
+        if (!(authentication.getPrincipal() instanceof CustomOAuth2User oauthUser)) {
+            response.sendRedirect("http://localhost:3000/login");
             return;
         }
 
