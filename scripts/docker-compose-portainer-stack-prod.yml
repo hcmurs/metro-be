@@ -67,9 +67,7 @@ services:
   metro-eureka:
     container_name: metro-eureka-service
     hostname: metro-eureka-service
-    build:
-      context: ..
-      dockerfile: ../services/eureka-service/Dockerfile
+    image: lcaohoanq/metro-eureka
     healthcheck:
       test: ["CMD", "curl", "-f", "http://metro-eureka-service:8761/actuator/health"]
       interval: 30s
@@ -88,9 +86,7 @@ services:
   metro-gateway:
     container_name: metro-gateway-service
     hostname: metro-gateway-service
-    build:
-      context: ..
-      dockerfile: ../services/gateway-service/Dockerfile
+    image: lcaohoanq/metro-gateway
     ports:
       - "4003:4003"
     restart: always
@@ -110,9 +106,7 @@ services:
   metro-auth:
     container_name: metro-auth-service
     hostname: metro-auth-service
-    build:
-      context: ..
-      dockerfile: ../services/auth-service/Dockerfile
+    image: lcaohoanq/metro-auth
     ports:
       - "4006:4006"
     restart: always
@@ -131,14 +125,14 @@ services:
   metro-user:
     container_name: metro-user-service
     hostname: metro-user-service
-    build:
-      context: ..
-      dockerfile: ../services/user-service/Dockerfile
+    image: lcaohoanq/metro-user
     ports:
       - "4007:4007"
     restart: always
-    env_file:
-      - ../.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -152,9 +146,7 @@ services:
   metro-notification:
     container_name: metro-notification-service
     hostname: metro-notification-service
-    build:
-      context: ..
-      dockerfile: ../services/notification-service/Dockerfile
+    image: lcaohoanq/metro-notification
     ports:
       - "4009:4009"
     restart: always
@@ -173,14 +165,14 @@ services:
   metro_order:
     container_name: metro-order-service
     hostname: metro-order-service
-    build:
-      context: ..
-      dockerfile: ../services/order-service/Dockerfile
+    image: lcaohoanq/metro-order
     ports:
       - "4008:4008"
     restart: always
-    env_file:
-      - ../.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -194,14 +186,14 @@ services:
   metro-ticket:
     container_name: metro-ticket-service
     hostname: metro-ticket-service
-    build:
-      context: ..
-      dockerfile: ../services/ticket-service/Dockerfile
+    image: lcaohoanq/metro-ticket
     ports:
       - "4005:4005"
     restart: always
-    env_file:
-      - ../.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
     depends_on:
       metro-eureka:
         condition: service_healthy
@@ -215,14 +207,14 @@ services:
   metro-station:
     container_name: metro-station-service
     hostname: metro-station-service
-    build:
-      context: ..
-      dockerfile: ../services/station-service/Dockerfile
+    image: lcaohoanq/metro-station
     ports:
       - "4004:4004"
     restart: always
-    env_file:
-      - ../.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
     depends_on:
       metro-eureka:
         condition: service_healthy
