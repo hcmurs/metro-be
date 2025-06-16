@@ -46,16 +46,28 @@ public class OrderController {
         return ordersService.getOrderById(orderId);
     }
 
-    @PutMapping("update/{orderId}")
-    @Operation(summary = "Update an order", description = "Updates the status of an existing order by its ID.")
-    public ApiResponse<OrderResponse> updateOrder(@PathVariable Long orderId) {
-        return ordersService.updateOrder(orderId);
+    @GetMapping("/user/{userId}")
+    @Operation(summary = "Get order by user ID", description = "Retrieves an order by the user's ID.")
+    public ApiResponse<List<OrderResponse>> getOrderByUserId(@PathVariable Long userId) {
+        return ordersService.getOrderByUserId(userId);
     }
 
-    @PutMapping("update-transaction/{orderId}")
+    @PutMapping("update-success/{orderId}")
+    @Operation(summary = "Update an order", description = "Updates the status of an existing order by its ID.")
+    public ApiResponse<TransactionResponse> updateTransactionSuccess(@PathVariable Long orderId) {
+        return ordersService.updateTransactionSuccess(orderId);
+    }
+
+    @PutMapping("update-fail/{orderId}")
+    @Operation(summary = "Update an order", description = "Updates the status of an existing order by its ID.")
+    public ApiResponse<TransactionResponse> updateTransactionFailed(@PathVariable Long orderId) {
+        return ordersService.updateTransactionFailed(orderId);
+    }
+
+    @PutMapping("update-order/{orderId}")
     @Operation(summary = "Update transaction for an order", description = "Updates the transaction details for an existing order by its ID.")
-    public ApiResponse<TransactionResponse> updateTransaction(@PathVariable Long orderId) {
-        return ordersService.updateTransaction(orderId);
+    public ApiResponse<OrderResponse> updateTransaction(@PathVariable Long orderId) {
+        return ordersService.updateOrder(orderId);
     }
 
 }

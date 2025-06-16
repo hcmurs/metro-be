@@ -15,6 +15,8 @@ public interface OrdersService {
     ApiResponse<List<OrderResponse>> getAllOrders();
     ApiResponse<OrderResponse> getOrderById(Long orderId);
     ApiResponse<OrderResponse> updateOrder(Long orderId);
-    ApiResponse<TransactionResponse> updateTransaction(Long orderId);
+    ApiResponse<TransactionResponse> updateTransactionSuccess(Long orderId);
+    ApiResponse<TransactionResponse> updateTransactionFailed(Long orderId);
+    ApiResponse<List<OrderResponse>> getOrderByUserId(Long userId);
 
 }

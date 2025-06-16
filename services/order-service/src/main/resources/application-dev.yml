@@ -23,3 +23,9 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
+paypal:
+  client-id: AZgVDnqEVFg0tr0ya9PyVBdpprnuVHHPSXVWP5T3lws_kw5gBeTnY21zElSfw-WhttcB78Gaa3Sm6JWS
+  client-secret: EETQLur6Ow-G-7kh-7gq6gAqKR4NIheJV9lQr5Tia8Uqa4y_8Ce99zWu57bifjS6kbxRqlFevsSrEM-W
+  base-url: https://api-m.sandbox.paypal.com
+  return-url: http://localhost:4008/api/payment/paypal/success
+  cancel-url: http://localhost:4008/api/payment/paypal/cancel

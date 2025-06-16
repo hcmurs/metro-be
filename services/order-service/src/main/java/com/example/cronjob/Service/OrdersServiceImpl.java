@@ -149,10 +149,10 @@ public class OrdersServiceImpl implements OrdersService {
         }
         if (orders.getTransaction().getTransactionStatus() == TransactionStatus.SUCCESSFUL) {
             orders.setStatus(OrderStatus.SUCCESSFUL);
-            ticketClient.updateTicketStatus(orders.getTicketId(),TicketStatus.NOT_USED);
+            ticketClient.updateTicketStatus(orders.getTicketId(), TicketStatus.NOT_USED);
         } else if (orders.getTransaction().getTransactionStatus() == TransactionStatus.FAILED) {
             orders.setStatus(OrderStatus.FAILED);
-            ticketClient.updateTicketStatus(orders.getTicketId(),TicketStatus.CANCELLED);
+            ticketClient.updateTicketStatus(orders.getTicketId(), TicketStatus.CANCELLED);
         } else {
             orders.setStatus(OrderStatus.PENDING);
         }
@@ -167,12 +167,59 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public ApiResponse<TransactionResponse> updateTransaction(Long orderId) {
+    public ApiResponse<TransactionResponse> updateTransactionSuccess(Long orderId) {
         Orders orders = ordersRepository.findByOrderId(orderId);
+        if (orders == null) {
+            throw new EntityNotFoundException("Order not found with ID: " + orderId);
+        }
+        Transactions transaction = orders.getTransaction();
+        if (transaction == null) {
+            throw new EntityNotFoundException("Transaction not found for Order ID: " + orderId);
+        }
+        transaction.setTransactionStatus(TransactionStatus.SUCCESSFUL);
+        transaction.setUpdateAt(LocalDateTime.now());
+        Transactions updatedTransaction = transactionsRepository.save(transaction);
+        TransactionResponse transactionResponse = transactionMapping.toResponse(updatedTransaction);
+        updateOrder(orderId);
         return ApiResponse.<TransactionResponse>builder()
-                .status(501)
-                .message("Not implemented yet")
-                .data(null)
+                .status(200)
+                .message("Transaction updated successfully")
+                .data(transactionResponse)
+                .build();
+    }
+
+    @Override
+    public ApiResponse<TransactionResponse> updateTransactionFailed(Long orderId) {
+        Orders orders = ordersRepository.findByOrderId(orderId);
+        if (orders == null) {
+            throw new EntityNotFoundException("Order not found with ID: " + orderId);
+        }
+        Transactions transaction = orders.getTransaction();
+        if (transaction == null) {
+            throw new EntityNotFoundException("Transaction not found for Order ID: " + orderId);
+        }
+        transaction.setTransactionStatus(TransactionStatus.FAILED);
+        transaction.setUpdateAt(LocalDateTime.now());
+        Transactions updatedTransaction = transactionsRepository.save(transaction);
+        TransactionResponse transactionResponse = transactionMapping.toResponse(updatedTransaction);
+        updateOrder(orderId);
+        return ApiResponse.<TransactionResponse>builder()
+                .status(200)
+                .message("Transaction updated successfully")
+                .data(transactionResponse)
+                .build();
+    }
+
+
+    @Override
+    public ApiResponse<List<OrderResponse>> getOrderByUserId(Long userId) {
+        if (!ordersRepository.existsByUserId(userId)) {
+            throw new EntityNotFoundException("No orders found for user ID: " + userId);
+        }
+        return ApiResponse.<List<OrderResponse>>builder()
+                .status(200)
+                .message("Order retrieved successfully")
+                .data(orderMapping.toResponseList(ordersRepository.findByUserId(userId)))
                 .build();
     }
 }
