@@ -60,7 +60,11 @@ public class JwtAuthenticationFilter implements WebFilter {
             //Stations
             "/api/stations/**",
             "/api/schedules/**",
-            "/api/routes/**"
+            "/api/routes/**",
+            //ticket
+            "/api/ts/**",
+            "/user/orders/**"
+
     );
 
     @NotNull
