@@ -19,5 +19,5 @@ public interface UserServiceClient {
     ApiResponse<UserDto> register(@RequestBody RegisterRequest request);
 
     @PostMapping("/local-login")
-    ApiResponse<UserDto> processLocalLogin(@RequestBody LocalLoginRequest request);
+    ApiResponse<UserDto> processLocalLogin(@RequestBody LocalLoginRequest localLoginRequest);
 }

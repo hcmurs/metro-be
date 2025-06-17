@@ -5,12 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.com.hcmurs</groupId>
-    <artifactId>metro-be</artifactId>
-    <version>1.0.0</version>
-    <relativePath>../../pom.xml</relativePath>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.4</version>
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
+  <groupId>org.com.hcmurs</groupId>
   <artifactId>gateway-service</artifactId>
   <version>1.0.0</version>
   <name>gateway-service</name>
@@ -26,16 +27,20 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-gateway</artifactId>
+      <version>4.2.0</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+      <version>4.2.0</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+      <version>4.2.0</version>
     </dependency>
 
     <dependency>
@@ -85,14 +90,17 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
+      <version>0.11.5</version>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-impl</artifactId>
+      <version>0.11.5</version>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-jackson</artifactId>
+      <version>0.11.5</version>
     </dependency>
 
     <!-- Bucket4j for rate limiting -->
@@ -121,6 +129,7 @@
     <dependency>
       <groupId>io.github.lcaohoanq</groupId>
       <artifactId>brlc</artifactId>
+      <version>1.0.0</version>
     </dependency>
 
   </dependencies>

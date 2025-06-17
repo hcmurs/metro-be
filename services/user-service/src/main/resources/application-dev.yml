@@ -12,9 +12,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  jackson:
-    date-format: dd/MM/yyyy HH:mm:ss
-    time-zone: Asia/Ho_Chi_Minh
   data:
     redis:
       host: localhost

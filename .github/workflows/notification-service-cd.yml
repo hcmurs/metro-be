@@ -1,0 +1,23 @@
+name: notification-cd-flow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main-deployment"]
+    paths:
+      - "services/notification-service/**"
+      - ".github/workflows/notification-service-cd.yml"
+      - "pom.xml"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusable-service-cd.yml
+    with:
+      service_name: notification
+      service_path: services/notification-service
+      image_name: lcaohoanq/metro-notification
+    secrets: inherit

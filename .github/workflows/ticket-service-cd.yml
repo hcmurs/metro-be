@@ -1,0 +1,23 @@
+name: ticket-cd-flow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main-deployment"]
+    paths:
+      - "services/ticket-service/**"
+      - ".github/workflows/ticket-service-cd.yml"
+      - "pom.xml"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusable-service-cd.yml
+    with:
+      service_name: ticket
+      service_path: services/ticket-service
+      image_name: lcaohoanq/metro-ticket
+    secrets: inherit

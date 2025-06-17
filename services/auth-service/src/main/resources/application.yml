@@ -30,12 +30,27 @@ spring:
               - profile
             provider: google_custom
             #url to login: "http://localhost:port/{context-path}/oauth2/authorization/google"
+          facebook:
+            client-id: 1279639400250791
+            client-secret: 2f7a84fc5fd5c6ab4d0a1b5c87097d72
+            client-name: Facebook
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:4006/api/v1/login/oauth2/code/facebook
+            scope:
+              - email
+              - public_profile
+            provider: facebook-custom
         provider:
           google_custom:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
+          facebook-custom:
+            authorization-uri: https://www.facebook.com/v17.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v17.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+            user-name-attribute: id
 
 server:
   port: 4006
@@ -60,3 +75,11 @@ service:
 
 app:
   version: v1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs

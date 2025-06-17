@@ -18,7 +18,7 @@ public class TicketServiceApplication {
 
         var env = context.getEnvironment();
         var activeProfiles = env.getActiveProfiles();
-        if (!Arrays.asList(activeProfiles).contains("docker")) {
+        if (!Arrays.asList(activeProfiles).contains("docker") && !Arrays.asList(activeProfiles).contains("test") && !Arrays.asList(activeProfiles).contains("zimaos")) {
             JavaBrowserLauncher.openHomePage("http://localhost:4005/swagger-ui.html");
         }
     }

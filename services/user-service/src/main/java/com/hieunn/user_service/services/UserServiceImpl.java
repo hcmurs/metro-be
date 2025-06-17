@@ -14,6 +14,8 @@ import com.hieunn.user_service.utils.JwtUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,47 +28,67 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     JwtUtil jwtUtil;
+    PasswordEncoder passwordEncoder;
+    RedisTemplate<String, String> redisTemplate;
 
     @Override
     @Transactional
     public UserDto processSocialLogin(SocialLoginRequest socialLoginRequest) {
-        if (socialLoginRequest.getAuthProvider() != AuthProvider.GOOGLE) {
+        AuthProvider provider = socialLoginRequest.getAuthProvider();
+
+        if (provider != AuthProvider.GOOGLE && provider != AuthProvider.FACEBOOK) {
             return null;
         }
 
-        Optional<User> userByGoogleId = userRepository.findByGoogleId(socialLoginRequest.getProviderId());
-        if (userByGoogleId.isPresent()) {
-            User existingUser = userByGoogleId.get();
-            return updateExistingGoogleUser(existingUser, socialLoginRequest);
+        Optional<User> userByProviderId = findUserByProviderId(provider, socialLoginRequest.getProviderId());
+        if (userByProviderId.isPresent()) {
+            return updateExistingUser(userByProviderId.get(), socialLoginRequest);
         }
 
         Optional<User> userByEmail = userRepository.findByEmail(socialLoginRequest.getEmail());
         if (userByEmail.isPresent()) {
-            User existingUser = userByEmail.get();
-            return updateExistingGoogleUser(existingUser, socialLoginRequest);
+            return updateExistingUser(userByEmail.get(), socialLoginRequest);
         }
 
-        User newUser = createNewUserFromGoogle(socialLoginRequest);
-        User savedUser = userRepository.save(newUser);
-        return userMapper.toUserDto(savedUser);
+        User newUser = createNewUserFromSocial(socialLoginRequest);
+        return userMapper.toUserDto(userRepository.save(newUser));
     }
 
-    private UserDto updateExistingGoogleUser(User existingUser, SocialLoginRequest socialLoginRequest) {
+    private Optional<User> findUserByProviderId(AuthProvider provider, String providerId) {
+        return switch (provider) {
+            case GOOGLE -> userRepository.findByGoogleId(providerId);
+            case FACEBOOK -> userRepository.findByFacebookId(providerId);
+            default -> Optional.empty();
+        };
+    }
+
+    private UserDto updateExistingUser(User existingUser, SocialLoginRequest socialLoginRequest) {
         boolean changed = false;
-        if (existingUser.getName() == null || !socialLoginRequest.getName().equals(existingUser.getName())) {
+
+        if (existingUser.getName() == null || !existingUser.getName().equals(socialLoginRequest.getName())) {
             existingUser.setName(socialLoginRequest.getName());
             changed = true;
         }
-        if (existingUser.getAuthProvider() != AuthProvider.GOOGLE) {
-            existingUser.setAuthProvider(AuthProvider.GOOGLE);
+
+        if (existingUser.getPictureUrl() == null || !existingUser.getPictureUrl().equals(socialLoginRequest.getPictureUrl())) {
+            existingUser.setPictureUrl(socialLoginRequest.getPictureUrl());
             changed = true;
         }
-        if (existingUser.getGoogleId() == null || !existingUser.getGoogleId().equals(socialLoginRequest.getProviderId())) {
+
+        if (existingUser.getAuthProvider() != socialLoginRequest.getAuthProvider()) {
+            existingUser.setAuthProvider(socialLoginRequest.getAuthProvider());
+            changed = true;
+        }
+
+        if (socialLoginRequest.getAuthProvider() == AuthProvider.GOOGLE &&
+                (existingUser.getGoogleId() == null || !existingUser.getGoogleId().equals(socialLoginRequest.getProviderId()))) {
             existingUser.setGoogleId(socialLoginRequest.getProviderId());
             changed = true;
         }
-        if (existingUser.getPictureUrl() == null || !socialLoginRequest.getPictureUrl().equals(existingUser.getPictureUrl())) {
-            existingUser.setPictureUrl(socialLoginRequest.getPictureUrl());
+
+        if (socialLoginRequest.getAuthProvider() == AuthProvider.FACEBOOK &&
+                (existingUser.getFacebookId() == null || !existingUser.getFacebookId().equals(socialLoginRequest.getProviderId()))) {
+            existingUser.setFacebookId(socialLoginRequest.getProviderId());
             changed = true;
         }
 
@@ -77,15 +99,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDto(existingUser);
     }
 
-    private User createNewUserFromGoogle(SocialLoginRequest request) {
-        return User.builder()
+    private User createNewUserFromSocial(SocialLoginRequest request) {
+        User.UserBuilder builder = User.builder()
                 .email(request.getEmail())
                 .name(request.getName())
-                .googleId(request.getProviderId())
-                .authProvider(AuthProvider.GOOGLE)
+                .authProvider(request.getAuthProvider())
                 .pictureUrl(request.getPictureUrl())
-                .role("ROLE_CUSTOMER")
-                .build();
+                .role("ROLE_CUSTOMER");
+
+        if (request.getAuthProvider() == AuthProvider.GOOGLE) {
+            builder.googleId(request.getProviderId());
+        } else if (request.getAuthProvider() == AuthProvider.FACEBOOK) {
+            builder.facebookId(request.getProviderId());
+        }
+
+        return builder.build();
     }
 
     @Override
@@ -104,31 +132,87 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto register(RegisterRequest registerRequest) {
+        if (redisTemplate.opsForValue().get(registerRequest.getEmail()) == null) {
+            throw new CustomException(
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getMessage());
+        }
+        redisTemplate.delete(registerRequest.getEmail());
+
         User newUser = createNewUserFromLocal(registerRequest);
         User savedUser = userRepository.save(newUser);
+
         return userMapper.toUserDto(savedUser);
+    }
+
+    @Override
+    public boolean isUsernameExist(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(String email, String newPassword) {
+        Optional<User> userByEmail = userRepository.findByEmail(email);
+        if (userByEmail.isEmpty()) {
+            throw new CustomException(
+                    ErrorMessage.USER_NOT_FOUND.getStatus(),
+                    ErrorMessage.USER_NOT_FOUND.getMessage());
+        }
+
+        User user = userByEmail.get();
+
+        if (user.getPassword() != null && user.getPassword().equals(newPassword)) {
+            throw new CustomException(
+                    ErrorMessage.NEW_PASSWORD_EQUALS_OLD_PASSWORD.getStatus(),
+                    ErrorMessage.NEW_PASSWORD_EQUALS_OLD_PASSWORD.getMessage());
+        }
+
+        if (redisTemplate.opsForValue().get(email) == null) {
+            throw new CustomException(
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
+                    ErrorMessage.EMAIL_NOT_VERIFIED.getMessage());
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     private User createNewUserFromLocal(RegisterRequest request) {
         return User.builder()
                 .email(request.getEmail())
+                .name(request.getName())
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .authProvider(AuthProvider.LOCAL)
                 .role("ROLE_CUSTOMER")
                 .build();
     }
 
     @Override
-    public User processLocalLogin(LocalLoginRequest localLoginRequest) {
-        Optional<User> userByUsername = userRepository.findByUsername(localLoginRequest.getUsername());
-        if (userByUsername.isEmpty()) {
+    public UserDto processLocalLogin(LocalLoginRequest localLoginRequest) {
+        Optional<User> userByUsername = userRepository.findByUsername(localLoginRequest.getUsernameOrEmail());
+        Optional<User> userByEmail = userRepository.findByEmail(localLoginRequest.getUsernameOrEmail());
+        if (userByUsername.isEmpty() && userByEmail.isEmpty()) {
             throw new CustomException(
                     ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
-                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage()
-            );
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
         }
-        return userByUsername.get();
+
+        User user = userByUsername.orElseGet(userByEmail::get);
+        if (!passwordEncoder.matches(localLoginRequest.getPassword(), user.getPassword())) {
+            throw new CustomException(
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
+                    ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage());
+        }
+
+        return userMapper.toUserDto(user);
     }
 }

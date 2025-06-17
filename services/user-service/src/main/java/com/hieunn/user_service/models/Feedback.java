@@ -1,5 +1,6 @@
 package com.hieunn.user_service.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -42,9 +43,11 @@ public class Feedback {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime updatedAt;
 }

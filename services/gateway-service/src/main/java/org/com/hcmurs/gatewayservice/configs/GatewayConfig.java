@@ -19,8 +19,8 @@ public class GatewayConfig {
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("station_service_route", r -> r
-                        .path(API_PREFIX + "/stations/**")
-                        .uri(STATION_SERVICE))
+                        .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**", API_PREFIX + "/routes/**")
+                        .uri("http://localhost:4004"))
 
                 .route("ticket_service_route", r -> r
                         .path(API_PREFIX + "/ts/**")
@@ -43,12 +43,21 @@ public class GatewayConfig {
                         .uri("http://localhost:4006"))
 
                 .route("auth_service_route", r -> r
-                        .path(API_PREFIX + "/oauth2/authorize/**")
+                        .path(API_PREFIX + "/oauth2/authorization/**")
                         .filters(f -> f.rewritePath(
-                                "/api/oauth2/authorize(?<segment>/?.*)",
-                                "/api/v1/oauth2/authorize${segment}"
+                                "/api/oauth2/authorization(?<segment>/?.*)",
+                                "/api/v1/oauth2/authorization${segment}"
                         ))
                         .uri("http://localhost:4006"))
+
+                .route("notification_service_route", r -> r
+                        .path(API_PREFIX + "/notifications/**")
+                        .filters(f -> f.rewritePath(
+                                "/api/notifications(?<segment>/?.*)",
+                                "/api/v1/notifications${segment}"
+                        ))
+                        .uri("http://localhost:4008"))
+
                 .build();
     }
 

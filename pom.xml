@@ -20,6 +20,7 @@
     <module>services/user-service</module>
     <module>services/auth-service</module>
     <module>services/order-service</module>
+    <module>services/notification-service</module>
   </modules>
 
   <groupId>org.com.hcmurs</groupId>
@@ -88,6 +89,7 @@
         <module>services/station-service</module>
         <module>services/user-service</module>
         <module>services/auth-service</module>
+        <module>services/notification-service</module>
       </modules>
     </profile>
 
@@ -136,9 +138,23 @@
     </profile>
 
     <profile>
+      <id>order</id>
+      <modules>
+        <module>services/order-service</module>
+      </modules>
+    </profile>
+
+    <profile>
       <id>auth</id>
       <modules>
         <module>services/auth-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>notification</id>
+      <modules>
+        <module>services/notification-service</module>
       </modules>
     </profile>
   </profiles>

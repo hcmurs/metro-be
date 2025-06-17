@@ -2,9 +2,11 @@ package com.hieunn.user_service.controllers;
 
 import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.user_service.dtos.requests.RegisterRequest;
+import com.hieunn.user_service.dtos.requests.ResetPasswordRequest;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
+import com.hieunn.user_service.exceptions.ErrorMessage;
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.services.UserService;
 import jakarta.validation.Valid;
@@ -24,45 +26,60 @@ public class UserController {
 
     @PostMapping("/social-login")
     public ResponseEntity<ApiResponse<UserDto>> processSocialLogin(
-            @Valid @RequestBody SocialLoginRequest socialLoginRequest
-    ) {
+            @Valid @RequestBody SocialLoginRequest socialLoginRequest) {
         UserDto userDto = userService.processSocialLogin(socialLoginRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDto>> findUser(
-            @RequestHeader("Authorization") String token
-    ) {
+            @RequestHeader("Authorization") String token) {
         UserDto userDto = userService.findUser(token.substring(7));
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDto>> register(
-            @Valid @RequestBody RegisterRequest registerRequest
-    ) {
+            @Valid @RequestBody RegisterRequest registerRequest) {
         UserDto userDto = userService.register(registerRequest);
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Register successfully");
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/local-login")
-    public ResponseEntity<ApiResponse<User>> localLogin(
-            @Valid @RequestBody LocalLoginRequest localLoginRequest
-    ) {
-        User user = userService.processLocalLogin(localLoginRequest);
-        ApiResponse<User> response = ApiResponse.success(user, "Login successfully");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+    public ResponseEntity<ApiResponse<UserDto>> findByUsernameOrEmail(
+            @RequestBody LocalLoginRequest localLoginRequest) {
+        UserDto userDto = userService.processLocalLogin(localLoginRequest);
+        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Login successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/is-username-exist")
+    public ResponseEntity<ApiResponse<?>> isUsernameExist(
+            @RequestParam String username) {
+        boolean isUsernameExist = userService.isUsernameExist(username);
+        ApiResponse<?> response = isUsernameExist ?
+                ApiResponse.success(true, "Username already exists") :
+                ApiResponse.success(false, "Username does not exist");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/is-email-exist")
+    public ResponseEntity<ApiResponse<?>> isEmailExist(
+            @RequestParam String email) {
+        boolean isEmailExist = userService.isEmailExist(email);
+        ApiResponse<?> response = isEmailExist ?
+                ApiResponse.success(true, "Email already exists") :
+                ApiResponse.success(false, "Email does not exist");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(
+            @RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+        userService.resetPassword(resetPasswordRequest.getEmail(), resetPasswordRequest.getNewPassword());
+        return ResponseEntity.ok(ApiResponse.success("Reset password successfully"));
     }
 }

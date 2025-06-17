@@ -1,0 +1,180 @@
+name: Reusable Service CD Workflow
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+        description: "Name of the service (e.g., user, auth)"
+      service_path:
+        required: true
+        type: string
+        description: "Path to the service directory (e.g., services/user-service)"
+      image_name:
+        required: true
+        type: string
+        description: "Docker image name (e.g., lcaohoanq/metro-user)"
+      platforms:
+        required: false
+        type: string
+        default: "linux/amd64"
+        description: "Platforms to build for (comma-separated)"
+      use_metadata_action:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to use docker/metadata-action for advanced tagging"
+      run_security_scan:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to run security scanning after build"
+
+jobs:
+  build-service:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      tags: ${{ steps.meta.outputs.tags }}
+      labels: ${{ steps.meta.outputs.labels }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for better version calculation
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      # Extract version from pom.xml
+      - name: Get version from pom.xml
+        if: ${{ github.ref == 'refs/heads/main-deployment' }}
+        id: pom-version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout -f ${{ inputs.service_path }}/pom.xml)
+          echo "POM_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      # Set date-based version
+      - name: Set date-based version
+        if: ${{ github.ref == 'refs/heads/main-deployment' }}
+        id: date
+        run: echo "DATE=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
+
+      # Set Git SHA-based version
+      - name: Set Git SHA version
+        if: ${{ github.ref == 'refs/heads/main-deployment' }}
+        id: git-sha
+        run: echo "GIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      # Generate comprehensive metadata and tags (optional)
+      - name: Extract metadata for Docker
+        if: ${{ inputs.use_metadata_action == true && github.ref == 'refs/heads/main-deployment' }}
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.image_name }}
+          tags: |
+            # Branch-based tags
+            type=ref,event=branch
+            type=ref,event=pr
+            # Semantic versioning from Maven pom.xml
+            type=raw,value={{branch}}-{{sha}},enable={{is_default_branch}}
+            # Date-based versioning
+            type=raw,value={{date 'YYYYMMDD-HHmmss'}},enable={{is_default_branch}}
+            # Latest tag for main branch
+            type=raw,value=latest,enable={{is_default_branch}}
+            # Semantic version if tag exists
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+          labels: |
+            org.opencontainers.image.title=Metro ${{ inputs.service_name }} Service
+            org.opencontainers.image.description=${{ inputs.service_name }} Service for Metro Platform
+            org.opencontainers.image.vendor=lcaohoanq
+            org.opencontainers.image.version={{version}}
+            org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
+            org.opencontainers.image.revision={{sha}}
+            org.opencontainers.image.url=https://github.com/${{ github.repository }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+      # Set up Docker Buildx for multi-platform builds
+      - name: Set up Docker Buildx
+        if: github.ref == 'refs/heads/main-deployment'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        if: github.ref == 'refs/heads/main-deployment'
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Standard build and push (when not using metadata action)
+      - name: Build and push Docker image (standard)
+        if: ${{ inputs.use_metadata_action == false && github.ref == 'refs/heads/main-deployment' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./${{ inputs.service_path }}/Dockerfile
+          platforms: ${{ inputs.platforms }}
+          push: true
+          tags: |
+            ${{ inputs.image_name }}:latest
+            ${{ inputs.image_name }}:${{ env.POM_VERSION }}
+            ${{ inputs.image_name }}:${{ env.GIT_SHORT_SHA }}
+            ${{ inputs.image_name }}:${{ env.DATE }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Enhanced build and push (when using metadata action)
+      - name: Build and push Docker image (with metadata)
+        if: ${{ inputs.use_metadata_action == true && github.ref == 'refs/heads/main-deployment' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./${{ inputs.service_path }}/Dockerfile
+          platforms: ${{ inputs.platforms }}
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ inputs.image_name }}:maven-${{ env.POM_VERSION }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+
+  # Security scanning job (optional)
+  security-scan:
+    runs-on: ubuntu-latest
+    needs: build-service
+    if: ${{ inputs.run_security_scan == true && github.ref == 'refs/heads/main-deployment' }}
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ inputs.image_name }}:latest
+          format: "sarif"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: "trivy-results.sarif"

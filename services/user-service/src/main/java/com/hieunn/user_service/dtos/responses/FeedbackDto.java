@@ -1,5 +1,6 @@
 package com.hieunn.user_service.dtos.responses;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class FeedbackDto {
     String image;
     String reply;
     Long userId;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdAt;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime updatedAt;
 }

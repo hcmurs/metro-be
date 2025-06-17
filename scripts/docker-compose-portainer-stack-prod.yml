@@ -1,0 +1,226 @@
+# Require to change host name healthcheck to container name when using on portainer
+
+networks:
+  metro-be:
+    driver: bridge
+
+services:
+  metro_postgresql:
+    container_name: metro_pg_sql
+    image: docker.io/library/postgres:17.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: metro_db
+      PGDATA: /data/postgres
+    volumes:
+      - /DATA/AppData/metro_application/postgres/data:/data/postgres
+      - ./postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "${POSTGRES_USER:-postgres}"']
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5433:5432"
+    networks:
+      - metro-be
+    restart: unless-stopped
+
+  redis:
+    image: docker.io/redis:7.2.3
+    container_name: redis-container
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /DATA/AppData/metro_application/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - metro-be
+
+  metro_zipkin:
+    container_name: metro_zipkin
+    image: openzipkin/zipkin:latest
+    hostname: zipkin
+    ports:
+      - "9412:9411"
+    networks:
+      - metro-be
+    restart: unless-stopped
+    # Resource limits for Zipkin
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    environment:
+      - STORAGE_TYPE=mem
+      - JAVA_OPTS=-Xms256m -Xmx512m
+
+  metro-eureka:
+    container_name: metro-eureka-service
+    hostname: metro-eureka-service
+    image: lcaohoanq/metro-eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://metro-eureka-service:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - EUREKA_INSTANCE_HOSTNAME=metro-eureka-service  # Override hostname via env var
+    ports:
+      - "8762:8761"
+    restart: always
+    networks:
+      - metro-be
+
+  metro-gateway:
+    container_name: metro-gateway-service
+    hostname: metro-gateway-service
+    image: lcaohoanq/metro-gateway
+    ports:
+      - "4003:4003"
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://metro-gateway-service:4003/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-auth:
+    container_name: metro-auth-service
+    hostname: metro-auth-service
+    image: lcaohoanq/metro-auth
+    ports:
+      - "4006:4006"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-user:
+    container_name: metro-user-service
+    hostname: metro-user-service
+    image: lcaohoanq/metro-user
+    ports:
+      - "4007:4007"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-notification:
+    container_name: metro-notification-service
+    hostname: metro-notification-service
+    image: lcaohoanq/metro-notification
+    ports:
+      - "4009:4009"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro_order:
+    container_name: metro-order-service
+    hostname: metro-order-service
+    image: lcaohoanq/metro-order
+    ports:
+      - "4008:4008"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-ticket:
+    container_name: metro-ticket-service
+    hostname: metro-ticket-service
+    image: lcaohoanq/metro-ticket
+    ports:
+      - "4005:4005"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be
+
+  metro-station:
+    container_name: metro-station-service
+    hostname: metro-station-service
+    image: lcaohoanq/metro-station
+    ports:
+      - "4004:4004"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=zimaos
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+    depends_on:
+      metro-eureka:
+        condition: service_healthy
+      metro-gateway:
+        condition: service_healthy
+      metro_postgresql:
+        condition: service_healthy
+    networks:
+      - metro-be

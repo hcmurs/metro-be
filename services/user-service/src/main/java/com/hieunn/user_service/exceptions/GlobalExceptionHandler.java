@@ -61,9 +61,13 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ApiResponse.error(
-                        400,
-                        message)
-                );
+                .body(ApiResponse.error(400, message));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.error(500, e.getMessage()));
     }
 }

@@ -4,8 +4,6 @@ import com.hieunn.auth_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.auth_service.dtos.responses.ApiResponse;
 import com.hieunn.auth_service.dtos.responses.UserDto;
 import com.hieunn.auth_service.dtos.requests.RegisterRequest;
-import com.hieunn.auth_service.exceptions.CustomException;
-import com.hieunn.auth_service.exceptions.ErrorMessage;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
 import com.hieunn.auth_service.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
@@ -28,7 +26,6 @@ public class AuthServiceImpl implements AuthService {
     JwtUtil jwtUtil;
     RedisTemplate<String, String> redisTemplate;
     UserServiceClient userServiceClient;
-    PasswordEncoder passwordEncoder;
     HttpServletResponse response;
 
     @Override
@@ -66,24 +63,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ApiResponse<UserDto> register(RegisterRequest registerRequest) {
-        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        return userServiceClient.register(registerRequest);
-    }
-
-    @Override
     public ApiResponse<UserDto> processLocalLogin(LocalLoginRequest localLoginRequest) {
         ApiResponse<UserDto> apiResponse = userServiceClient.processLocalLogin(localLoginRequest);
 
         if (apiResponse.getData() != null) {
             UserDto userDto = apiResponse.getData();
-            if (!passwordEncoder.matches(localLoginRequest.getPassword(), userDto.getPassword())) {
-                throw new CustomException(
-                        ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getStatus(),
-                        ErrorMessage.INCORRECT_USERNAME_OR_PASSWORD.getMessage()
-                );
-            }
-            userDto.setPassword(null);
 
             String token = jwtUtil.generateToken(userDto);
 

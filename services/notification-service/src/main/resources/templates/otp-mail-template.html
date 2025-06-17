@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email OTP</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+<div style="max-width: 600px; margin: auto; background-color: white; border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <h2 style="color: #4285f4;">Email OTP</h2>
+    <hr style="margin: 20px 0;">
+    <p>Dear User,</p>
+    <p>Your One-Time Password (OTP) is:</p>
+    <h1 style="color: #34A853; font-size: 48px;" th:text="${otp}">123456</h1>
+    <p>Please use this OTP to complete your register process. Do not share this code with anyone.</p>
+    <p><strong>Note:</strong> This OTP is valid for <strong>5 minutes</strong> only.</p>
+    <br>
+    <p>Thank you for using our website</p>
+    <p style="font-size: 12px; color: #888;">&copy; <a href="https://www.hcmrus.com"
+                                                       style="color: #888; text-decoration: none;">www.hcmrus.com</a>. All
+        rights reserved.</p>
+</div>
+</body>
+</html>
