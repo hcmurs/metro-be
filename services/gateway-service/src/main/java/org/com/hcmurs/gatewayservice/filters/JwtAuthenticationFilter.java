@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/routes/**",
             //ticket
             "/api/ts/**",
-            "/user/orders/**"
+            "/api/user/orders/**"
 
     );
 

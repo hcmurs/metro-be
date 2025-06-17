@@ -5,11 +5,11 @@ spring:
   cloud:
     discovery:
       enabled: true
+      eureka:
+        client:
+          serviceUrl:
+            defaultZone: http://eureka:8761/eureka/
 
   profiles:
     active: dev
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
