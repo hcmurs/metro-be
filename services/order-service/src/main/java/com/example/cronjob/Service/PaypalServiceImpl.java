@@ -1,11 +1,16 @@
 package com.example.cronjob.Service;
 
+import com.example.cronjob.Pojos.Orders;
+import com.example.cronjob.Repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +18,11 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class PaypalServiceImpl {
+    @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
+    private OrdersRepository ordersRepository;
 
     @Value("${paypal.client-id}")
     private String clientId;
@@ -50,8 +60,13 @@ public class PaypalServiceImpl {
         return response.getBody().get("access_token").toString();
     }
 
-    public String createOrder(Double amount, String currency, String description) {
+    public String createOrder(Long orderId, String currency, String description) {
+        Orders order = ordersRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new IllegalArgumentException("Order not found with ID: " + orderId);
+        }
         String accessToken = getAccessToken();
+        BigDecimal amount = order.getAmount().divide(new BigDecimal(25000),2, RoundingMode.HALF_UP);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
@@ -64,7 +79,8 @@ public class PaypalServiceImpl {
                                 "currency_code", currency,
                                 "value", amount.toString()
                         ),
-                        "description", description
+                        "description", description,
+                        "custom_id", Long.toString(orderId)
                 )),
                 "application_context", Map.of(
                         "return_url", returnUrl,
