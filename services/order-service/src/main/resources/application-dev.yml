@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/order-db
     username: postgres
-    password: 2707
+    password: 12345
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,7 +13,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 4008
+  port: 4009
+
+service:
+  users:
+    url: http://localhost:${service.users.port}/api/ts/tickets
+    port: 4005
 
 springdoc:
   swagger-ui:
@@ -22,6 +27,15 @@ springdoc:
     tags-sorter: alpha
   api-docs:
     path: /v3/api-docs
+
+security:
+  api:
+
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY
+  jwt:
+    secret-key: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
+    expiration: 3600000 # 1 hour in milliseconds
 
 paypal:
   client-id: AZgVDnqEVFg0tr0ya9PyVBdpprnuVHHPSXVWP5T3lws_kw5gBeTnY21zElSfw-WhttcB78Gaa3Sm6JWS

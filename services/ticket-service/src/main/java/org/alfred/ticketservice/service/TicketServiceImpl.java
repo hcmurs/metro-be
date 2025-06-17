@@ -6,7 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.alfred.ticketservice.config.TicketProcessingException;
+import org.alfred.ticketservice.exception.TicketProcessingException;
 import org.alfred.ticketservice.dto.ticket.TicketQrData;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;

@@ -3,6 +3,7 @@ package com.example.cronjob.Controller;
 import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.Service.PaypalServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -15,6 +16,7 @@ public class PaypalController {
     private final PaypalServiceImpl paypalService;
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ApiResponse<?> createPayment(@RequestParam Long orderId) {
         String approvalLink = paypalService.createOrder(
                 orderId,
@@ -30,6 +32,7 @@ public class PaypalController {
     }
 
     @GetMapping("/success")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ApiResponse<?> paymentSuccess(@RequestParam("token") String token) {
 
         return ApiResponse.builder()
@@ -40,6 +43,7 @@ public class PaypalController {
     }
 
     @GetMapping("/cancel")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ApiResponse<?> paymentCancel() {
         return ApiResponse.builder()
                 .status(400)

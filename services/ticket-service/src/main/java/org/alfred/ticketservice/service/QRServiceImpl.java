@@ -10,7 +10,7 @@ package org.alfred.ticketservice.service;
         import com.google.zxing.LuminanceSource;
         import com.google.zxing.Result;
         import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-        import org.alfred.ticketservice.config.QrProcessingException;
+        import org.alfred.ticketservice.exception.QrProcessingException;
         import org.springframework.stereotype.Service;
 
         import javax.imageio.ImageIO;

@@ -1,5 +1,6 @@
 package com.example.cronjob.Service;
 
+import com.example.cronjob.Config.JwtUtil;
 import com.example.cronjob.DTO.Request.OrderTicketDaysRequest;
 import com.example.cronjob.DTO.Request.OrderTicketSingleRequest;
 import com.example.cronjob.DTO.Response.ApiResponse;
@@ -19,6 +20,7 @@ import com.example.cronjob.Repository.TransactionsRepository;
 import com.example.cronjob.client.TicketClient;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private OrdersRepository ordersRepository;
@@ -47,9 +50,12 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private TicketClient ticketClient;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Override
     @Transactional
-    public ApiResponse<OrderResponse> generateOrderTicketSingle(OrderTicketSingleRequest request) {
+    public ApiResponse<OrderResponse> generateOrderTicketSingle(OrderTicketSingleRequest request,String token) {
         // Get ticket using fareMatrixId
         ApiResponse<TicketResponse> ticketRes = ticketClient.createTicketFare(request.getFareMatrixId());
         TicketResponse ticketResponse = ticketRes.getData();
@@ -57,11 +63,11 @@ public class OrdersServiceImpl implements OrdersService {
             throw new EntityNotFoundException("Create ticket failed for Fare Matrix ID: " + request.getFareMatrixId());
         }
 
-        return generateOrder(request.getPaymentMethodId(), ticketResponse);
+        return generateOrder(request.getPaymentMethodId(), ticketResponse,token);
     }
 
     @Override
-    public ApiResponse<OrderResponse> generateOrderTicketDays(OrderTicketDaysRequest request) {
+    public ApiResponse<OrderResponse> generateOrderTicketDays(OrderTicketDaysRequest request,String token) {
         // Get ticket using ticketId
         ApiResponse<TicketResponse> ticketRes = ticketClient.createTicketType(request.getTicketId());
         TicketResponse ticketResponse = ticketRes.getData();
@@ -69,20 +75,21 @@ public class OrdersServiceImpl implements OrdersService {
             throw new EntityNotFoundException("Create ticket failed for Ticket Type ID: " + request.getTicketId());
         }
 
-        return generateOrder(request.getPaymentMethodId(), ticketResponse);
+        return generateOrder(request.getPaymentMethodId(), ticketResponse,token);
     }
 
-    private ApiResponse<OrderResponse> generateOrder(Long paymentMethodId, TicketResponse ticketResponse) {
+    private ApiResponse<OrderResponse> generateOrder(Long paymentMethodId, TicketResponse ticketResponse, String token) {
         // Validate payment method
         PaymentMethod paymentMethod = paymentMethodService.getPaymentMethodById(paymentMethodId);
         if (paymentMethod == null) {
             throw new EntityNotFoundException("Payment method not found with ID: " + paymentMethodId);
         }
+        Long userId = jwtUtil.extractUserId(token);
 
         // Create order
         Orders orders = Orders.builder()
                 // hiện tại t thaasy chưa có jwt token nên userId là măặc định mốt token thì sẽ lấy từ jwt
-                .userId(1L)
+                .userId(userId)
                 .ticketId(ticketResponse.id())
                 .status(OrderStatus.PENDING)
                 .amount(BigDecimal.valueOf(ticketResponse.actualPrice()))
@@ -212,10 +219,9 @@ public class OrdersServiceImpl implements OrdersService {
 
 
     @Override
-    public ApiResponse<List<OrderResponse>> getOrderByUserId(Long userId) {
-        if (!ordersRepository.existsByUserId(userId)) {
-            throw new EntityNotFoundException("No orders found for user ID: " + userId);
-        }
+    public ApiResponse<List<OrderResponse>> getOrderByUserId(String token) {
+
+        Long userId = jwtUtil.extractUserId(token);
         return ApiResponse.<List<OrderResponse>>builder()
                 .status(200)
                 .message("Order retrieved successfully")

@@ -7,6 +7,7 @@ import com.example.cronjob.Service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -28,6 +29,7 @@ public class VNPayController {
     private final VNPayConfig vnPayConfig;
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ApiResponse<Map<String, Object>> createPayment(
             HttpServletRequest req,
             @RequestParam(value = "orderInfo", defaultValue = "") Long orderId
@@ -37,6 +39,7 @@ public class VNPayController {
 
     // Callback method cũng cần sửa để đảm bảo consistency
     @GetMapping("/callback")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ApiResponse<Map<String, Object>> paymentCallback(HttpServletRequest req) {
         return vnPayService.paymentCallback(req);
     }
