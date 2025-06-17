@@ -1,7 +1,8 @@
 package com.hieunn.auth_service.configs;
 
-import com.hieunn.auth_service.handlers.AuthenticationSuccessHandlerImpl;
-import com.hieunn.auth_service.services.OAuth2UserServiceImpl;
+import com.hieunn.auth_service.handlers.CustomOAuth2FailureHandler;
+import com.hieunn.auth_service.handlers.CustomOAuth2SuccessHandler;
+import com.hieunn.auth_service.services.CustomOAuth2UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,9 +19,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    OAuth2UserServiceImpl OAuth2UserServiceImpl;
+    CustomOAuth2UserService CustomOAuth2UserService;
 
-    AuthenticationSuccessHandlerImpl oAuth2LoginSuccessHandler;
+    CustomOAuth2SuccessHandler oAuth2LoginSuccessHandler;
+
+    CustomOAuth2FailureHandler oAuth2FailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,9 +47,10 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(OAuth2UserServiceImpl)
+                                .userService(CustomOAuth2UserService)
                         )
                         .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2FailureHandler)
                 );
         return http.build();
     }

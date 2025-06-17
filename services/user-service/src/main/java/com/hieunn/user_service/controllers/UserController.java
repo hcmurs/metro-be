@@ -61,10 +61,8 @@ public class UserController {
             @RequestParam String username) {
         boolean isUsernameExist = userService.isUsernameExist(username);
         ApiResponse<?> response = isUsernameExist ?
-                ApiResponse.success(true) :
-                ApiResponse.error(
-                        ErrorMessage.USERNAME_ALREADY_EXISTS.getStatus(),
-                        ErrorMessage.USERNAME_ALREADY_EXISTS.getMessage());
+                ApiResponse.success(true, "Username already exists") :
+                ApiResponse.success(false, "Username does not exist");
         return ResponseEntity.ok(response);
     }
 
@@ -73,10 +71,8 @@ public class UserController {
             @RequestParam String email) {
         boolean isEmailExist = userService.isEmailExist(email);
         ApiResponse<?> response = isEmailExist ?
-                ApiResponse.success(true) :
-                ApiResponse.error(
-                        ErrorMessage.EMAIL_ALREADY_EXISTS.getStatus(),
-                        ErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
+                ApiResponse.success(true, "Email already exists") :
+                ApiResponse.success(false, "Email does not exist");
         return ResponseEntity.ok(response);
     }
 

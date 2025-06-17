@@ -6,7 +6,7 @@ import com.hieunn.auth_service.exceptions.CustomException;
 import com.hieunn.auth_service.exceptions.ErrorMessage;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
 import com.hieunn.auth_service.models.AuthProvider;
-import com.hieunn.auth_service.models.OAuth2UserImpl;
+import com.hieunn.auth_service.models.CustomOAuth2User;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +22,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     UserServiceClient userServiceClient;
 
@@ -52,17 +52,28 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
             name = (String) attributes.get("name");
             pictureUrl = (String) attributes.get("picture");
 
+        } else if (AuthProvider.FACEBOOK.name().equalsIgnoreCase(registrationId)) {
+            authProvider = AuthProvider.FACEBOOK;
+            providerId = (String) attributes.get("id");
+            email = (String) attributes.get("email");
+            name = (String) attributes.get("name");
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> pictureObj = (Map<String, Object>) attributes.get("picture");
+            @SuppressWarnings("unchecked")
+            Map<String, Object> dataObj = (Map<String, Object>) pictureObj.get("data");
+            pictureUrl = (String) dataObj.get("url");
+
         } else {
             throw new CustomException(
                     ErrorMessage.UNSUPPORTED_AUTH_PROVIDER.getStatus(),
-                    ErrorMessage.UNSUPPORTED_AUTH_PROVIDER.getMessage() + registrationId
-            );
+                    ErrorMessage.UNSUPPORTED_AUTH_PROVIDER.getMessage() + registrationId);
         }
 
         SocialLoginUserRequest socialLoginRequest = new SocialLoginUserRequest(email, name, providerId, pictureUrl, authProvider);
         UserDto userDto = userServiceClient.processSocialLogin(socialLoginRequest).getData();
 
-        return OAuth2UserImpl.builder()
+        return CustomOAuth2User.builder()
                 .userDto(userDto)
                 .attributes(attributes)
                 .build();
