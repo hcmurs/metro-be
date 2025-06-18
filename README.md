@@ -137,7 +137,7 @@ Copyright © 2025 HCMURS. All rights reserved.
 
 ## 📞 Contact
 
-If you have any questions, please contact via [GitHub Issues](https://github.com/hcmurs/metro-be/issues).
+If you have any questions, please contact via https://www.linkedin.com/in/vo-quang-minh-335792343
 
 ---
 
