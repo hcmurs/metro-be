@@ -14,17 +14,22 @@ public class GatewayConfig {
     private final String API_PREFIX = "/api";
     private final String STATION_SERVICE = "lb://station-service";
     private final String TICKET_SERVICE = "lb://ticket-service";
+    private final String ORDER_SERVICE = "lb://order-service";
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("station_service_route", r -> r
                         .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**", API_PREFIX + "/routes/**")
-                        .uri("http://localhost:4004"))
+                        .uri(STATION_SERVICE))
 
                 .route("ticket_service_route", r -> r
                         .path(API_PREFIX + "/ts/**")
                         .uri("http://localhost:4005"))
+
+                .route("order_service_route", r -> r
+                        .path(API_PREFIX + "/user/orders/**")
+                        .uri(ORDER_SERVICE))
 
                 .route("user_service_route", r -> r
                         .path(API_PREFIX + "/users/**")
