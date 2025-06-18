@@ -1,4 +1,4 @@
-package org.alfred.ticketservice.config;
+package org.alfred.ticketservice.exception;
 
 public class TicketProcessingException extends RuntimeException {
     public TicketProcessingException(String message) {

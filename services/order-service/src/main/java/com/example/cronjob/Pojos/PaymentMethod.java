@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "payment_methods")
+@Builder
 public class PaymentMethod {
 
     @Id

@@ -20,30 +20,3 @@ spring:
 
 
 
-#app:
-#  ticket:
-#    secret-key: test-secret-Km8N9pQ2rS5tU7wX0yZ3bC6dF8gH1jK4mN7pQ0rS3tU6
-#    qr-code-size: 300
-#
-#spring:
-#  application:
-#    name: ticket-service
-#  cloud:
-#    discovery:
-#      enabled: true
-#  profiles:
-#    active: dev
-#
-## Eureka configuration should be at the root level, not nested under spring.cloud.discovery
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://eureka:8761/eureka/
-#    register-with-eureka: true
-#    fetch-registry: true
-#  instance:
-#    prefer-ip-address: true
-#
-#server:
-#  port: 4005
-

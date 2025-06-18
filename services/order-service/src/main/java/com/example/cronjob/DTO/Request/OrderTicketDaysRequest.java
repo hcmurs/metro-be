@@ -8,7 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderTicketDaysRequest {
-    private Long userId;
     private TicketRequest.TicketType ticketId;
     private Long paymentMethodId;
 }

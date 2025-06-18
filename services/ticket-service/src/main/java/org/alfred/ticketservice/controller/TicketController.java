@@ -13,6 +13,7 @@ import org.alfred.ticketservice.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class TicketController {
     TicketService ticketService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> getTicketById(@PathVariable Long id) {
         log.info("Request to get ticket by id: {}", id);
         TicketResponse ticket = ticketService.getTicketById(id);
@@ -36,6 +38,7 @@ public class TicketController {
     }
 
     @PostMapping("/ticket-type")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> createTicketType(@Valid @RequestBody TicketRequest.TicketType request) {
         log.info("Request to create ticket for type ID: {}",
                 request.id());
@@ -45,6 +48,7 @@ public class TicketController {
     }
 
     @PostMapping("/fare-matrix")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> createTicketFare(@Valid @RequestBody TicketRequest.FareMatrix request) {
         log.info("Request to create ticket for type ID: {}",
                 request.id());
@@ -54,6 +58,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> updateTicketStatus(
             @PathVariable Long id,
             @RequestParam TicketStatus status) {
@@ -63,6 +68,7 @@ public class TicketController {
     }
 
     @GetMapping("/code/{ticketCode}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> getTicketByCode(
             @PathVariable @NotBlank String ticketCode) {
         log.info("Request to get ticket by code: {}", ticketCode);
@@ -79,6 +85,7 @@ public class TicketController {
 //    }
 
     @GetMapping("/fare-matrix/{fareMatrixId}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<List<TicketResponse>>> getTicketsByFareMatrix(
             @PathVariable Long fareMatrixId) {
         log.info("Request to get tickets by fare matrix ID: {}", fareMatrixId);
@@ -87,6 +94,7 @@ public class TicketController {
     }
 
     @GetMapping("/ticket-type/{ticketTypeId}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<List<TicketResponse>>> getTicketsByTicketType(
             @PathVariable Long ticketTypeId) {
         log.info("Request to get tickets by ticket type ID: {}", ticketTypeId);
@@ -95,6 +103,7 @@ public class TicketController {
     }
 
     @PostMapping("/scan/entry")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> scanEntryTicket(
             @Valid @RequestBody TicketScanRequest request) {
         log.info("Request to scan entry ticket at station ID: {}", request.stationId());
@@ -103,6 +112,7 @@ public class TicketController {
     }
 
     @PostMapping("/scan/exit")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> scanExitTicket(
             @Valid @RequestBody TicketScanRequest request) {
         log.info("Request to scan exit ticket at station ID: {}", request.stationId());
@@ -111,6 +121,7 @@ public class TicketController {
     }
 
     @PostMapping("/{id}/cancel")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<TicketResponse>> cancelTicket(@PathVariable Long id) {
         log.info("Request to cancel ticket with ID: {}", id);
         TicketResponse cancelledTicket = ticketService.cancel(id);
@@ -118,6 +129,7 @@ public class TicketController {
     }
 
     @GetMapping("/generate-qr")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<byte[]>> generateQrCodeData(@RequestParam @NotBlank String ticketCode) {
         log.info("Request to generate QR code data for: {}", ticketCode);
         byte[] qrCodeData = ticketService.generateQrCodeData(ticketCode);

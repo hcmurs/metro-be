@@ -9,6 +9,7 @@ import org.alfred.ticketservice.dto.ticket_type.TicketTypeResponse;
 import org.alfred.ticketservice.service.TicketTypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class TicketTypeController {
     private final TicketTypeService ticketTypeService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> getTicketTypeById(@PathVariable Long id) {
         log.info("Request to get ticket type by id: {}", id);
         TicketTypeResponse ticketType = ticketTypeService.getTicketTypeById(id);
@@ -31,6 +33,7 @@ public class TicketTypeController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<List<TicketTypeResponse>>> getAllTicketTypes() {
         log.info("Request to get all ticket types");
         List<TicketTypeResponse> ticketTypes = ticketTypeService.getAll();
@@ -38,6 +41,7 @@ public class TicketTypeController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> createTicketType(@Valid @RequestBody TicketTypeRequest request) {
         log.info("Request to create ticket type with name: {}", request.name());
         TicketTypeResponse createdTicketType = ticketTypeService.createTicketType(request);
@@ -48,6 +52,7 @@ public class TicketTypeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> updateTicketType(@Valid @RequestBody TicketTypeRequest request) {
         log.info("Request to update ticket type with ID: {}", request.ticketTypeId());
         TicketTypeResponse updatedTicketType = ticketTypeService.updateTicketType(request);
@@ -55,6 +60,7 @@ public class TicketTypeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteTicketType(@PathVariable Long id) {
         log.info("Request to delete (deactivate) ticket type with ID: {}", id);
         ticketTypeService.deleteTicketType(id);

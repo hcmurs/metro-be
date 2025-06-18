@@ -8,6 +8,7 @@ import org.alfred.ticketservice.dto.fare_matrix.*;
 import org.alfred.ticketservice.service.FareMatrixService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class FareMatrixController {
     private final FareMatrixService fareMatrixService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<FareMatrixResponse>> getFareMatrixById(@PathVariable Long id) {
         log.info("Request to get fare matrix by id: {}", id);
         FareMatrixResponse fareMatrix = fareMatrixService.getFareMatrixById(id);
@@ -30,6 +32,7 @@ public class FareMatrixController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<List<FareMatrixResponse>>> getAllFareMatrices() {
         log.info("Request to get all fare matrices");
         List<FareMatrixResponse> fareMatrices = fareMatrixService.getAllFareMatrices();
@@ -37,6 +40,7 @@ public class FareMatrixController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<FareMatrixResponse>> createFareMatrix(@Valid @RequestBody FareMatrixRequest request) {
         log.info("Request to create fare matrix between stations: {} and {}",
                 request.startStationId(), request.endStationId());
@@ -48,6 +52,7 @@ public class FareMatrixController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<FareMatrixResponse>> updateFareMatrix(@Valid @RequestBody FareMatrixUpdateRequest request) {
         log.info("Request to update fare matrix with ID: {}", request.fareMatrixId());
         FareMatrixResponse updatedFareMatrix = fareMatrixService.updateFareMatrix(request);
@@ -55,6 +60,7 @@ public class FareMatrixController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<Void>> deleteFareMatrix(@PathVariable Long id) {
         log.info("Request to delete (deactivate) fare matrix with ID: {}", id);
         fareMatrixService.deleteFareMatrix(id);
@@ -62,6 +68,7 @@ public class FareMatrixController {
     }
 
     @GetMapping("/by-station/{stationId}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<List<FareMatrixResponse>>> getFareMatricesByStartStation(
             @Valid @PathVariable Long stationId) {
         log.info("Request to get fare matrices by start station ID: {}", stationId);
@@ -70,6 +77,7 @@ public class FareMatrixController {
     }
 
     @GetMapping("/{fareMatrixId}/validate-station/{stationId}")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<Boolean>> validateStationInFareMatrix(
             @PathVariable Long fareMatrixId,
             @PathVariable Long stationId) {

@@ -25,7 +25,7 @@ public class GatewayConfig {
 
                 .route("ticket_service_route", r -> r
                         .path(API_PREFIX + "/ts/**")
-                        .uri(TICKET_SERVICE))
+                        .uri("http://localhost:4005"))
 
                 .route("order_service_route", r -> r
                         .path(API_PREFIX + "/user/orders/**")
@@ -62,7 +62,9 @@ public class GatewayConfig {
                                 "/api/v1/notifications${segment}"
                         ))
                         .uri("http://localhost:4008"))
-
+                .route("order_service_route", r -> r
+                        .path(API_PREFIX + "/orders/**", API_PREFIX + "/payment/**")
+                        .uri("http://localhost:4009"))
                 .build();
     }
 
