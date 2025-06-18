@@ -2,6 +2,7 @@ package com.example.cronjob.Service;
 
 import com.example.cronjob.Config.VNPayConfig;
 import com.example.cronjob.DTO.Response.ApiResponse;
+import com.example.cronjob.Enum.OrderStatus;
 import com.example.cronjob.Pojos.Orders;
 import com.example.cronjob.Repository.OrdersRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,6 +28,13 @@ public class VNPayServiceImpl implements VNPayService {
         Orders order = ordersRepository.findByOrderId(orderId);
         if (order == null) {
             throw new EntityNotFoundException("Order not found with ID: " + orderId);
+        }
+        if(order.getStatus()!= OrderStatus.PENDING) {
+            return ApiResponse.<Map<String, Object>>builder()
+                    .status(400)
+                    .message("Order is not in pending status")
+                    .data(null)
+                    .build();
         }
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
         String vnp_IpAddr = VNPayConfig.getRealIpAddress(req);

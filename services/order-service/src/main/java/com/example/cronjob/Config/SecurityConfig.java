@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/api/v1/accounts/login","/api/v1/accounts/register").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**").permitAll()
+                        .requestMatchers("/api/payment/callback/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Handle exceptions for unauthorized access and access denied filters
