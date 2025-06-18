@@ -34,8 +34,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/v1/accounts/login","/api/v1/accounts/register").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**").permitAll()
+                        .requestMatchers("/api/ts/fare-matrices/{id}","/api/ts/fare-matrices","/api/ts/fare-matrices/by-station/{stationId}").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**")
+                                .permitAll()
+                        .requestMatchers("/api/ts/ticket-types/{id}","/api/ts/ticket-types").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Handle exceptions for unauthorized access and access denied filters

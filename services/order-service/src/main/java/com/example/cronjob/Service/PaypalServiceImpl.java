@@ -1,5 +1,6 @@
 package com.example.cronjob.Service;
 
+import com.example.cronjob.Enum.OrderStatus;
 import com.example.cronjob.Pojos.Orders;
 import com.example.cronjob.Repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,9 @@ public class PaypalServiceImpl {
         if (order == null) {
             throw new IllegalArgumentException("Order not found with ID: " + orderId);
         }
+        if( order.getStatus() != OrderStatus.PENDING) {
+            throw new IllegalArgumentException("Order is not in pending status");
+        }
         String accessToken = getAccessToken();
         BigDecimal amount = order.getAmount().divide(new BigDecimal(25000),2, RoundingMode.HALF_UP);
 
@@ -100,10 +104,97 @@ public class PaypalServiceImpl {
         List<Map<String, String>> links = (List<Map<String, String>>) response.getBody().get("links");
         for (Map<String, String> link : links) {
             if ("approve".equals(link.get("rel"))) {
-                return link.get("href");
+                String paypalUrl = link.get("href");
+                return extractTokenAndRedirectToCorrectPort(paypalUrl);
             }
         }
 
+
         throw new RuntimeException("Không lấy được approval link từ PayPal.");
     }
+    public Long getCustomOrderIdFromPayPalOrderId(String paypalOrderId) {
+        try {
+            String accessToken = getAccessToken();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(accessToken);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<String> request = new HttpEntity<>(headers);
+
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    paypalBaseUrl + "/v2/checkout/orders/" + paypalOrderId,
+                    HttpMethod.GET,
+                    request,
+                    Map.class
+            );
+
+            // Lấy custom_id từ purchase_units
+            List<Map<String, Object>> purchaseUnits = (List<Map<String, Object>>) response.getBody().get("purchase_units");
+            if (purchaseUnits != null && !purchaseUnits.isEmpty()) {
+                Object customId = purchaseUnits.get(0).get("custom_id");
+                if (customId != null) {
+                    return Long.parseLong(customId.toString());
+                }
+            }
+
+            throw new RuntimeException("Không tìm thấy custom OrderID trong PayPal response");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi lấy custom OrderID: " + e.getMessage(), e);
+        }
+    }
+
+    public void updateOrderSuccess(Long orderId) {
+        Orders order = ordersRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new IllegalArgumentException("Order not found with ID: " + orderId);
+        }
+
+        ordersService.updateTransactionSuccess(orderId);
+    }
+    public void updateOrderFail(Long orderId) {
+        Orders order = ordersRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new IllegalArgumentException("Order not found with ID: " + orderId);
+        }
+
+        ordersService.updateTransactionFailed(orderId);
+    }
+
+    /**
+     * Extract order ID from PayPal approval URL and create redirect URL to port 4003
+     * @param paypalApprovalUrl The URL returned from PayPal
+     * @return Redirect URL with proper port
+     */
+    public String extractTokenAndRedirectToCorrectPort(String paypalApprovalUrl) {
+        try {
+            // Extract token from URL
+            String token = null;
+            if (paypalApprovalUrl.contains("token=")) {
+                String[] urlParts = paypalApprovalUrl.split("\\?");
+                if (urlParts.length > 1) {
+                    String queryString = urlParts[1];
+                    String[] params = queryString.split("&");
+                    for (String param : params) {
+                        if (param.startsWith("token=")) {
+                            token = param.substring("token=".length());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (token == null) {
+                throw new RuntimeException("Could not extract token from PayPal URL");
+            }
+
+            // Create new redirect URL with port 4003
+            return "http://localhost:4003/payment/complete?token=" + token;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract token: " + e.getMessage());
+        }
+    }
+
+
 }

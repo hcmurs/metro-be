@@ -1,6 +1,7 @@
 package org.alfred.ticketservice.dto.ticket_type;
 
 import lombok.Builder;
+import org.alfred.ticketservice.model.enums.Duration;
 
 import java.time.LocalDateTime;
 @Builder
@@ -9,7 +10,7 @@ public record TicketTypeResponse(
         String name,
         String description,
         float price,
-        int validityDuration,
+        Duration validityDuration,
         boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt

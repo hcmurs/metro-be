@@ -3,6 +3,7 @@ package org.alfred.ticketservice.model;
     import jakarta.persistence.*;
     import jakarta.validation.constraints.*;
     import lombok.*;
+    import org.alfred.ticketservice.model.enums.Duration;
 
     import java.math.BigDecimal;
     import java.time.LocalDateTime;
@@ -34,9 +35,9 @@ package org.alfred.ticketservice.model;
         private String description;
 
         @NotNull(message = "Validity duration is required")
-        @Min(value = 0, message = "Validity duration must be at least 1 minute")
         @Column(name = "validity_duration", nullable = false,unique = true)
-        private int validityDuration; // in minutes
+        @Enumerated(EnumType.STRING)
+        private Duration validityDuration; // in minutes
 
         @Column(name = "is_active", nullable = false)
         private boolean isActive = true;

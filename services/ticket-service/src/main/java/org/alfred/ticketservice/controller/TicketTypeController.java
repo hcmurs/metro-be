@@ -25,7 +25,6 @@ public class TicketTypeController {
     private final TicketTypeService ticketTypeService;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> getTicketTypeById(@PathVariable Long id) {
         log.info("Request to get ticket type by id: {}", id);
         TicketTypeResponse ticketType = ticketTypeService.getTicketTypeById(id);
@@ -33,14 +32,13 @@ public class TicketTypeController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<List<TicketTypeResponse>>> getAllTicketTypes() {
         log.info("Request to get all ticket types");
         List<TicketTypeResponse> ticketTypes = ticketTypeService.getAll();
         return ResponseEntity.ok(ApiResponse.success(ticketTypes, "Ticket types retrieved successfully"));
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> createTicketType(@Valid @RequestBody TicketTypeRequest request) {
         log.info("Request to create ticket type with name: {}", request.name());
@@ -51,7 +49,7 @@ public class TicketTypeController {
         );
     }
 
-    @PutMapping
+    @PutMapping("/update")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> updateTicketType(@Valid @RequestBody TicketTypeRequest request) {
         log.info("Request to update ticket type with ID: {}", request.ticketTypeId());
@@ -59,7 +57,7 @@ public class TicketTypeController {
         return ResponseEntity.ok(ApiResponse.success(updatedTicketType, "Ticket type updated successfully"));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteTicketType(@PathVariable Long id) {
         log.info("Request to delete (deactivate) ticket type with ID: {}", id);

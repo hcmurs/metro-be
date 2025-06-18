@@ -15,6 +15,7 @@ import org.alfred.ticketservice.model.FareMatrix;
 import org.alfred.ticketservice.model.TicketTypes;
 import org.alfred.ticketservice.model.TicketUsageLogs;
 import org.alfred.ticketservice.model.Tickets;
+import org.alfred.ticketservice.model.enums.Duration;
 import org.alfred.ticketservice.model.enums.TicketStatus;
 import org.alfred.ticketservice.model.enums.UsageTypes;
 import org.alfred.ticketservice.repository.FareMatrixRepository;
@@ -79,7 +80,7 @@ public class TicketServiceImpl implements TicketService{
         if( !ticketType.isActive()) {
             throw new EntityNotFoundException("Ticket type is not active with id: " + ticket.id());
         }
-        if( ticketType.getValidityDuration() == 0) {
+        if( ticketType.getValidityDuration() ==null) {
             throw new IllegalArgumentException("Ticket type must have a valid validity duration on days");
         }
         String prefix = "MT";
@@ -106,7 +107,7 @@ public class TicketServiceImpl implements TicketService{
         if (ticket == null || ticket.id() == null  ) {
             throw new IllegalArgumentException("Ticket request must contain valid fareMatrixId");
         }
-        TicketTypes ticketType = ticketTypeRepository.findByValidityDuration(0);
+        TicketTypes ticketType = ticketTypeRepository.findByValidityDuration(Duration.SINGLE);
         if (ticketType == null) {
             throw new EntityNotFoundException("Default ticket type not found");
         }
@@ -213,7 +214,7 @@ public class TicketServiceImpl implements TicketService{
                 throw new TicketProcessingException("Ticket is not valid yet");
             }
             switch (ticket.getTicketType().getValidityDuration()) {
-                case 0 -> {
+                case SINGLE -> {
                     if(ticket.getStatus()!= TicketStatus.NOT_USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for entry");
                     }
@@ -224,9 +225,9 @@ public class TicketServiceImpl implements TicketService{
                     ticket.setStatus(TicketStatus.USED);
                     saveTicketUsageLog(ticket, UsageTypes.ENTRY, currentScanTime, ticketScanRequest.stationId());
                 }
-                case 1,3, 7, 30 -> {
+                case ONE_DAY,ONE_MONTH,ONE_WEEK,THREE_DAYS -> {
                     if (ticket.getStatus() == TicketStatus.NOT_USED) {
-                        ticket.setValidUntil(currentScanTime.plusDays(ticket.getTicketType().getValidityDuration()));
+                        ticket.setValidUntil(currentScanTime.plusDays(ticket.getTicketType().getValidityDuration().getDurationInDays()));
                         ticket.setStatus(TicketStatus.USED);
                         ticket.setInTrip(true);
                         saveTicketUsageLog(ticket, UsageTypes.ENTRY, currentScanTime, ticketScanRequest.stationId());
@@ -273,7 +274,7 @@ public class TicketServiceImpl implements TicketService{
             }
             ticket.setInTrip(false);
             switch (ticket.getTicketType().getValidityDuration()) {
-                case 0 -> {
+                case SINGLE -> {
                     // Single-use ticket: mark as expired after exit
                     if (ticket.getStatus() != TicketStatus.USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for exit");
@@ -283,7 +284,7 @@ public class TicketServiceImpl implements TicketService{
                     }
                     ticket.setStatus(TicketStatus.EXPIRED);
                 }
-                case 1, 3, 7, 30 -> {
+                case ONE_DAY,ONE_MONTH,ONE_WEEK,THREE_DAYS -> {
                     // Multi-day pass: keep status as USED for future entries
                     if (ticket.getStatus() != TicketStatus.USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for exit");
