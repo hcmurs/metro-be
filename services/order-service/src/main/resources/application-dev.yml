@@ -17,8 +17,7 @@ server:
 
 service:
   users:
-    url: http://localhost:${service.users.port}/api/ts/tickets
-    port: 4005
+    url: http://localhost:4005/api/ts/tickets
 
 springdoc:
   swagger-ui:
