@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -81,5 +83,13 @@ public class UserController {
             @RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
         userService.resetPassword(resetPasswordRequest.getEmail(), resetPasswordRequest.getNewPassword());
         return ResponseEntity.ok(ApiResponse.success("Reset password successfully"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<UserDto>>> findAll(
+            @RequestHeader("Authorization") String token) {
+        List<UserDto> users = userService.findAll(token.substring(7));
+        ApiResponse<List<UserDto>> response = ApiResponse.success(users, "Find successfully");
+        return ResponseEntity.ok(response);
     }
 }

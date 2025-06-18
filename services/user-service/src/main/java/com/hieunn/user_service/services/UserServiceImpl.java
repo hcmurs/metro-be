@@ -11,6 +11,7 @@ import com.hieunn.user_service.models.AuthProvider;
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.repositories.UserRepository;
 import com.hieunn.user_service.utils.JwtUtil;
+import com.hieunn.user_service.utils.ValidationUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     JwtUtil jwtUtil;
     PasswordEncoder passwordEncoder;
     RedisTemplate<String, String> redisTemplate;
+    private final ValidationUtil validationUtil;
 
     @Override
     @Transactional
@@ -129,6 +132,18 @@ public class UserServiceImpl implements UserService {
                     ErrorMessage.USER_NOT_FOUND.getMessage()
             );
         }
+    }
+
+    @Override
+    public List<UserDto> findAll(String token) {
+        validationUtil.checkAdmin(token);
+
+        List<User> users = userRepository.findAll();
+
+        return users
+                .stream()
+                .map(userMapper::toUserDto)
+                .toList();
     }
 
     @Override
