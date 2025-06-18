@@ -17,7 +17,7 @@ spring:
       path: /h2-console
 
 server:
-  port: 4008
+  port: 4009
 
 springdoc:
   swagger-ui:
