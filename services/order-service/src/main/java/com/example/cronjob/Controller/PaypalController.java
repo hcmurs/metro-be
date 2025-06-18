@@ -34,7 +34,8 @@ public class PaypalController {
     @GetMapping("/success")
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     public ApiResponse<?> paymentSuccess(@RequestParam("token") String token) {
-
+        Long orderIdLong = paypalService.getCustomOrderIdFromPayPalOrderId(token);
+        paypalService.updateOrderSuccess(orderIdLong);
         return ApiResponse.builder()
                 .status(200)
                 .message("Payment completed successfully")
@@ -44,7 +45,9 @@ public class PaypalController {
 
     @GetMapping("/cancel")
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
-    public ApiResponse<?> paymentCancel() {
+    public ApiResponse<?> paymentCancel(@RequestParam("token") String token) {
+        Long orderIdLong = paypalService.getCustomOrderIdFromPayPalOrderId(token);
+        paypalService.updateOrderFail(orderIdLong);
         return ApiResponse.builder()
                 .status(400)
                 .message("Payment cancelled by user")
