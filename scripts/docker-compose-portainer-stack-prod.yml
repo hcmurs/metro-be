@@ -67,7 +67,7 @@ services:
   metro-eureka:
     container_name: metro-eureka-service
     hostname: metro-eureka-service
-    image: lcaohoanq/metro-eureka
+    image: lcaohoanq/metro-eureka:1.0.0
     healthcheck:
       test: ["CMD", "curl", "-f", "http://metro-eureka-service:8761/actuator/health"]
       interval: 30s
@@ -86,7 +86,7 @@ services:
   metro-gateway:
     container_name: metro-gateway-service
     hostname: metro-gateway-service
-    image: lcaohoanq/metro-gateway
+    image: lcaohoanq/metro-gateway:main-deployment
     ports:
       - "4003:4003"
     restart: always
@@ -106,7 +106,7 @@ services:
   metro-auth:
     container_name: metro-auth-service
     hostname: metro-auth-service
-    image: lcaohoanq/metro-auth
+    image: lcaohoanq/metro-auth:1.0.0
     ports:
       - "4006:4006"
     restart: always
@@ -125,7 +125,7 @@ services:
   metro-user:
     container_name: metro-user-service
     hostname: metro-user-service
-    image: lcaohoanq/metro-user
+    image: lcaohoanq/metro-user:1.0.0
     ports:
       - "4007:4007"
     restart: always
@@ -146,7 +146,7 @@ services:
   metro-notification:
     container_name: metro-notification-service
     hostname: metro-notification-service
-    image: lcaohoanq/metro-notification
+    image: lcaohoanq/metro-notification:1.0.0
     ports:
       - "4009:4009"
     restart: always
@@ -165,7 +165,7 @@ services:
   metro_order:
     container_name: metro-order-service
     hostname: metro-order-service
-    image: lcaohoanq/metro-order
+    image: lcaohoanq/metro-order:1.0.0
     ports:
       - "4008:4008"
     restart: always
@@ -186,7 +186,7 @@ services:
   metro-ticket:
     container_name: metro-ticket-service
     hostname: metro-ticket-service
-    image: lcaohoanq/metro-ticket
+    image: lcaohoanq/metro-ticket:1.0.0
     ports:
       - "4005:4005"
     restart: always
@@ -207,7 +207,7 @@ services:
   metro-station:
     container_name: metro-station-service
     hostname: metro-station-service
-    image: lcaohoanq/metro-station
+    image: lcaohoanq/metro-station:1.0.0
     ports:
       - "4004:4004"
     restart: always
