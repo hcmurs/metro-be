@@ -2,9 +2,127 @@ spring:
   main:
     web-application-type: reactive
 
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        # Auth Service Routes
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+        # Auth Service Swagger Route
+        - id: auth-service-swagger
+          uri: lb://auth-service
+          predicates:
+            - Path=/aggregate/auth-service/**
+          filters:
+            - RewritePath=/aggregate/auth-service(?<segment>/?.*), /api/v1$\{segment}
+
+        # Station Service Routes
+        - id: station-service
+          uri: lb://station-service
+          predicates:
+            - Path=/api/v1/station/**
+        # User Service Swagger Route
+        - id: station-service-swagger
+          uri: lb://station-service
+          predicates:
+            - Path=/aggregate/station-service/**
+          filters:
+            - RewritePath=/aggregate/station-service(?<segment>/?.*), $\{segment}
+
+        # User Service Routes
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user/**
+        # User Service Swagger Route
+        - id: user-service-swagger
+          uri: lb://user-service
+          predicates:
+            - Path=/aggregate/user-service/**
+          filters:
+            - RewritePath=/aggregate/user-service(?<segment>/?.*), $\{segment}
+
+        # Ticket Service Routes
+        - id: ticket-service
+          uri: lb://ticket-service
+          predicates:
+            - Path=/api/v1/ticket/**
+        # Ticket Service Swagger Route
+        - id: ticket-service-swagger
+          uri: lb://ticket-service
+          predicates:
+            - Path=/aggregate/ticket-service/**
+          filters:
+            - RewritePath=/aggregate/ticket-service(?<segment>/?.*), $\{segment}
+
+        # Order Service Routes
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/order/**
+        # Order Service Swagger Route
+        - id: order-service-swagger
+          uri: lb://order-service
+          predicates:
+            - Path=/aggregate/order-service/**
+          filters:
+            - RewritePath=/aggregate/order-service(?<segment>/?.*), $\{segment}
+
+        # Notification Service Routes
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notification/**
+        # Notification Service Swagger Route
+        - id: notification-service-swagger
+          uri: lb://notification-service
+          predicates:
+            - Path=/aggregate/notification-service/**
+          filters:
+            - RewritePath=/aggregate/notification-service(?<segment>/?.*), $\{segment}
+
   application:
     name: gateway-service
     gw-config-version: v2
 
   profiles:
     active: dev
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+    try-it-out-enabled: true
+    filter: true
+    doc-expansion: none
+    enabled: true
+    use-root-path: true
+    # Configuration for Swagger UI Services
+    urls:
+      - name: Auth Service
+        url: /aggregate/auth-service/v3/api-docs
+#       Add more services here if needed
+      - name: Station Service
+        url: /aggregate/station-service/v3/api-docs
+
+      - name: User Service
+        url: /aggregate/user-service/v3/api-docs
+
+      - name: Ticket Service
+        url: /aggregate/ticket-service/v3/api-docs
+
+      - name: Order Service
+        url: /aggregate/order-service/v3/api-docs
+
+      - name: Notification Service
+        url: /aggregate/notification-service/v3/api-docs
+
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
