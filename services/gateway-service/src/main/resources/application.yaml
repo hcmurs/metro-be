@@ -2,9 +2,55 @@ spring:
   main:
     web-application-type: reactive
 
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        # Auth Service Routes
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+        # Auth Service Swagger Route
+        - id: auth-service-swagger
+          uri: lb://auth-service
+          predicates:
+            - Path=/aggregate/auth-service/**
+          filters:
+            - RewritePath=/aggregate/auth-service(?<segment>/?.*), /api/v1$\{segment}
+        # Station Service Routes
+        - id: station-service
+          uri: lb://station-service
+          predicates:
+            - Path=/api/v1/station/**
+        # User Service Swagger Route
+        - id: station-service-swagger
+          uri: lb://station-service
+          predicates:
+            - Path=/aggregate/station-service/**
+          filters:
+            - RewritePath=/aggregate/station-service(?<segment>/?.*), $\{segment}
+
   application:
     name: gateway-service
     gw-config-version: v2
 
   profiles:
     active: dev
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    use-root-path: true
+    # Configuration for Swagger UI Services
+    urls:
+      - name: Auth Service
+        url: /aggregate/auth-service/v3/api-docs
+#       Add more services here if needed
+      - name: Station Service
+        url: /aggregate/station-service/v3/api-docs
+  api-docs:
+    enabled: true
+    path: /v3/api-docs

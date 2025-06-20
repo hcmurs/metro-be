@@ -42,6 +42,7 @@ public class JwtAuthenticationFilter implements WebFilter {
     final List<String> PUBLIC_ENDPOINTS = List.of(
             //Swagger
             "/swagger-ui.html",
+            "/swagger-ui/**",  // Add this line for newer Swagger UI paths
             "/favicon.ico",
             "/v3/api-docs/**",
             "/webjars/swagger-ui/**",
@@ -69,7 +70,8 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/ts/fare-matrices/by-station/{stationId}",
             "/api/ts/ticket-types/{id}",
             "/api/ts/ticket-types",
-            "api/payment/callback/**"
+            "api/payment/callback/**",
+            "/aggregate/**"
 
     );
 
