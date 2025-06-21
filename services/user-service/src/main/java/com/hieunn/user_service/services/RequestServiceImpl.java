@@ -33,7 +33,7 @@ public class RequestServiceImpl implements RequestService {
     ValidationUtil validationUtil;
 
     @Override
-    public List<RequestDto> findByUser(Long userId, String token) {
+    public List<RequestDto> findByUserId(Long userId, String token) {
         validationUtil.checkVerifiedUser(userId, token);
 
         List<Request> requests = requestRepository.findByUser_UserId(userId);
@@ -55,7 +55,7 @@ public class RequestServiceImpl implements RequestService {
                     ErrorMessage.USER_NOT_FOUND.getMessage());
         }
 
-        List<RequestDto> passRequests = findByUser(userId, token);
+        List<RequestDto> passRequests = findByUserId(userId, token);
         boolean hasPendingOrApproved = passRequests.stream()
                 .anyMatch(r -> r.getRequestStatus() == RequestStatus.PENDING || r.getRequestStatus() == RequestStatus.APPROVED);
         if (hasPendingOrApproved) {

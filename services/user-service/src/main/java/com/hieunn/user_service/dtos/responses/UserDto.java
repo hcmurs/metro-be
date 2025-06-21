@@ -27,8 +27,14 @@ public class UserDto {
     String pictureUrl;
     @JsonIgnore
     String googleId;
+    @JsonIgnore
+    String facebookId;
     boolean isStudent;
     LocalDateTime studentExpiredDate;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+
+    public boolean getIsStudent() {
+        return this.isStudent;
+    }
 }

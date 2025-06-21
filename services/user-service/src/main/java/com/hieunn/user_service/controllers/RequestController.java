@@ -22,10 +22,10 @@ public class RequestController {
     RequestService requestService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<List<RequestDto>>> findRequestByUser(
+    public ResponseEntity<ApiResponse<List<RequestDto>>> findRequestByUserId(
             @RequestHeader("Authorization") String token,
             @PathVariable Long userId) {
-        List<RequestDto> requests = requestService.findByUser(userId, token.substring(7));
+        List<RequestDto> requests = requestService.findByUserId(userId, token.substring(7));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
