@@ -23,9 +23,8 @@ public class RequestController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<List<RequestDto>>> findRequestByUserId(
-            @RequestHeader("Authorization") String token,
             @PathVariable Long userId) {
-        List<RequestDto> requests = requestService.findByUserId(userId, token.substring(7));
+        List<RequestDto> requests = requestService.findByUserId(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -33,10 +32,9 @@ public class RequestController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<RequestDto>> createRequest(
-            @RequestHeader("Authorization") String token,
+    public ResponseEntity<ApiResponse<RequestDto>> create(
             @Valid @RequestBody RequestCreationRequest requestCreationRequest) {
-        RequestDto request = requestService.createRequest(requestCreationRequest, token.substring(7));
+        RequestDto request = requestService.create(requestCreationRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -44,20 +42,18 @@ public class RequestController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<ApiResponse<Void>> verifyRequest(
-            @RequestHeader("Authorization") String token,
+    public ResponseEntity<ApiResponse<Void>> verify(
             @RequestParam Long requestId,
             @RequestParam boolean isApproved) {
-        requestService.verifyRequest(requestId, isApproved, token.substring(7));
+        requestService.verify(requestId, isApproved);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Request has been verified"));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<RequestDto>>> findAll(
-            @RequestHeader("Authorization") String token) {
-        List<RequestDto> requests = requestService.findAll(token.substring(7));
+    public ResponseEntity<ApiResponse<List<RequestDto>>> findAll() {
+        List<RequestDto> requests = requestService.findAll();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(requests));

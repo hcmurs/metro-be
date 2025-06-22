@@ -6,8 +6,8 @@ import com.hieunn.user_service.dtos.responses.RequestDto;
 import java.util.List;
 
 public interface RequestService {
-    List<RequestDto> findByUserId(Long userId, String token);
-    RequestDto createRequest(RequestCreationRequest requestCreationRequest, String token);
-    List<RequestDto> findAll(String token);
-    void verifyRequest(Long requestId, boolean isApproved, String token);
+    List<RequestDto> findByUserId(Long userId);
+    RequestDto create(RequestCreationRequest requestCreationRequest);
+    List<RequestDto> findAll();
+    void verify(Long requestId, boolean isApproved);
 }

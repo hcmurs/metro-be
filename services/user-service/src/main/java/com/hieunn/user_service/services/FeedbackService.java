@@ -6,7 +6,8 @@ import com.hieunn.user_service.dtos.responses.FeedbackDto;
 import java.util.List;
 
 public interface FeedbackService {
-    List<FeedbackDto> findByUser(Long userId, String token);
-    FeedbackDto createFeedback(FeedbackCreationRequest feedbackCreationRequest, String token);
-    List<FeedbackDto> findAll(String token);
+    List<FeedbackDto> findByUserId(Long userId);
+    FeedbackDto create(FeedbackCreationRequest feedbackCreationRequest);
+    List<FeedbackDto> findAll();
+    FeedbackDto reply(Long feedbackId, String content);
 }

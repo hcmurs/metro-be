@@ -68,6 +68,8 @@ public class JwtUtil {
                 .setSubject(userDto.getUserId().toString())
                 .setId(UUID.randomUUID().toString())
                 .claim("role", userDto.getRole())
+                .claim("email", userDto.getEmail())
+                .claim("username", userDto.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(signingKey, SignatureAlgorithm.HS256)
