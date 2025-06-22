@@ -10,11 +10,10 @@ import com.hieunn.user_service.models.Request.RequestStatus;
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.repositories.RequestRepository;
 import com.hieunn.user_service.repositories.UserRepository;
-import com.hieunn.user_service.utils.JwtUtil;
-import com.hieunn.user_service.utils.ValidationUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +28,11 @@ public class RequestServiceImpl implements RequestService {
     RequestRepository requestRepository;
     UserRepository userRepository;
     RequestMapper requestMapper;
-    JwtUtil jwtUtil;
-    ValidationUtil validationUtil;
+    UserService userService;
 
     @Override
-    public List<RequestDto> findByUserId(Long userId, String token) {
-        validationUtil.checkVerifiedUser(userId, token);
-
+    @PreAuthorize("authentication.principal.userId == #userId or hasRole('ADMIN')")
+    public List<RequestDto> findByUserId(Long userId) {
         List<Request> requests = requestRepository.findByUser_UserId(userId);
         return requests
                 .stream()
@@ -45,19 +42,13 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public RequestDto createRequest(RequestCreationRequest requestCreationRequest, String token) {
-        Long userId = jwtUtil.extractUserId(token);
+    public RequestDto create(RequestCreationRequest requestCreationRequest) {
+        User user = userService.getCurrentUser();
 
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            throw new CustomException(
-                    ErrorMessage.USER_NOT_FOUND.getStatus(),
-                    ErrorMessage.USER_NOT_FOUND.getMessage());
-        }
-
-        List<RequestDto> passRequests = findByUserId(userId, token);
+        List<Request> passRequests = requestRepository.findByUser_UserId(user.getUserId());
         boolean hasPendingOrApproved = passRequests.stream()
-                .anyMatch(r -> r.getRequestStatus() == RequestStatus.PENDING || r.getRequestStatus() == RequestStatus.APPROVED);
+                .anyMatch(r -> r.getRequestStatus() == RequestStatus.PENDING
+                        || r.getRequestStatus() == RequestStatus.APPROVED);
         if (hasPendingOrApproved) {
             throw new CustomException(
                     ErrorMessage.ALREADY_REQUESTED.getStatus(),
@@ -69,7 +60,7 @@ public class RequestServiceImpl implements RequestService {
                 .content(requestCreationRequest.getContent())
                 .studentCardImage(requestCreationRequest.getStudentCardImage())
                 .citizenIdentityCardImage(requestCreationRequest.getCitizenIdentityCardImage())
-                .user(user.get())
+                .user(user)
                 .endDate(requestCreationRequest.getEndDate())
                 .build();
 
@@ -78,9 +69,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestDto> findAll(String token) {
-        validationUtil.checkAdmin(token);
-
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<RequestDto> findAll() {
         List<Request> requests = requestRepository.findAll();
         return requests
                 .stream()
@@ -90,9 +80,8 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public void verifyRequest(Long requestId, boolean isApproved, String token) {
-        validationUtil.checkAdmin(token);
-
+    @PreAuthorize("hasRole('ADMIN')")
+    public void verify(Long requestId, boolean isApproved) {
         Optional<Request> requestById = requestRepository.findById(requestId);
         if (requestById.isEmpty()) {
             throw new CustomException(

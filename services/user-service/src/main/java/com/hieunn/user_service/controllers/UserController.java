@@ -35,9 +35,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserDto>> findUser(
-            @RequestHeader("Authorization") String token) {
-        UserDto userDto = userService.findUser(token.substring(7));
+    public ResponseEntity<ApiResponse<UserDto>> getCurrentUser() {
+        UserDto userDto = userService.getCurrentUserDto();
         ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
         return ResponseEntity.ok(response);
     }
@@ -86,9 +85,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UserDto>>> findAll(
-            @RequestHeader("Authorization") String token) {
-        List<UserDto> users = userService.findAll(token.substring(7));
+    public ResponseEntity<ApiResponse<List<UserDto>>> findAll() {
+        List<UserDto> users = userService.findAll();
         ApiResponse<List<UserDto>> response = ApiResponse.success(users, "Find successfully");
         return ResponseEntity.ok(response);
     }
