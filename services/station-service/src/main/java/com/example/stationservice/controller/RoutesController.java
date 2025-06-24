@@ -6,9 +6,12 @@ import com.example.stationservice.dto.RoutesResponse;
 import com.example.stationservice.model.Routes;
 import com.example.stationservice.service.RoutesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +26,9 @@ public class RoutesController {
     @Autowired
     private RoutesService routesService;
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
-    public ApiResponse<RoutesResponse> createRoute(@RequestBody RoutesRequest request) {
+    public ApiResponse<RoutesResponse> createRoute(@RequestBody @Valid RoutesRequest request) {
         RoutesResponse route = routesService.createRoute(request);
         return ApiResponse.success(route, "Route created successfully");
     }
@@ -62,14 +66,14 @@ public class RoutesController {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ApiResponse<RoutesResponse> updateRoute(@PathVariable Long id, @RequestBody RoutesRequest route) {
         RoutesResponse updatedRoute = routesService.updateRoute(id, route);
         return ApiResponse.success(updatedRoute, "Route updated successfully");
     }
 
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteRoute(@PathVariable Long id) {
         routesService.deleteRoute(id);

@@ -1,10 +1,12 @@
-package com.example.stationservice.config;
+package com.example.stationservice.Exception;
 import com.example.stationservice.config.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -64,11 +66,24 @@ public class GlobalExceptionHandler {
     }
 
     // Fallback for unhandled exceptions
-//        @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<ApiResponse<Void>> handleGeneralException(Exception ex) {
-//        ex.printStackTrace(); // Consider using proper logging instead
-//        ApiResponse<Void> response = ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unexpected error occurred");
-//        return ResponseEntity.ok().body(response);
-//    }
+        @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<Void>> handleGeneralException(Exception ex) {
+        ex.printStackTrace(); // Consider using proper logging instead
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unexpected error occurred");
+        return ResponseEntity.ok().body(response);
+    }
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(AuthorizationDeniedException ex) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.FORBIDDEN.value(), "You do not have permission to access this resource: "+ ex.getMessage());
+        return ResponseEntity.ok().body(response);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<Void>> handleAuthenticationException(AuthenticationException ex) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), "Authentication failed: " + ex.getMessage());
+        return ResponseEntity.ok().body(response);
+    }
 }

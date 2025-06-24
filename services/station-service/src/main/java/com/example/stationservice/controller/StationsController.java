@@ -3,12 +3,10 @@ package com.example.stationservice.controller;
 import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.StationsRequest;
 import com.example.stationservice.dto.StationsResponse;
-import com.example.stationservice.model.Stations;
 import com.example.stationservice.service.StationsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +22,7 @@ public class StationsController {
     private StationsService stationsService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<StationsResponse> createStation(@RequestBody StationsRequest request) {
         StationsResponse station = stationsService.createStation(request);
         return ApiResponse.success(station, "Station created successfully");
@@ -58,21 +57,23 @@ public class StationsController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody StationsRequest station) {
         StationsResponse updatedStation = stationsService.updateStation(id, station);
         return ApiResponse.success(updatedStation, "Station updated successfully");
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<Void> deleteStation(@PathVariable Long id) {
         stationsService.deleteStation(id);
         return ApiResponse.success("Station deleted successfully");
     }
-    @GetMapping("/{id}/exists")
-    public ApiResponse<Boolean> checkStationExists(@PathVariable Long id) {
-        boolean exists = stationsService.existsById(id);
-        return ApiResponse.success(exists, "Station existence checked");
-    }
+//    @GetMapping("/{id}/exists")
+//    public ApiResponse<Boolean> checkStationExists(@PathVariable Long id) {
+//        boolean exists = stationsService.existsById(id);
+//        return ApiResponse.success(exists, "Station existence checked");
+//    }
 
     @GetMapping("/check-line")
     public ApiResponse<Boolean> checkStationOnLine(@RequestParam Long startStationId,

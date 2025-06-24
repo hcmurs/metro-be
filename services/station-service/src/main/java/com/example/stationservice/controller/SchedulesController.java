@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class SchedulesController {
     private SchedulesService schedulesService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<SchedulesResponse> createSchedule(@RequestBody SchedulesRequest request) {
         SchedulesResponse schedule = schedulesService.createSchedule(request);
         return ApiResponse.success(schedule, "Schedule created successfully");
@@ -52,12 +54,14 @@ public class SchedulesController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<SchedulesResponse> updateSchedule(@PathVariable Long id, @RequestBody SchedulesRequest schedule) {
         SchedulesResponse updatedSchedule = schedulesService.updateSchedule(id, schedule);
         return ApiResponse.success(updatedSchedule, "Schedule updated successfully");
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<Void> deleteSchedule(@PathVariable Long id) {
         schedulesService.deleteSchedule(id);
         return ApiResponse.success("Schedule deleted successfully");
