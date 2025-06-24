@@ -103,7 +103,7 @@ public class TicketController {
     }
 
     @PostMapping("/scan/entry")
-    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @PreAuthorize("hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<TicketResponse>> scanEntryTicket(
             @Valid @RequestBody TicketScanRequest request) {
         log.info("Request to scan entry ticket at station ID: {}", request.stationId());
@@ -112,7 +112,7 @@ public class TicketController {
     }
 
     @PostMapping("/scan/exit")
-    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @PreAuthorize("hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<TicketResponse>> scanExitTicket(
             @Valid @RequestBody TicketScanRequest request) {
         log.info("Request to scan exit ticket at station ID: {}", request.stationId());
