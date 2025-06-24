@@ -50,6 +50,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/oauth2/authorization/**",
             "/api/auth/local-login",
             "/api/auth/**",
+            "/api/v1/auth/**",
             //User
             "/api/users/is-username-exist",
             "/api/users/is-email-exist",

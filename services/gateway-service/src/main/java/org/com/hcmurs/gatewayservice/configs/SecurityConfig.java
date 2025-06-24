@@ -17,7 +17,8 @@ public class SecurityConfig {
             "/aggregate/**",
             "/actuator/**",
             "/webjars/**",
-            "/api/v1/auth/**"
+            "/api/v1/auth/**",
+            "/api/auth/**"
     };
 
     @Bean
