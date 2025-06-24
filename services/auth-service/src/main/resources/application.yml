@@ -20,8 +20,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 634675406739-vsrau9upvljnlemslcrubdad6jrngfli.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 642093341387-4ts23qfc08ukhfkifq7k2d2a2nr928t5.apps.googleusercontent.com
+            client-secret: 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
             client-name: Google
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:4006/api/v1/login/oauth2/code/google
