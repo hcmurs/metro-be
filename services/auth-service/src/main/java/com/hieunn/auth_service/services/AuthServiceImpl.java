@@ -136,4 +136,44 @@ public class AuthServiceImpl implements AuthService {
             return ApiResponse.success(null, "Authentication failed");
         }
     }
+    @Override
+    public ApiResponse<UserDto> getUserProfileFromToken(String authorizationHeader) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ApiResponse.<UserDto>builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .message("Invalid Authorization header format")
+                        .build();
+            }
+
+            String token = authorizationHeader.substring(7);
+
+            if (!jwtUtil.validateToken(token)) {
+                return ApiResponse.<UserDto>builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .message("Invalid or expired token")
+                        .build();
+            }
+
+            ApiResponse<UserDto> userResponse = userServiceClient.getUserProfile("Bearer " + token);
+
+            if (userResponse.getData() != null) {
+                return ApiResponse.success(userResponse.getData());
+            } else {
+                return ApiResponse.<UserDto>builder()
+                        .status(userResponse.getStatus())
+                        .message(userResponse.getMessage())
+                        .build();
+            }
+
+        } catch (Exception e) {
+            log.error("Error fetching user profile from token", e);
+            return ApiResponse.<UserDto>builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .message("Failed to fetch user profile")
+                    .build();
+        }
+    }
+
+
 }

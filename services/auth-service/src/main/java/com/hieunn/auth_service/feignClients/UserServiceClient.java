@@ -7,8 +7,7 @@ import com.hieunn.auth_service.dtos.requests.RegisterRequest;
 import com.hieunn.auth_service.dtos.requests.SocialLoginUserRequest;
 import com.hieunn.auth_service.dtos.responses.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "user-service", url = "${service.users.url}", configuration = FeignConfig.class)
 public interface UserServiceClient {
@@ -20,4 +19,9 @@ public interface UserServiceClient {
 
     @PostMapping("/local-login")
     ApiResponse<UserDto> processLocalLogin(@RequestBody LocalLoginRequest localLoginRequest);
+
+    @GetMapping("/me")
+    ApiResponse<UserDto> getUserProfile(@RequestHeader("Authorization") String token);
+
+
 }

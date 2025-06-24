@@ -54,55 +54,55 @@ public class MobileOAuth2Controller {
 
         response.sendRedirect(authUrl);
     }
+//
+//    @GetMapping("/callback")
+//    public void handleOAuth2Callback(
+//            @RequestParam String code,
+//            @RequestParam(required = false) String state,
+//            @RequestParam(required = false) String error,
+//            HttpServletRequest request,
+//            HttpServletResponse response) throws IOException {
+//
+//        if (StringUtils.hasText(error)) {
+//            // Handle error case
+//            String errorRedirect = "org.com.hcmurs://callback?error=" + URLEncoder.encode(error, StandardCharsets.UTF_8);
+//            response.sendRedirect(errorRedirect);
+//            return;
+//        }
+//
+//        try {
+//            // Process the OAuth2 code and get user info
+//            Map<String, Object> result = authService.processMobileOAuth2Login(code, "mobile-google");
+//
+//            // Extract tokens/user info
+//            String jwtToken = (String) result.get("jwt_token");
+//
+//            // Redirect back to mobile app with success
+//            String successRedirect = "org.com.hcmurs://callback" +
+//                    "?success=true" +
+//                    "&token=" + URLEncoder.encode(jwtToken != null ? jwtToken : "", StandardCharsets.UTF_8);
+//
+//            response.sendRedirect(successRedirect);
+//
+//        } catch (Exception e) {
+//            // Handle processing error
+//            String errorRedirect = "org.com.hcmurs://callback?error=" +
+//                    URLEncoder.encode("authentication_failed", StandardCharsets.UTF_8);
+//            response.sendRedirect(errorRedirect);
+//        }
+//    }
 
-    @GetMapping("/callback")
-    public void handleOAuth2Callback(
-            @RequestParam String code,
-            @RequestParam(required = false) String state,
-            @RequestParam(required = false) String error,
-            HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
-
-        if (StringUtils.hasText(error)) {
-            // Handle error case
-            String errorRedirect = "org.com.hcmurs://callback?error=" + URLEncoder.encode(error, StandardCharsets.UTF_8);
-            response.sendRedirect(errorRedirect);
-            return;
-        }
-
-        try {
-            // Process the OAuth2 code and get user info
-            Map<String, Object> result = authService.processMobileOAuth2Login(code, "mobile-google");
-
-            // Extract tokens/user info
-            String jwtToken = (String) result.get("jwt_token");
-
-            // Redirect back to mobile app with success
-            String successRedirect = "org.com.hcmurs://callback" +
-                    "?success=true" +
-                    "&token=" + URLEncoder.encode(jwtToken != null ? jwtToken : "", StandardCharsets.UTF_8);
-
-            response.sendRedirect(successRedirect);
-
-        } catch (Exception e) {
-            // Handle processing error
-            String errorRedirect = "org.com.hcmurs://callback?error=" +
-                    URLEncoder.encode("authentication_failed", StandardCharsets.UTF_8);
-            response.sendRedirect(errorRedirect);
-        }
-    }
-
-    @PostMapping("/exchange-token")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> exchangeToken(
-            @RequestParam String code,
-            @RequestParam(defaultValue = "mobile-google") String provider) {
-        try {
-            Map<String, Object> result = authService.processMobileOAuth2Login(code, provider);
-            return ResponseEntity.ok(ApiResponse.success("Token exchanged successfully", result));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error(400, "Failed to exchange token: " + e.getMessage()));
-        }
-    }
+//    @PostMapping("/exchange-token")
+//    public ResponseEntity<ApiResponse<Map<String, Object>>> exchangeToken(
+//            @RequestParam String code,
+//            @RequestParam(defaultValue = "mobile-google") String provider) {
+//        try {
+//            Map<String, Object> result = authService.processMobileOAuth2Login(code, provider);
+//            return ResponseEntity.ok(ApiResponse.success("Token exchanged successfully", result));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(ApiResponse.error(400, "Failed to exchange token: " + e.getMessage()));
+//        }
+//    }
 
 }

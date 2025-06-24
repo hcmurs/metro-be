@@ -15,10 +15,7 @@
     import lombok.experimental.FieldDefaults;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.web.bind.annotation.*;
 
     @RestController
     @RequestMapping("/auth")
@@ -48,6 +45,15 @@
             ApiResponse<TokenResponse> response = authService.processGoogleLogin(request.getIdToken());
             return ResponseEntity
                     .status(HttpStatus.OK)
+                    .body(response);
+        }
+        @GetMapping("/profile")
+        public ResponseEntity<ApiResponse<UserDto>> getUserProfile(@RequestHeader("Authorization") String authorizationHeader) {
+            // authorizationHeader sẽ có dạng "Bearer <token>"
+            // Bạn cần trích xuất token và truyền vào service
+            ApiResponse<UserDto> response = authService.getUserProfileFromToken(authorizationHeader);
+            return ResponseEntity
+                    .status(response.getStatus()) // Sử dụng status từ ApiResponse
                     .body(response);
         }
     }
