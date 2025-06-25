@@ -12,6 +12,7 @@ import org.alfred.ticketservice.model.enums.TicketStatus;
 import org.alfred.ticketservice.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -134,5 +135,13 @@ public class TicketController {
         log.info("Request to generate QR code data for: {}", ticketCode);
         byte[] qrCodeData = ticketService.generateQrCodeData(ticketCode);
         return ResponseEntity.ok(ApiResponse.success(qrCodeData, "QR code data generated successfully"));
+    }
+
+    @GetMapping(value = "/qr", produces = MediaType.IMAGE_PNG_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    public ResponseEntity<byte[]> getQrCodeImage(@RequestParam @NotBlank String ticketCode) {
+        log.info("Request to get QR code image for: {}", ticketCode);
+        byte[] qrCodeImage = ticketService.generateQrCodeData(ticketCode);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(qrCodeImage);
     }
 }
