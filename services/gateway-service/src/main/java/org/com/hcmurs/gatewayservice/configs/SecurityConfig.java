@@ -18,7 +18,24 @@ public class SecurityConfig {
             "/actuator/**",
             "/webjars/**",
             "/api/v1/auth/**",
-            "/api/auth/**"
+            "/api/auth/**",
+            "/api/ts/fare-matrices/{id}",
+            "/api/ts/fare-matrices",
+            "/api/ts/fare-matrices/by-station/{stationId}",
+            "/api/ts/fare-matrices/get-fare",
+            "/api/ts/ticket-types/{id}",
+            "/api/ts/ticket-types",
+            "/api/routes",
+            "/api/routes/{id}",
+            "/api/routes/search",
+            "/api/routes/code/{routeCode}",
+            "/api/stations",
+            "/api/stations/{id}",
+            "/api/stations/search",
+            "api/stations/route/{routeId}",
+            "/api/schedules",
+            "/api/schedules/{id}",
+            "/api/schedules/station/{stationId}"
     };
 
     @Bean

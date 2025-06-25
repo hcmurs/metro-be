@@ -21,7 +21,7 @@ public class GatewayConfig {
         return builder.routes()
                 .route("station_service_route", r -> r
                         .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**", API_PREFIX + "/routes/**")
-                        .uri(STATION_SERVICE))
+                        .uri("http://localhost:4004"))
 
                 .route("ticket_service_route", r -> r
                         .path(API_PREFIX + "/ts/**")
