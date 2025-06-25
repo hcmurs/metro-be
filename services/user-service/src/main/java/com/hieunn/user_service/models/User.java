@@ -67,6 +67,7 @@ public class User implements UserDetails {
     String role = "ROLE_CUSTOMER";
 
     @Column(name = "is_student", nullable = false)
+    @Builder.Default
     boolean isStudent = false;
 
     @Column(name = "student_expired_date")

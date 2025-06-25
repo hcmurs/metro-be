@@ -4,13 +4,11 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.hieunn.auth_service.configs.GoogleOAuthConfig;
 import com.hieunn.auth_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.auth_service.dtos.requests.SocialLoginUserRequest;
 import com.hieunn.auth_service.dtos.responses.ApiResponse;
 import com.hieunn.auth_service.dtos.responses.TokenResponse;
 import com.hieunn.auth_service.dtos.responses.UserDto;
-import com.hieunn.auth_service.dtos.requests.RegisterRequest;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
 import com.hieunn.auth_service.models.AuthProvider;
 import com.hieunn.auth_service.utils.JwtUtil;
@@ -24,25 +22,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 
-//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-   private final JwtUtil jwtUtil;
-   private final RedisTemplate<String, String> redisTemplate;
-    private final UserServiceClient userServiceClient;
-    HttpServletResponse response;
+    final JwtUtil jwtUtil;
+    final RedisTemplate<String, String> redisTemplate;
+    final UserServiceClient userServiceClient;
+    final HttpServletResponse response;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private String googleClientId;
+    String googleClientId;
 
 
     @Override
@@ -136,6 +133,7 @@ public class AuthServiceImpl implements AuthService {
             return ApiResponse.success(null, "Authentication failed");
         }
     }
+
     @Override
     public ApiResponse<UserDto> getUserProfileFromToken(String authorizationHeader) {
         try {
