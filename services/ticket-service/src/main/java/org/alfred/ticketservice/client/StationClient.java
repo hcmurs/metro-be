@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "station-service", path = "/api/stations")
 public interface StationClient {
-    @GetMapping("/stations/{id}")
+    @GetMapping("/{id}")
     ApiResponse<StationResponse> getStationById(@PathVariable("id") Long id);
 
     @GetMapping("/check-line")

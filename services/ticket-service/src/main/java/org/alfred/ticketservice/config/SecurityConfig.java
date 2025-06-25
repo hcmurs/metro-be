@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/ts/fare-matrices/{id}","/api/ts/fare-matrices","/api/ts/fare-matrices/by-station/{stationId}").permitAll()
+                        .requestMatchers("/api/ts/fare-matrices/{id}","/api/ts/fare-matrices","/api/ts/fare-matrices/by-station/{stationId}","/api/ts/fare-matrices/get-fare").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**")
                                 .permitAll()
                         .requestMatchers("/api/ts/ticket-types/{id}","/api/ts/ticket-types").permitAll()

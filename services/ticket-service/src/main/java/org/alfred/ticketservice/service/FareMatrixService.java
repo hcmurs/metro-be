@@ -18,4 +18,6 @@ public interface FareMatrixService {
     List<FareMatrixResponse> getFareMatricesByStartStationId(Long startStationId);
 
     boolean isStationInFareMatrix(Long stationId, Long fareMatrixId);
+
+    FareMatrixResponse getFareMatrixByStations(FindFareRequest request);
 }

@@ -95,6 +95,23 @@ public class FareMatrixServiceImpl implements FareMatrixService{
         return stationClient.checkStationOnLine(startStationId,endStationId, stationId).getData();
     }
 
+    @Override
+    public FareMatrixResponse getFareMatrixByStations(FindFareRequest findFareRequest) {
+        Long startStationId = findFareRequest.startStationId();
+        Long endStationId = findFareRequest.endStationId();
+        if (stationClient.getStationById(startStationId).getData() == null) {
+            throw new EntityNotFoundException("Start station not found with id: " + startStationId);
+        }
+        if (stationClient.getStationById(endStationId).getData() == null) {
+            throw new EntityNotFoundException("End station not found with id: " + endStationId);
+        }
+        FareMatrix fareMatrix = fareMatrixRepository.findByStartStationIdAndEndStationId(startStationId, endStationId);
+        if (fareMatrix == null) {
+            throw new EntityNotFoundException("Fare matrix not found for the given station pair");
+        }
+        return mapToResponse(fareMatrix);
+    }
+
     private FareMatrixResponse mapToResponse(FareMatrix fareMatrix) {
         return FareMatrixResponse.builder()
                 .fareMatrixId(fareMatrix.getFareMatrixId())
