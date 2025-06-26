@@ -45,7 +45,7 @@ spring:
           predicates:
             - Path=/aggregate/user-service/**
           filters:
-            - RewritePath=/aggregate/user-service(?<segment>/?.*), $\{segment}
+            - RewritePath=/aggregate/user-service(?<segment>/?.*), /api/v1$\{segment}
 
         # Ticket Service Routes
         - id: ticket-service
