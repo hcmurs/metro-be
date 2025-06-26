@@ -18,11 +18,9 @@ public class StationsRequest {
     @NotNull(message = "Address cannot be null")
     private String address;
     @NotNull(message = "Latitude cannot be null")
-    @DecimalMax(value = "10000.0", message = "Latitude cannot exceed 10,000")
-    private BigDecimal latitude;
+    private Double latitude;
     @NotNull(message = "Longitude cannot be null")
-    @DecimalMax(value = "10000.0", message = "Longitude cannot exceed 10,000")
-    private BigDecimal longitude;
+    private Double longitude;
     @NotNull(message = "Sequence order cannot be null")
     @PositiveOrZero(message = "Sequence order must be zero or positive")
     private Integer sequenceOrder;

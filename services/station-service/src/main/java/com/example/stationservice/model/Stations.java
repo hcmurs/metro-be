@@ -24,9 +24,9 @@ public class Stations {
     @Column(name = "address")
     private String address;
     @Column(name = "latitude")
-    private BigDecimal latitude;
+    private Double latitude;
     @Column(name = "longitude")
-    private BigDecimal longitude;
+    private Double longitude;
     @Column(name = "sequence_order")
     private Integer sequenceOrder;
     @Enumerated(EnumType.STRING)
