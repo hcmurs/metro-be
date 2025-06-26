@@ -91,7 +91,7 @@ public class TicketServiceImpl implements TicketService{
                 throw new IllegalArgumentException("Ticket type must have a valid validity duration on days");
             }
             String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-            if(ticketType.getValidityDuration()==Duration.STUDENT && jwtUtil.isStudent(token)){
+            if(ticketType.getValidityDuration()==Duration.STUDENT && !jwtUtil.isStudent(token)){
                 throw new IllegalArgumentException("This ticket only available for students");
             }
             String prefix = "MT";
