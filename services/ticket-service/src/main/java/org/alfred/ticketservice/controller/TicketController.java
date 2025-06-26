@@ -144,4 +144,13 @@ public class TicketController {
         byte[] qrCodeImage = ticketService.generateQrCodeData(ticketCode);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(qrCodeImage);
     }
+
+    @GetMapping("/batch")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse<List<TicketResponse>>> getTicketsByIds(
+            @RequestParam List<Long> ticketIds) {
+        log.info("Request to get tickets by IDs: {}", ticketIds);
+        List<TicketResponse> tickets = ticketService.getTicketsByIds(ticketIds);
+        return ResponseEntity.ok(ApiResponse.success(tickets, "Tickets retrieved successfully"));
+    }
 }

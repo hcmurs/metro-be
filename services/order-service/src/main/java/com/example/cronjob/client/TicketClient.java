@@ -8,6 +8,8 @@ import com.example.cronjob.Enum.TicketStatus;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @FeignClient(name = "ticket-service",url = "${service.users.url}", configuration = FeignConfig.class)
 public interface TicketClient {
     @PostMapping("/ticket-type")
@@ -19,4 +21,9 @@ public interface TicketClient {
     @PutMapping("/{id}/status")
     ApiResponse<TicketResponse> updateTicketStatus(@PathVariable Long id,
                                                                    @RequestParam TicketStatus status);
+    @GetMapping("/{id}")
+    ApiResponse<TicketResponse> getTicketById(@PathVariable Long id);
+
+    @GetMapping("/batch")
+    ApiResponse<List<TicketResponse>> getTicketsByIds(@RequestParam("ticketIds") List<Long> ticketIds);
 }

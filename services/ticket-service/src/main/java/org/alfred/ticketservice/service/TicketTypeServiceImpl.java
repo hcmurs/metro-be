@@ -74,7 +74,7 @@ public class TicketTypeServiceImpl implements TicketTypeService{
                 .name(ticketTypes.getName())
                 .description(ticketTypes.getDescription())
                 .price(ticketTypes.getPrice())
-                .validityDuration(ticketTypes.getValidityDuration())
+                .validityDuration(ticketTypes.getValidityDuration().getDurationInDays())
                 .isActive(ticketTypes.isActive())
                 .createdAt(ticketTypes.getCreatedAt())
                 .updatedAt(ticketTypes.getUpdatedAt())

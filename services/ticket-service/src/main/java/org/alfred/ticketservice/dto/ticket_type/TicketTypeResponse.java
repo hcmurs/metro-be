@@ -10,7 +10,7 @@ public record TicketTypeResponse(
         String name,
         String description,
         float price,
-        Duration validityDuration,
+        int validityDuration,
         boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt

@@ -76,6 +76,7 @@ public class JwtUtil {
                 .claim("role", userDto.getRole())
                 .claim("email", userDto.getEmail())
                 .claim("username", userDto.getUsername())
+                .claim("isStudent", userDto.isStudent())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(signingKey, SignatureAlgorithm.HS256)

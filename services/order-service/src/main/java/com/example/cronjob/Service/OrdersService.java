@@ -18,5 +18,6 @@ public interface OrdersService {
     ApiResponse<TransactionResponse> updateTransactionSuccess(Long orderId);
     ApiResponse<TransactionResponse> updateTransactionFailed(Long orderId);
     ApiResponse<List<OrderResponse>> getOrderByUserId(String token);
+    ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByUserId(String token);
 
 }
