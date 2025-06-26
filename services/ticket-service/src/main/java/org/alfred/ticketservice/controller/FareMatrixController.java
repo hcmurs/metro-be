@@ -85,7 +85,7 @@ public class FareMatrixController {
                 isValid ? "Station is valid for this fare matrix" : "Station is not valid for this fare matrix"));
     }
 
-    @GetMapping("/get-fare")
+    @PostMapping("/get-fare")
     public ResponseEntity<ApiResponse<FareMatrixResponse>> getFare(
             @RequestBody @Valid FindFareRequest fareRequest) {
         FareMatrixResponse fare = fareMatrixService.getFareMatrixByStations(fareRequest);
