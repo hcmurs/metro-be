@@ -2,7 +2,7 @@ package com.hieunn.user_service.services;
 
 import com.hieunn.user_service.configs.PocketBaseProperties;
 import com.hieunn.user_service.dtos.requests.BlogDTO;
-import com.hieunn.user_service.dtos.requests.BlogDTO.BlogPageRes;
+import com.hieunn.user_service.dtos.requests.BlogDTO.BlogPageResPB;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +23,7 @@ public class PocketBaseService {
     PocketBaseAuthService authService;
     PocketBaseProperties pocketBaseProperties;
 
-    public BlogDTO.BlogPageRes getBlogs(int page, int perPage) {
+    public BlogDTO.BlogPageResPB getBlogs(int page, int perPage) {
         String token = authService.getSuperUserToken();
         String url = String.format(
             "%s/api/collections/blogs/records?page=%d&perPage=%d", pocketBaseProperties.getUrl(),
@@ -36,8 +36,8 @@ public class PocketBaseService {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         // Use ParameterizedTypeReference for proper type handling
-        ParameterizedTypeReference<BlogPageRes> responseType =
-            new ParameterizedTypeReference<BlogDTO.BlogPageRes>() {
+        ParameterizedTypeReference<BlogPageResPB> responseType =
+            new ParameterizedTypeReference<>() {
             };
 
         return restTemplate.exchange(url, HttpMethod.GET, entity, responseType).getBody();

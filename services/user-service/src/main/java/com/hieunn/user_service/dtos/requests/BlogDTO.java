@@ -1,11 +1,12 @@
 package com.hieunn.user_service.dtos.requests;
 
+import com.hieunn.user_service.models.Blog;
 import java.util.List;
 
 public class BlogDTO {
 
     public record BlogReq(
-        String id,
+//        String id,
         String category,
         String title,
         String author,
@@ -13,7 +14,7 @@ public class BlogDTO {
         Integer comments,
         String image,
         String content,
-        String[] tags,
+        List<String> tags,
         String readTime,
         String excerpt,
         Integer views,
@@ -34,7 +35,7 @@ public class BlogDTO {
         Integer comments,
         String image,
         String content,
-        String[] tags,
+        List<String> tags,
         String readTime,
         String excerpt,
         Integer views,
@@ -44,7 +45,7 @@ public class BlogDTO {
 
     }
 
-    public record BlogPageRes(
+    public record BlogPageResPB(
         List<BlogReq> items,
         Integer page,
         Integer perPage,
@@ -53,4 +54,12 @@ public class BlogDTO {
     ) {
 
     }
+
+    public record BlogPageRes(
+        List<Blog> content,
+        int currentPage,
+        int pageSize,
+        long totalElements,
+        int totalPages
+    ) { }
 }
