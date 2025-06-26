@@ -10,8 +10,8 @@ public class StationsResponse {
     private String stationCode;
     private String name;
     private String address;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private Double latitude;
+    private Double longitude;
     private Integer sequenceOrder;
     private String status;
     private LocalDateTime createdAt;

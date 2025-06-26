@@ -7,32 +7,24 @@ import com.example.stationservice.dto.SchedulesRequest;
 import com.example.stationservice.model.Routes;
 import com.example.stationservice.model.Schedules;
 import com.example.stationservice.model.Stations;
-import com.example.stationservice.repository.RoutesRepository;
 import com.example.stationservice.repository.StationsRepository;
 import com.example.stationservice.service.RoutesService;
 import com.example.stationservice.service.SchedulesService;
-import jakarta.annotation.PostConstruct;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 @Component
+@RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    @Autowired
-    private StationsRepository stationsRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private RoutesService routesService;
-    @Autowired
-    private SchedulesService schedulesService;
+    private final StationsRepository stationsRepository;
+    private final ModelMapper modelMapper;
+    private final RoutesService routesService;
+    private final SchedulesService schedulesService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -75,8 +67,8 @@ public class DataInitializer implements CommandLineRunner {
         station.setStationCode(code);
         station.setName(name);
         station.setAddress(address);
-        station.setLatitude(BigDecimal.valueOf(lat));
-        station.setLongitude(BigDecimal.valueOf(lng));
+        station.setLatitude(lat);
+        station.setLongitude(lng);
         station.setSequenceOrder(order);
         station.setStatus(Stations.Status.open);
         station.setCreatedAt(LocalDateTime.now());
