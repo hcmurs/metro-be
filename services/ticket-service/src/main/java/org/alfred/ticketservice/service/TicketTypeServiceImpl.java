@@ -41,8 +41,8 @@ public class TicketTypeServiceImpl implements TicketTypeService{
     }
 
     @Override
-    public TicketTypeResponse updateTicketType(TicketTypeRequest ticketType) {
-        TicketTypes ticketTypes = ticketTypeRepository.findById(ticketType.ticketTypeId())
+    public TicketTypeResponse updateTicketType(TicketTypeRequest ticketType, Long id) {
+        TicketTypes ticketTypes = ticketTypeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket type not found"));
         ticketTypes.setName(ticketType.name());
         ticketTypes.setDescription(ticketType.description());

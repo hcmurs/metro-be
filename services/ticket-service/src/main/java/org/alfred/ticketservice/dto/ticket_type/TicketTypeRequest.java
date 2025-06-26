@@ -5,7 +5,6 @@ package org.alfred.ticketservice.dto.ticket_type;
 
 public record TicketTypeRequest(
                 // Optional for creation, required for updates
-                Long ticketTypeId,
 
                 @NotBlank(message = "Name cannot be empty")
                 @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")

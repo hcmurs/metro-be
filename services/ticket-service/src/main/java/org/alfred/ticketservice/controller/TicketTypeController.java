@@ -49,11 +49,12 @@ public class TicketTypeController {
         );
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<ApiResponse<TicketTypeResponse>> updateTicketType(@Valid @RequestBody TicketTypeRequest request) {
-        log.info("Request to update ticket type with ID: {}", request.ticketTypeId());
-        TicketTypeResponse updatedTicketType = ticketTypeService.updateTicketType(request);
+    public ResponseEntity<ApiResponse<TicketTypeResponse>> updateTicketType(@Valid @RequestBody TicketTypeRequest request,
+                                                                           @PathVariable Long id)  {
+        log.info("Request to update ticket type with ID: {}", id);
+        TicketTypeResponse updatedTicketType = ticketTypeService.updateTicketType(request,id);
         return ResponseEntity.ok(ApiResponse.success(updatedTicketType, "Ticket type updated successfully"));
     }
 
