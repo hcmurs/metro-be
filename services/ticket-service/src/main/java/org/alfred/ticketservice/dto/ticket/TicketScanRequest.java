@@ -6,6 +6,6 @@ import jakarta.validation.constraints.Positive;
 
 public record TicketScanRequest(
         @Positive @NotNull(message = "Station ID not null") Long stationId,
-        @NotNull byte[] qrCodeData
+        @NotBlank String qrCodeJsonData
 ) {
 }

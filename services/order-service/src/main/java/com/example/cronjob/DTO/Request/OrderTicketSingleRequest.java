@@ -10,7 +10,4 @@ import lombok.*;
 public class OrderTicketSingleRequest {
     private TicketRequest.FareMatrix fareMatrixId;
     private Long paymentMethodId;
-
-
-
 }

@@ -180,13 +180,12 @@ public class TicketServiceImpl implements TicketService{
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public TicketResponse scanEntryTicket(TicketScanRequest ticketScanRequest) {
-        if (ticketScanRequest.qrCodeData() == null ||  ticketScanRequest.stationId() == null) {
+        if (ticketScanRequest.qrCodeJsonData().isEmpty() ||  ticketScanRequest.stationId() == null) {
             throw new IllegalArgumentException("QR code data and station ID are required");
         }
         try {
-            String jsonData = qrService.readQrCode(ticketScanRequest.qrCodeData());
             LocalDateTime currentScanTime = LocalDateTime.now();
-            TicketQrData ticketQrData = objectMapper.readValue(jsonData, TicketQrData.class);
+            TicketQrData ticketQrData = objectMapper.readValue(ticketScanRequest.qrCodeJsonData(), TicketQrData.class);
             if (!verifySignature(ticketQrData)) {
                 throw new TicketProcessingException("Invalid QR code signature");
             }
@@ -194,12 +193,7 @@ public class TicketServiceImpl implements TicketService{
             if (ticket == null) {
                 throw new EntityNotFoundException("Ticket not found with code: " + ticketQrData.ticketCode());
             }
-            if(ticket.getFareMatrix() == null) {
-                throw new EntityNotFoundException("Fare matrix not found for ticket with code: " + ticketQrData.ticketCode());
-            }
-            if(ticket.getFareMatrix().getStartStationId() == null) {
-                throw new EntityNotFoundException("Start station not found for fare matrix of ticket with code: " + ticketQrData.ticketCode());
-            }
+
             if(ticket.getTicketType() == null) {
                 throw new EntityNotFoundException("Ticket type not found for ticket with code: " + ticketQrData.ticketCode());
             }
@@ -215,6 +209,12 @@ public class TicketServiceImpl implements TicketService{
             }
             switch (ticket.getTicketType().getValidityDuration()) {
                 case SINGLE -> {
+                    if(ticket.getFareMatrix() == null) {
+                        throw new EntityNotFoundException("Fare matrix not found for ticket with code: " + ticketQrData.ticketCode());
+                    }
+                    if(ticket.getFareMatrix().getStartStationId() == null) {
+                        throw new EntityNotFoundException("Start station not found for fare matrix of ticket with code: " + ticketQrData.ticketCode());
+                    }
                     if(ticket.getStatus()!= TicketStatus.NOT_USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for entry");
                     }
@@ -252,10 +252,12 @@ public class TicketServiceImpl implements TicketService{
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public TicketResponse scanExitTicket(TicketScanRequest ticketScanRequest) {
+        if (ticketScanRequest.qrCodeJsonData().isEmpty() ||  ticketScanRequest.stationId() == null) {
+            throw new IllegalArgumentException("QR code data and station ID are required");
+        }
         try {
-            String jsonData = qrService.readQrCode(ticketScanRequest.qrCodeData());
             LocalDateTime currentScanTime = LocalDateTime.now();
-            TicketQrData ticketQrData = objectMapper.readValue(jsonData, TicketQrData.class);
+            TicketQrData ticketQrData = objectMapper.readValue(ticketScanRequest.qrCodeJsonData(), TicketQrData.class);
             if (!verifySignature(ticketQrData)) {
                 throw new TicketProcessingException("Invalid QR code signature");
             }
@@ -263,9 +265,7 @@ public class TicketServiceImpl implements TicketService{
             if (ticket == null) {
                 throw new EntityNotFoundException("Ticket not found with code: " + ticketQrData.ticketCode());
             }
-            if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
-                throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
-            }
+
             if (ticket.getTicketType() == null) {
                 throw new EntityNotFoundException("Ticket type not found for ticket with code: " + ticketQrData.ticketCode());
             }
@@ -276,6 +276,9 @@ public class TicketServiceImpl implements TicketService{
             switch (ticket.getTicketType().getValidityDuration()) {
                 case SINGLE -> {
                     // Single-use ticket: mark as expired after exit
+                    if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
+                        throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
+                    }
                     if (ticket.getStatus() != TicketStatus.USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for exit");
                     }
@@ -351,7 +354,7 @@ public class TicketServiceImpl implements TicketService{
         return TicketResponse.builder()
                 .id(ticket.getTicketId())
                 .ticketTypeId(ticket.getTicketType().getTicketTypeId())
-                .fareMatrixId(ticket.getFareMatrix().getFareMatrixId() == null ? null : ticket.getFareMatrix().getFareMatrixId())
+                .fareMatrixId(ticket.getFareMatrix() == null ? null : ticket.getFareMatrix().getFareMatrixId())
                 .ticketCode(ticket.getTicketCode())
                 .name(ticket.getName())
                 .actualPrice(ticket.getActualPrice())
@@ -412,7 +415,7 @@ public class TicketServiceImpl implements TicketService{
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String nowStr = LocalDateTime.now().format(formatter);
-            String untilStr = LocalDateTime.now().plusMinutes(1).format(formatter);
+            String untilStr = LocalDateTime.now().plusMinutes(2).format(formatter);
             // First build without signature
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())
