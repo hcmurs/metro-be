@@ -43,12 +43,16 @@ public class FareMatrixServiceImpl implements FareMatrixService{
     }
 
     @Override
-    public FareMatrixResponse updateFareMatrix(FareMatrixUpdateRequest fareMatrix) {
+    public FareMatrixResponse updateFareMatrix(FareMatrixRequest fareMatrix, Long id) {
+        FareMatrix fareMatrixexist = fareMatrixRepository.findByStartStationIdAndEndStationId(
+                fareMatrix.startStationId(), fareMatrix.endStationId());
+        if (fareMatrixexist != null) throw new EntityExistsException("Fare matrix already exists for this station pair");
         FareMatrix fareMatrixEntity = fareMatrixRepository.findById(fareMatrix.fareMatrixId())
                 .orElseThrow(() -> new EntityNotFoundException("Fare matrix not found"));
         fareMatrixEntity.setPrice(fareMatrix.price());
         fareMatrixEntity.setName(fareMatrix.name());
-        fareMatrixEntity.setActive(fareMatrix.isActive());
+        fareMatrixEntity.setStartStationId(fareMatrix.startStationId());
+        fareMatrixEntity.setEndStationId(fareMatrix.endStationId());
         fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
     }
