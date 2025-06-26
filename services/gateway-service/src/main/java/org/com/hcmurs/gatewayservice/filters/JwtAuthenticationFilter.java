@@ -42,12 +42,15 @@ public class JwtAuthenticationFilter implements WebFilter {
     final List<String> PUBLIC_ENDPOINTS = List.of(
             //Swagger
             "/swagger-ui.html",
+            "/swagger-ui/**",  // Add this line for newer Swagger UI paths
             "/favicon.ico",
             "/v3/api-docs/**",
             "/webjars/swagger-ui/**",
             //Auth
             "/api/oauth2/authorization/**",
             "/api/auth/local-login",
+            "/api/auth/**",
+            "/api/v1/auth/**",
             //User
             "/api/users/is-username-exist",
             "/api/users/is-email-exist",
@@ -58,12 +61,28 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/notifications/verify-otp",
             "/actuator/health",
             //Stations
-            "/api/stations/**",
-            "/api/schedules/**",
-            "/api/routes/**",
+            "/api/routes",
+            "/api/routes/{id}",
+            "/api/routes/search",
+            "/api/routes/code/{routeCode}",
+            "/api/stations",
+            "/api/stations/{id}",
+            "/api/stations/search",
+            "api/stations/route/{routeId}",
+            "/api/schedules",
+            "/api/schedules/{id}",
+            "/api/schedules/station/{stationId}",
             //ticket
-            "/api/ts/**",
-            "/api/user/orders/**"
+//            "/api/ts/**",
+//            "/user/orders/**",
+            "/api/ts/fare-matrices/{id}",
+            "/api/ts/fare-matrices",
+            "/api/ts/fare-matrices/by-station/{stationId}",
+            "/api/ts/fare-matrices/get-fare",
+            "/api/ts/ticket-types/{id}",
+            "/api/ts/ticket-types",
+            "api/payment/callback/**",
+            "/aggregate/**"
 
     );
 

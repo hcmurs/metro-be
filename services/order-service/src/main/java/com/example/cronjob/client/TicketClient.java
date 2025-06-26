@@ -1,14 +1,14 @@
 package com.example.cronjob.client;
 
+import com.example.cronjob.Config.FeignConfig;
 import com.example.cronjob.DTO.Request.TicketRequest;
 import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.DTO.Response.TicketResponse;
 import com.example.cronjob.Enum.TicketStatus;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "ticket-service", path = "/api/ts/tickets")
+@FeignClient(name = "ticket-service",url = "${service.users.url}", configuration = FeignConfig.class)
 public interface TicketClient {
     @PostMapping("/ticket-type")
     ApiResponse<TicketResponse> createTicketType(@RequestBody TicketRequest.TicketType ticket);

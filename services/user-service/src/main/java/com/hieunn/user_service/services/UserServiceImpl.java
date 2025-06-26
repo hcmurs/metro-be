@@ -10,24 +10,28 @@ import com.hieunn.user_service.mappers.UserMapper;
 import com.hieunn.user_service.models.AuthProvider;
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.repositories.UserRepository;
-import com.hieunn.user_service.utils.JwtUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     UserRepository userRepository;
     UserMapper userMapper;
-    JwtUtil jwtUtil;
     PasswordEncoder passwordEncoder;
     RedisTemplate<String, String> redisTemplate;
 
@@ -104,8 +108,7 @@ public class UserServiceImpl implements UserService {
                 .email(request.getEmail())
                 .name(request.getName())
                 .authProvider(request.getAuthProvider())
-                .pictureUrl(request.getPictureUrl())
-                .role("ROLE_CUSTOMER");
+                .pictureUrl(request.getPictureUrl());
 
         if (request.getAuthProvider() == AuthProvider.GOOGLE) {
             builder.googleId(request.getProviderId());
@@ -117,18 +120,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findUser(String token) {
-        Long userId = jwtUtil.extractUserId(token);
-        Optional<User> userById = userRepository.findById(userId);
+    public User getCurrentUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        User currentUser = (User) securityContext.getAuthentication().getPrincipal();
 
-        if (userById.isPresent()) {
-            return userMapper.toUserDto(userById.get());
-        } else {
+        if (currentUser == null) {
             throw new CustomException(
-                    ErrorMessage.USER_NOT_FOUND.getStatus(),
-                    ErrorMessage.USER_NOT_FOUND.getMessage()
-            );
+                    ErrorMessage.UNAUTHENTICATED.getStatus(),
+                    ErrorMessage.UNAUTHENTICATED.getMessage());
         }
+
+        return currentUser;
+    }
+
+    @Override
+    public UserDto getCurrentUserDto() {
+        return userMapper.toUserDto(this.getCurrentUser());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserDto> findAll() {
+        List<User> users = userRepository.findAll();
+
+        return users
+                .stream()
+                .map(userMapper::toUserDto)
+                .toList();
     }
 
     @Override
@@ -142,9 +160,9 @@ public class UserServiceImpl implements UserService {
         redisTemplate.delete(registerRequest.getEmail());
 
         User newUser = createNewUserFromLocal(registerRequest);
-        User savedUser = userRepository.save(newUser);
+        userRepository.save(newUser);
 
-        return userMapper.toUserDto(savedUser);
+        return userMapper.toUserDto(newUser);
     }
 
     @Override
@@ -169,12 +187,6 @@ public class UserServiceImpl implements UserService {
 
         User user = userByEmail.get();
 
-        if (user.getPassword() != null && user.getPassword().equals(newPassword)) {
-            throw new CustomException(
-                    ErrorMessage.NEW_PASSWORD_EQUALS_OLD_PASSWORD.getStatus(),
-                    ErrorMessage.NEW_PASSWORD_EQUALS_OLD_PASSWORD.getMessage());
-        }
-
         if (redisTemplate.opsForValue().get(email) == null) {
             throw new CustomException(
                     ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
@@ -192,7 +204,6 @@ public class UserServiceImpl implements UserService {
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .authProvider(AuthProvider.LOCAL)
-                .role("ROLE_CUSTOMER")
                 .build();
     }
 
@@ -214,5 +225,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return userMapper.toUserDto(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(
+                        ErrorMessage.USER_NOT_FOUND.getStatus(),
+                        ErrorMessage.USER_NOT_FOUND.getMessage()));
     }
 }

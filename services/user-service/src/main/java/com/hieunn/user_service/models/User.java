@@ -8,9 +8,14 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -24,7 +29,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -38,7 +43,7 @@ public class User {
 
     @NotEmpty
     @Email
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     String email;
 
     @Column(name = "name")
@@ -58,9 +63,11 @@ public class User {
     String pictureUrl;
 
     @Column(name = "role", nullable = false)
-    String role;
+    @Builder.Default
+    String role = "ROLE_CUSTOMER";
 
     @Column(name = "is_student", nullable = false)
+    @Builder.Default
     boolean isStudent = false;
 
     @Column(name = "student_expired_date")
@@ -77,7 +84,13 @@ public class User {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime updatedAt;
 
-    public boolean getIsStudent() {
-        return this.isStudent;
+    public void setRole(String role) {
+        this.role = role.toUpperCase();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String formattedRole = this.role.startsWith("ROLE_") ? this.role : "ROLE_" + this.role;
+        return List.of(new SimpleGrantedAuthority(formattedRole));
     }
 }

@@ -8,10 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderTicketSingleRequest {
-    private Long userId;
     private TicketRequest.FareMatrix fareMatrixId;
     private Long paymentMethodId;
-
-
-
 }

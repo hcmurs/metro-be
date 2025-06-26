@@ -1,8 +1,9 @@
 package org.alfred.ticketservice.dto.ticket_type;
 
 import jakarta.validation.constraints.*;
+import org.alfred.ticketservice.model.enums.Duration;
 
-                                      public record UpdateTicketTypeRequest(
+public record UpdateTicketTypeRequest(
                                               @NotNull(message = "Ticket type ID is required for updates")
                                               Long ticketTypeId,
 
@@ -23,5 +24,5 @@ import jakarta.validation.constraints.*;
                                               @NotNull(message = "Validity duration is required")
                                               @Positive(message = "Validity duration must be greater than zero")
                                               @Max(value = 365, message = "Validity duration cannot exceed 365")
-                                              int validityDuration
+                                              Duration validityDuration
                                       ) {}

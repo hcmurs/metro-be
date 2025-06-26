@@ -43,12 +43,16 @@ public class FareMatrixServiceImpl implements FareMatrixService{
     }
 
     @Override
-    public FareMatrixResponse updateFareMatrix(FareMatrixUpdateRequest fareMatrix) {
+    public FareMatrixResponse updateFareMatrix(FareMatrixRequest fareMatrix, Long id) {
+        FareMatrix fareMatrixexist = fareMatrixRepository.findByStartStationIdAndEndStationId(
+                fareMatrix.startStationId(), fareMatrix.endStationId());
+        if (fareMatrixexist != null) throw new EntityExistsException("Fare matrix already exists for this station pair");
         FareMatrix fareMatrixEntity = fareMatrixRepository.findById(fareMatrix.fareMatrixId())
                 .orElseThrow(() -> new EntityNotFoundException("Fare matrix not found"));
         fareMatrixEntity.setPrice(fareMatrix.price());
         fareMatrixEntity.setName(fareMatrix.name());
-        fareMatrixEntity.setActive(fareMatrix.isActive());
+        fareMatrixEntity.setStartStationId(fareMatrix.startStationId());
+        fareMatrixEntity.setEndStationId(fareMatrix.endStationId());
         fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
     }
@@ -93,6 +97,23 @@ public class FareMatrixServiceImpl implements FareMatrixService{
             throw new EntityNotFoundException("Station not found on the line between start and end stations");
         }
         return stationClient.checkStationOnLine(startStationId,endStationId, stationId).getData();
+    }
+
+    @Override
+    public FareMatrixResponse getFareMatrixByStations(FindFareRequest findFareRequest) {
+        Long startStationId = findFareRequest.startStationId();
+        Long endStationId = findFareRequest.endStationId();
+        if (stationClient.getStationById(startStationId).getData() == null) {
+            throw new EntityNotFoundException("Start station not found with id: " + startStationId);
+        }
+        if (stationClient.getStationById(endStationId).getData() == null) {
+            throw new EntityNotFoundException("End station not found with id: " + endStationId);
+        }
+        FareMatrix fareMatrix = fareMatrixRepository.findByStartStationIdAndEndStationId(startStationId, endStationId);
+        if (fareMatrix == null) {
+            throw new EntityNotFoundException("Fare matrix not found for the given station pair");
+        }
+        return mapToResponse(fareMatrix);
     }
 
     private FareMatrixResponse mapToResponse(FareMatrix fareMatrix) {

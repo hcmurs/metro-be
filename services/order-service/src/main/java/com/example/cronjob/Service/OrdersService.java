@@ -10,11 +10,13 @@ import java.util.List;
 
 
 public interface OrdersService {
-    ApiResponse<OrderResponse> generateOrderTicketSingle(OrderTicketSingleRequest orderTicketSingleRequest);
-    ApiResponse<OrderResponse> generateOrderTicketDays(OrderTicketDaysRequest orderTicketSingleRequest);
+    ApiResponse<OrderResponse> generateOrderTicketSingle(OrderTicketSingleRequest orderTicketSingleRequest,String token);
+    ApiResponse<OrderResponse> generateOrderTicketDays(OrderTicketDaysRequest orderTicketSingleRequest,String token);
     ApiResponse<List<OrderResponse>> getAllOrders();
     ApiResponse<OrderResponse> getOrderById(Long orderId);
     ApiResponse<OrderResponse> updateOrder(Long orderId);
-    ApiResponse<TransactionResponse> updateTransaction(Long orderId);
+    ApiResponse<TransactionResponse> updateTransactionSuccess(Long orderId);
+    ApiResponse<TransactionResponse> updateTransactionFailed(Long orderId);
+    ApiResponse<List<OrderResponse>> getOrderByUserId(String token);
 
 }

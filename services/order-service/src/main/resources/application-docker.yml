@@ -13,7 +13,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 4008
+  port: 4009
 
 springdoc:
   swagger-ui:

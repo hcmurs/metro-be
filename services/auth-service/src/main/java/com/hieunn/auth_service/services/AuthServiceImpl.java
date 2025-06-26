@@ -1,10 +1,16 @@
 package com.hieunn.auth_service.services;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.hieunn.auth_service.dtos.requests.LocalLoginRequest;
+import com.hieunn.auth_service.dtos.requests.SocialLoginUserRequest;
 import com.hieunn.auth_service.dtos.responses.ApiResponse;
+import com.hieunn.auth_service.dtos.responses.TokenResponse;
 import com.hieunn.auth_service.dtos.responses.UserDto;
-import com.hieunn.auth_service.dtos.requests.RegisterRequest;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
+import com.hieunn.auth_service.models.AuthProvider;
 import com.hieunn.auth_service.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,21 +18,29 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Date;
 
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
-    JwtUtil jwtUtil;
-    RedisTemplate<String, String> redisTemplate;
-    UserServiceClient userServiceClient;
-    HttpServletResponse response;
+    final JwtUtil jwtUtil;
+    final RedisTemplate<String, String> redisTemplate;
+    final UserServiceClient userServiceClient;
+    final HttpServletResponse response;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    String googleClientId;
+
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -81,4 +95,83 @@ public class AuthServiceImpl implements AuthService {
 
         return apiResponse;
     }
+
+
+    @Override
+    public ApiResponse<TokenResponse> processGoogleLogin(String idToken) {
+        try {
+            // Configure the Google ID token verifier
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    new NetHttpTransport(), new GsonFactory())
+                    .setAudience(Collections.singletonList(googleClientId))
+                    .build();
+
+            // Verify the token
+            GoogleIdToken googleIdToken = verifier.verify(idToken);
+            if (googleIdToken == null) {
+                return ApiResponse.success(null, "Invalid Google ID token");
+            }
+
+            // Extract user information
+            GoogleIdToken.Payload payload = googleIdToken.getPayload();
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
+            String pictureUrl = (String) payload.get("picture");
+            String providerId = payload.getSubject();
+
+            // Find or create user in your system
+            SocialLoginUserRequest socialLoginRequest = new SocialLoginUserRequest(
+                    email, name, providerId, pictureUrl, AuthProvider.GOOGLE);
+            UserDto user = userServiceClient.processSocialLogin(socialLoginRequest).getData();
+
+            // Generate JWT token
+            String accessToken = jwtUtil.generateToken(user);
+
+            return ApiResponse.success(new TokenResponse(accessToken));
+        } catch (Exception e) {
+            log.error("Error validating Google ID token", e);
+            return ApiResponse.success(null, "Authentication failed");
+        }
+    }
+
+    @Override
+    public ApiResponse<UserDto> getUserProfileFromToken(String authorizationHeader) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ApiResponse.<UserDto>builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .message("Invalid Authorization header format")
+                        .build();
+            }
+
+            String token = authorizationHeader.substring(7);
+
+            if (!jwtUtil.validateToken(token)) {
+                return ApiResponse.<UserDto>builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .message("Invalid or expired token")
+                        .build();
+            }
+
+            ApiResponse<UserDto> userResponse = userServiceClient.getUserProfile("Bearer " + token);
+
+            if (userResponse.getData() != null) {
+                return ApiResponse.success(userResponse.getData());
+            } else {
+                return ApiResponse.<UserDto>builder()
+                        .status(userResponse.getStatus())
+                        .message(userResponse.getMessage())
+                        .build();
+            }
+
+        } catch (Exception e) {
+            log.error("Error fetching user profile from token", e);
+            return ApiResponse.<UserDto>builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .message("Failed to fetch user profile")
+                    .build();
+        }
+    }
+
+
 }

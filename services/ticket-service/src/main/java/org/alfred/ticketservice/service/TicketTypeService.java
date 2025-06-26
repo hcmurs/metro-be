@@ -11,7 +11,7 @@ public interface TicketTypeService {
 
     TicketTypeResponse createTicketType(TicketTypeRequest ticketType);
 
-    TicketTypeResponse updateTicketType(TicketTypeRequest ticketType);
+    TicketTypeResponse updateTicketType(TicketTypeRequest ticketType,Long id);
 
     List<TicketTypeResponse> getAll();
 

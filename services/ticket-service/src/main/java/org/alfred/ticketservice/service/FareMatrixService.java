@@ -9,7 +9,7 @@ public interface FareMatrixService {
 
     FareMatrixResponse createFareMatrix(FareMatrixRequest fareMatrix);
 
-    FareMatrixResponse updateFareMatrix(FareMatrixUpdateRequest fareMatrix);
+    FareMatrixResponse updateFareMatrix(FareMatrixRequest fareMatrix, Long id);
 
     void deleteFareMatrix(Long id);
 
@@ -18,4 +18,6 @@ public interface FareMatrixService {
     List<FareMatrixResponse> getFareMatricesByStartStationId(Long startStationId);
 
     boolean isStationInFareMatrix(Long stationId, Long fareMatrixId);
+
+    FareMatrixResponse getFareMatrixByStations(FindFareRequest request);
 }

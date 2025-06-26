@@ -17,14 +17,15 @@ public enum ErrorMessage {
     INVALID_TOKEN(401, "Invalid JWT token"),
     INVALID_API_KEY(401, "Invalid API key"),
     UNAUTHORIZED(403, "You do not have permission"),
+    UNAUTHENTICATED(401, "You haven't login yet"),
     ALREADY_LOGOUT(401, "Already logout"),
     LACK_OF_TOKEN(400, "Lack of JWT token"),
     ALREADY_REQUESTED(400, "Already requested"),
     EMAIL_NOT_VERIFIED(401, "Email is not verified"),
     INCORRECT_USERNAME_OR_PASSWORD(401, "Incorrect username or password"),
-    NEW_PASSWORD_EQUALS_OLD_PASSWORD(400, "New password are the same with old password"),
 
-    REQUEST_NOT_FOUND(404, "Request does not exist");
+    REQUEST_NOT_FOUND(404, "Request does not exist"),
+    FEEDBACK_NOT_FOUND(404, "Feedback does not exist");
 
     int status;
     String message;

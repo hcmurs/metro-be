@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -62,6 +63,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.error(400, message));
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthorizationDeniedException(AuthorizationDeniedException e) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.error(
+                        ErrorMessage.UNAUTHORIZED.getStatus(),
+                        ErrorMessage.UNAUTHORIZED.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

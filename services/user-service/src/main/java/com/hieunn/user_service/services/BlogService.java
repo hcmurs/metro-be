@@ -1,13 +1,20 @@
 package com.hieunn.user_service.services;
 
 import com.hieunn.user_service.dtos.requests.BlogDTO;
+import com.hieunn.user_service.dtos.requests.BlogDTO.BlogPageRes;
+import com.hieunn.user_service.models.Blog;
+import org.springframework.data.domain.Pageable;
 
 public interface BlogService {
 
+    BlogPageRes getAll(Pageable pageable);
+
+    Blog getById(Integer id);
+
     void add(BlogDTO.BlogReq req);
 
-    void update(BlogDTO.BlogReq req);
+    void update(Integer id, BlogDTO.BlogReq req);
 
-    void delete(String id);
+    void delete(Integer id);
 
 }
