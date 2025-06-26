@@ -18,6 +18,7 @@ import com.example.cronjob.Pojos.Transactions;
 import com.example.cronjob.Repository.OrdersRepository;
 import com.example.cronjob.Repository.TransactionsRepository;
 import com.example.cronjob.client.TicketClient;
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -60,7 +63,7 @@ public class OrdersServiceImpl implements OrdersService {
         ApiResponse<TicketResponse> ticketRes = ticketClient.createTicketFare(request.getFareMatrixId());
         TicketResponse ticketResponse = ticketRes.getData();
         if (ticketResponse == null) {
-            throw new EntityNotFoundException("Create ticket failed for Fare Matrix ID: " + request.getFareMatrixId());
+            throw new EntityNotFoundException(ticketRes.getMessage());
         }
 
         return generateOrder(request.getPaymentMethodId(), ticketResponse,token);
@@ -69,13 +72,17 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public ApiResponse<OrderResponse> generateOrderTicketDays(OrderTicketDaysRequest request,String token) {
         // Get ticket using ticketId
-        ApiResponse<TicketResponse> ticketRes = ticketClient.createTicketType(request.getTicketId());
-        TicketResponse ticketResponse = ticketRes.getData();
-        if (ticketResponse == null) {
-            throw new EntityNotFoundException("Create ticket failed for Ticket Type ID: " + request.getTicketId());
-        }
+        try {
+            ApiResponse<TicketResponse> ticketRes = ticketClient.createTicketType(request.getTicketId());
+            TicketResponse ticketResponse = ticketRes.getData();
+            if (ticketResponse == null) {
+                throw new EntityNotFoundException(ticketRes.getMessage());
+            }
 
-        return generateOrder(request.getPaymentMethodId(), ticketResponse,token);
+            return generateOrder(request.getPaymentMethodId(), ticketResponse, token);
+        }catch (FeignException.Forbidden ex){
+            throw new IllegalArgumentException("This ticket only available for students");
+        }
     }
 
     private ApiResponse<OrderResponse> generateOrder(Long paymentMethodId, TicketResponse ticketResponse, String token) {
@@ -156,10 +163,16 @@ public class OrdersServiceImpl implements OrdersService {
         }
         if (orders.getTransaction().getTransactionStatus() == TransactionStatus.SUCCESSFUL) {
             orders.setStatus(OrderStatus.SUCCESSFUL);
-            ticketClient.updateTicketStatus(orders.getTicketId(), TicketStatus.NOT_USED);
+            ApiResponse<TicketResponse> res = ticketClient.updateTicketStatus(orders.getTicketId(), TicketStatus.NOT_USED);
+            if(res.getData()==null){
+                throw new EntityNotFoundException(res.getMessage());
+            }
         } else if (orders.getTransaction().getTransactionStatus() == TransactionStatus.FAILED) {
             orders.setStatus(OrderStatus.FAILED);
-            ticketClient.updateTicketStatus(orders.getTicketId(), TicketStatus.CANCELLED);
+            ApiResponse<TicketResponse> res = ticketClient.updateTicketStatus(orders.getTicketId(), TicketStatus.CANCELLED);
+            if(res.getData()==null){
+                throw new EntityNotFoundException(res.getMessage());
+            }
         } else {
             orders.setStatus(OrderStatus.PENDING);
         }
@@ -226,6 +239,40 @@ public class OrdersServiceImpl implements OrdersService {
                 .status(200)
                 .message("Order retrieved successfully")
                 .data(orderMapping.toResponseList(ordersRepository.findByUserId(userId)))
+                .build();
+    }
+
+    @Override
+    public ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByUserId(String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        List<Orders> orders = ordersRepository.findByUserId(userId);
+        if (orders.isEmpty()) {
+            throw new EntityNotFoundException("No orders found for user ID: " + userId);
+        }
+        List<Long> ticketIds = orders.stream()
+                .map(Orders::getTicketId)
+                .distinct()
+                .toList();
+        List<TicketResponse> ticketResponses = ticketClient.getTicketsByIds(ticketIds).getData();
+        if( ticketResponses == null || ticketResponses.isEmpty()) {
+            throw new EntityNotFoundException("No tickets found for the provided IDs");
+        }
+        // 🔹 Map ticketId -> TicketResponse để tra nhanh
+        Map<Long, TicketResponse> ticketMap = ticketResponses.stream()
+                .collect(Collectors.toMap(TicketResponse::id, t -> t));
+        List<OrderResponse.OrderDetailResponse> orderDetails = orders.stream()
+                .map(order -> OrderResponse.OrderDetailResponse.builder()
+                        .orderId(order.getOrderId())
+                        .userId(order.getUserId())
+                        .status(order.getStatus())
+                        .amount(order.getAmount())
+                        .ticket(ticketMap.get(order.getTicketId()))
+                        .build())
+                .toList();
+        return ApiResponse.<List<OrderResponse.OrderDetailResponse>>builder()
+                .status(200)
+                .message("Order retrieved successfully")
+                .data(orderDetails)
                 .build();
     }
 }

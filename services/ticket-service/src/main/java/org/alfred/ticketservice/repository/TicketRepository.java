@@ -14,4 +14,5 @@ public interface TicketRepository extends JpaRepository<Tickets, Long> {
     Tickets findByTicketCode(String ticketCode);
     List<Tickets> findByFareMatrix(FareMatrix fareMatrix);
     List<Tickets> findByTicketType(TicketTypes ticketType);
+    List<Tickets> findByTicketIdIn(List<Long> ticketIds);
 }

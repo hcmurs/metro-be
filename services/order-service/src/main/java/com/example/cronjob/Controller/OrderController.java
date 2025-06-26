@@ -55,12 +55,20 @@ public class OrderController {
         return ordersService.getOrderById(orderId);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     @Operation(summary = "Get order by user ID", description = "Retrieves an order by the user's ID.")
     public ApiResponse<List<OrderResponse>> getOrderByUserId(@RequestHeader ("Authorization") String token) {
         String validatedToken = token.startsWith("Bearer ") ? token.substring(7) : token;
         return ordersService.getOrderByUserId(validatedToken);
+    }
+
+    @GetMapping("/user/details")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @Operation(summary = "Get order by user ID", description = "Retrieves an order by the user's ID.")
+    public ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByUserId(@RequestHeader ("Authorization") String token) {
+        String validatedToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+        return ordersService.getOrderDetailByUserId(validatedToken);
     }
 
     @PutMapping("update-success/{orderId}")

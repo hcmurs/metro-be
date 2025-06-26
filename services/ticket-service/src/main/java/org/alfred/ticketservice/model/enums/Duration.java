@@ -5,7 +5,8 @@ public enum Duration {
     THREE_DAYS(3, "3 Days"),
     ONE_WEEK(7, "1 Week"),
     SINGLE(0, "Single Ticket"),
-    ONE_MONTH(30, "1 Month");
+    ONE_MONTH(30, "1 Month"),
+    STUDENT(30, "Student Ticket");
 
 
     private final int durationInDays;

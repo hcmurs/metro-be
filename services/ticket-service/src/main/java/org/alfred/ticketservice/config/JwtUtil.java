@@ -44,6 +44,10 @@ public class JwtUtil {
         return Long.parseLong(userId);
     }
 
+    public boolean isStudent (String token) {
+        return extractAllClaims(token).get("isStudent", Boolean.class);
+    }
+
     public String extractRole(String token) {
         return extractAllClaims(token).get("role", String.class);
     }
