@@ -22,4 +22,6 @@ public interface TicketService {
     List<TicketResponse> getTicketsByTicketType(Long ticketTypeId);
     byte[] generateQrCodeData(String ticketCode);
     List<TicketResponse> getTicketsByIds(List<Long> ticketIds);
+    List<TicketResponse> getTicketsByIdsAndStatus(List<Long> ticketIds, TicketStatus status);
+
 }

@@ -27,6 +27,7 @@ import org.alfred.ticketservice.repository.TicketUsageLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +39,13 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @Slf4j
-public class TicketServiceImpl implements TicketService{
+public class TicketServiceImpl implements TicketService,TicketCronJobService{
     @Autowired
     private TicketTypeRepository ticketTypeRepository;
 
@@ -213,6 +215,7 @@ public class TicketServiceImpl implements TicketService{
             }
             if (ticket.getValidUntil().isBefore(currentScanTime)) {
                 ticket.setStatus(TicketStatus.EXPIRED);
+                ticketRepository.save(ticket);
                 throw new TicketProcessingException("Ticket has expired");
             }
             if(ticket.isInTrip()) {
@@ -378,7 +381,24 @@ public class TicketServiceImpl implements TicketService{
                 .toList();
     }
 
-
+    @Override
+    public List<TicketResponse> getTicketsByIdsAndStatus(List<Long> ticketIds, TicketStatus status) {
+        if (ticketIds == null || ticketIds.isEmpty()) {
+            throw new IllegalArgumentException("Ticket IDs cannot be null or empty");
+        }
+        if (status == null) {
+            throw new IllegalArgumentException("Ticket status cannot be null");
+        }
+        List<Tickets> tickets = ticketRepository.findByTicketIdInAndStatus(ticketIds,status);
+        if (tickets.isEmpty()) {
+            throw new EntityNotFoundException("No tickets found for the provided IDs and status");
+        }
+        return tickets.stream()
+                .filter(ticket -> ticket.getValidUntil().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Tickets::getCreatedAt))
+                .map(this::mapToResponse)
+                .toList();
+    }
 
 
     private TicketResponse mapToResponse(Tickets ticket) {
@@ -496,4 +516,20 @@ public class TicketServiceImpl implements TicketService{
         return expectedSignature.equals(qrData.signature());
     }
 
+    @Scheduled(cron = "0 */5 * * * *") // chạy mỗi 5 phút
+    @Transactional
+    public void expireTickets() {
+        LocalDateTime now = LocalDateTime.now();
+
+        List<TicketStatus> statusesToExpire = List.of(TicketStatus.NOT_USED, TicketStatus.USED);
+
+        statusesToExpire.forEach(status -> {
+            List<Tickets> expiredTickets = ticketRepository.findByStatusAndValidUntilBefore(status, now);
+            if (!expiredTickets.isEmpty()) {
+                expiredTickets.forEach(ticket -> ticket.setStatus(TicketStatus.EXPIRED));
+                ticketRepository.saveAll(expiredTickets);
+                log.info("✅ [{}] EXPIRED {} {} tickets", now, expiredTickets.size(), status);
+            }
+        });
+    }
 }

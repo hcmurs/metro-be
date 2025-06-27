@@ -77,13 +77,15 @@ public class TicketController {
         return ResponseEntity.ok(ApiResponse.success(ticket, "Ticket retrieved successfully"));
     }
 
-//    @GetMapping("/qr")
-//    public ResponseEntity<ApiResponse<TicketResponse>> getTicketByQr(
-//            @RequestParam @NotBlank String qrData) {
-//        log.info("Request to get ticket by QR data");
-//        TicketResponse ticket = ticketService.getTicketByQr(qrData);
-//        return ResponseEntity.ok(ApiResponse.success(ticket, "Ticket retrieved successfully"));
-//    }
+    @GetMapping("/get-by-status")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse<List<TicketResponse>>> getTicketsByIdsAndStatus(
+            @RequestParam List<Long> ticketIds,
+            @RequestParam TicketStatus status) {
+        log.info("Request to get tickets by IDs: {} and status: {}", ticketIds, status);
+        List<TicketResponse> tickets = ticketService.getTicketsByIdsAndStatus(ticketIds, status);
+        return ResponseEntity.ok(ApiResponse.success(tickets, "Tickets retrieved successfully"));
+    }
 
     @GetMapping("/fare-matrix/{fareMatrixId}")
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
