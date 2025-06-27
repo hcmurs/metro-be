@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -273,6 +274,47 @@ public class OrdersServiceImpl implements OrdersService {
                 .status(200)
                 .message("Order retrieved successfully")
                 .data(orderDetails)
+                .build();
+    }
+
+    @Override
+    public ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByStatus(String token, TicketStatus status) {
+        Long userId = jwtUtil.extractUserId(token);
+        List<Orders> orders = ordersRepository.findByUserId(userId);
+        if (orders.isEmpty()) {
+            throw new EntityNotFoundException("No orders found for user ID: " + userId);
+        }
+        List<Orders> successfulOrders = orders.stream()
+                .filter(order -> order.getStatus() == OrderStatus.SUCCESSFUL)
+                .toList();
+
+        List<Long> ticketIds = successfulOrders.stream()
+                .map(Orders::getTicketId)
+                .distinct()
+                .toList();
+        List<TicketResponse> ticketResponses = ticketClient.getTicketsByStatus(ticketIds,status).getData();
+        if( ticketResponses == null || ticketResponses.isEmpty()) {
+            throw new EntityNotFoundException("No tickets found for the provided IDs");
+        }
+        // 🔹 Map ticketId -> TicketResponse để tra nhanh
+        Map<Long, TicketResponse> ticketMap = ticketResponses.stream()
+                .collect(Collectors.toMap(TicketResponse::id, t -> t));
+
+        List<OrderResponse.OrderDetailResponse> orderDetails = successfulOrders.stream()
+                .filter(order -> ticketMap.containsKey(order.getTicketId()))
+                .map(order -> OrderResponse.OrderDetailResponse.builder()
+                        .orderId(order.getOrderId())
+                        .userId(order.getUserId())
+                        .status(order.getStatus())
+                        .amount(order.getAmount())
+                        .ticket(ticketMap.get(order.getTicketId()))
+                        .build())
+                .toList();
+
+        return ApiResponse.<List<OrderResponse.OrderDetailResponse>>builder()
+                .status(200)
+                .message("Order retrieved successfully")
+                .data(orderDetails.stream().sorted(Comparator.comparing(order -> order.ticket().validUntil())).collect(Collectors.toList()))
                 .build();
     }
 }

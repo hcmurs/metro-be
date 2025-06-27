@@ -26,4 +26,8 @@ public interface TicketClient {
 
     @GetMapping("/batch")
     ApiResponse<List<TicketResponse>> getTicketsByIds(@RequestParam("ticketIds") List<Long> ticketIds);
+
+    @GetMapping("/get-by-status")
+    ApiResponse<List<TicketResponse>> getTicketsByStatus(@RequestParam List<Long> ticketIds,
+                                                         @RequestParam TicketStatus status);
 }

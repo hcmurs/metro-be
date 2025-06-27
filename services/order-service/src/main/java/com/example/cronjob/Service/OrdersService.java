@@ -5,6 +5,7 @@ import com.example.cronjob.DTO.Request.OrderTicketSingleRequest;
 import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.DTO.Response.OrderResponse;
 import com.example.cronjob.DTO.Response.TransactionResponse;
+import com.example.cronjob.Enum.TicketStatus;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface OrdersService {
     ApiResponse<TransactionResponse> updateTransactionFailed(Long orderId);
     ApiResponse<List<OrderResponse>> getOrderByUserId(String token);
     ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByUserId(String token);
-
+    ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByStatus(String token, TicketStatus status);
 }

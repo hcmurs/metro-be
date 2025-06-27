@@ -11,5 +11,5 @@ spring:
             defaultZone: http://eureka:8761/eureka/
 
   profiles:
-    active: dbgate
+    active: dev
 
