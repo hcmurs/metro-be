@@ -7,13 +7,13 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:postgresql://metro_postgresql:5432/stationdb
+    url: jdbc:postgresql://192.168.88.154:5433/stationdb
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
