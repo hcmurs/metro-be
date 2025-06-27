@@ -27,12 +27,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/api/v1/accounts/login","/api/v1/accounts/register").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**").permitAll()
-                        .requestMatchers("/api/payment/callback/**").permitAll()
+                        .requestMatchers("/api/payment/callback/**","/api/orders/payment-methods/get-all").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Handle exceptions for unauthorized access and access denied filters
@@ -45,14 +45,5 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
 }

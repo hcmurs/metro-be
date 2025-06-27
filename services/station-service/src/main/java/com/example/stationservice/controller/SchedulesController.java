@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/schedules")
-@CrossOrigin(origins = "*")
 @Tag(name = "Schedules", description = "Operations related to schedules")
 public class SchedulesController {
 

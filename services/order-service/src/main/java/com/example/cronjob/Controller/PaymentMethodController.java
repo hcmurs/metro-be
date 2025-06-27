@@ -4,6 +4,7 @@ import com.example.cronjob.DTO.Request.PaymentMethodRequest;
 import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.DTO.Response.PaymentMethodResponse;
 import com.example.cronjob.Service.PaymentMethodService;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 public class PaymentMethodController {
     @Autowired
     private PaymentMethodService paymentMethodService;
-    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @PermitAll
     @GetMapping("/get-all")
     public ApiResponse<List<PaymentMethodResponse>> getAllPaymentMethods() {
         return paymentMethodService.getAllPaymentMethods();

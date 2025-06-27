@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentMethodResponse {
+    private Integer paymentMethodId;
     private String paymentMethodName;
     private boolean isActive;
 }

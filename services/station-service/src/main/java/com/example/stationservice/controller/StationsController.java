@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stations")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Tag(name = "Stations", description = "Operations related to stations")
 public class StationsController {
