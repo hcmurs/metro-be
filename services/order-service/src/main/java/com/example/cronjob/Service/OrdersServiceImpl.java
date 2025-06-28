@@ -311,6 +311,10 @@ public class OrdersServiceImpl implements OrdersService {
                         .build())
                 .toList();
 
+        if(orderDetails.isEmpty()) {
+            throw new EntityNotFoundException("No orders found with status: " + status);
+        }
+
         return ApiResponse.<List<OrderResponse.OrderDetailResponse>>builder()
                 .status(200)
                 .message("Order retrieved successfully")
