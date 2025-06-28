@@ -17,5 +17,4 @@ public class RegisterRequest {
     String name;
     String username;
     String password;
-    AuthProvider authProvider;
 }

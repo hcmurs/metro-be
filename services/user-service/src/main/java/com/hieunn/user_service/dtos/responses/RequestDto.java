@@ -17,7 +17,9 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RequestDto {
     Long requestId;
+    String title;
     String content;
+    String rejectionReason;
     String studentCardImage;
     String citizenIdentityCardImage;
     RequestStatus requestStatus;

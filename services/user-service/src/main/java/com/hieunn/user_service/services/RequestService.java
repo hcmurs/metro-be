@@ -9,5 +9,5 @@ public interface RequestService {
     List<RequestDto> findByUserId(Long userId);
     RequestDto create(RequestCreationRequest requestCreationRequest);
     List<RequestDto> findAll();
-    void verify(Long requestId, boolean isApproved);
+    void verify(Long requestId, boolean isApproved, String rejectionReason);
 }

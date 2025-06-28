@@ -31,7 +31,7 @@ public class Feedback {
     @NotBlank
     String content;
 
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "TEXT")
     String image;
 
     @Column(name = "reply")
