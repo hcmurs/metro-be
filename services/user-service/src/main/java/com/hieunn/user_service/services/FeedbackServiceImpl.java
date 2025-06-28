@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return feedbacks
                 .stream()
+                .sorted(Comparator.comparing(Feedback::getCreatedAt).reversed())
                 .map(feedbackMapper::toFeedbackDto)
                 .toList();
     }
