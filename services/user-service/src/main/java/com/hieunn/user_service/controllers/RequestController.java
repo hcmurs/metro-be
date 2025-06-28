@@ -44,8 +44,9 @@ public class RequestController {
     @PostMapping("/verify")
     public ResponseEntity<ApiResponse<Void>> verify(
             @RequestParam Long requestId,
-            @RequestParam boolean isApproved) {
-        requestService.verify(requestId, isApproved);
+            @RequestParam boolean isApproved,
+            @RequestParam String rejectionReason) {
+        requestService.verify(requestId, isApproved, rejectionReason);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success("Request has been verified"));

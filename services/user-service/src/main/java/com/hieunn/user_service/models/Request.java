@@ -34,11 +34,18 @@ public class Request {
     @NotBlank
     String content;
 
-    @Column(name = "student_card_image", nullable = false)
+    @Column(name = "title")
+    @NotBlank
+    String title;
+
+    @Column(name = "rejection_reason")
+    String rejectionReason;
+
+    @Column(name = "student_card_image", nullable = false, columnDefinition = "TEXT")
     @NotBlank
     String studentCardImage;
 
-    @Column(name = "citizen_identity_card_image", nullable = false)
+    @Column(name = "citizen_identity_card_image", nullable = false, columnDefinition = "TEXT")
     @NotBlank
     String citizenIdentityCardImage;
 
