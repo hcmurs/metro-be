@@ -36,7 +36,10 @@ public class SecurityConfig {
             "/api/schedules",
             "/api/schedules/{id}",
             "/api/schedules/station/{stationId}",
-            "/api/orders/payment-methods/get-all"
+            "/api/orders/payment-methods/get-all",
+            "/api/ts/tickets/generate-qr",
+            "/api/ts/tickets/qr",
+
     };
 
     @Bean

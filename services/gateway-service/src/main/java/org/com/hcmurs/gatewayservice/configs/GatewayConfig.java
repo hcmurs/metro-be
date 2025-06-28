@@ -29,7 +29,7 @@ public class GatewayConfig {
 
                 .route("order_service_route", r -> r
                         .path(API_PREFIX + "/user/orders/**")
-                        .uri(ORDER_SERVICE))
+                        .uri("http://localhost:4009"))
 
                 .route("user_service_route", r -> r
                         .path(API_PREFIX + "/users/**")
