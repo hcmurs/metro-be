@@ -39,7 +39,7 @@ public class SecurityConfig {
             "/api/orders/payment-methods/get-all",
             "/api/ts/tickets/generate-qr",
             "/api/ts/tickets/qr",
-
+            "/api/bus/**"
     };
 
     @Bean

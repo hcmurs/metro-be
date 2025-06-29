@@ -40,20 +40,20 @@ public class DataInitializer implements CommandLineRunner {
         Routes route = modelMapper.map(routesResponse, Routes.class);
 
         List<Stations> stations = List.of(
-                create("BXMD", "Bến xe Miền Đông", "Bến xe Miền Đông mới (Suối Tiên)", 10.879444, 106.813889, 1, route),
-                create("NHTP", "Trường Đại học Quốc gia (National University)", "Linh Trung, Thủ Đức", 10.866389, 106.801111, 2, route),
-                create("HTP", "Khu Công nghệ cao (Hi-tech Park)", "Thủ Đức", 10.860000, 106.789000, 3, route),
-                create("TDU", "Thủ Đức", "Bình Thọ, Thủ Đức", 10.850000, 106.782000, 4, route),
-                create("BTH", "Bình Thái", "Trường Thọ, Thủ Đức", 10.843000, 106.776000, 5, route),
-                create("PL", "Phước Long", "Phước Long A, Thủ Đức", 10.833000, 106.765000, 6, route),
-                create("RC", "Rạch Chiếc", "An Phú, Thủ Đức", 10.824000, 106.752000, 7, route),
-                create("AP", "An Phú", "An Phú, Thủ Đức", 10.817000, 106.741000, 8, route),
-                create("TD", "Thảo Điền", "Thảo Điền, Thủ Đức", 10.810000, 106.735000, 9, route),
-                create("TC", "Tân Cảng", "Bình Thạnh", 10.805000, 106.722000, 10, route),
-                create("CVVT", "Công viên Văn Thánh (Văn Thánh Park)", "Bình Thạnh", 10.798000, 106.715000, 11, route),
-                create("BS", "Ba Son", "Bình Thạnh", 10.783564, 106.709794, 12, route),
-                create("NHTP", "Nhà hát Thành phố (Opera House)", "Q.1", 10.777000, 106.702800, 13, route),
-                create("BT", "Bến Thành", "Q.1", 10.772000, 106.698000, 14, route)
+                create("BXMD", "Bến xe Miền Đông", "Bến xe Miền Đông mới (Suối Tiên)", 10.879512241390108, 106.81409560253722, 1, route),
+                create("NHTP", "Trường Đại học Quốc gia (National University)", "Linh Trung, Thủ Đức", 10.866291781126687, 106.80124945301374, 2, route),
+                create("HTP", "Khu Công nghệ cao (Hi-tech Park)", "Thủ Đức", 10.858999986669915, 106.78878017918157, 3, route),
+                create("TDU", "Thủ Đức", "Bình Thọ, Thủ Đức", 10.846372121206313, 106.77159999068043, 4, route),
+                create("BTH", "Bình Thái", "Trường Thọ, Thủ Đức", 10.832601114841145, 106.76384478331777, 5, route),
+                create("PL", "Phước Long", "Phước Long A, Thủ Đức", 10.821356644499083, 106.75813941185976, 6, route),
+                create("RC", "Rạch Chiếc", "An Phú, Thủ Đức", 10.808476742610557, 106.75525715663437, 7, route),
+                create("AP", "An Phú", "An Phú, Thủ Đức", 10.802069265420103, 106.74227526515422, 8, route),
+                create("TD", "Thảo Điền", "Thảo Điền, Thủ Đức", 10.800467374750985, 106.73367073862954, 9, route),
+                create("TC", "Tân Cảng", "Bình Thạnh", 10.798550415101449, 106.72329887103433, 10, route),
+                create("CVVT", "Công viên Văn Thánh (Văn Thánh Park)", "Bình Thạnh", 10.796069240758085, 106.71553225518468, 11, route),
+                create("BS", "Ba Son", "Bình Thạnh", 10.781570288538946, 106.70799481205246, 12, route),
+                create("NHTP", "Nhà hát Thành phố (Opera House)", "Q.1", 10.776254445807423, 106.70298994292116, 13, route),
+                create("BT", "Bến Thành", "Q.1", 10.77099020206032, 106.69837125466249, 14, route)
 
         );
 
