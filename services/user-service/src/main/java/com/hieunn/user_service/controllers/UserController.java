@@ -41,6 +41,13 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse<UserDto>> findByUserId(@PathVariable Long userId) {
+        UserDto userDto = userService.findByUserId(userId);
+        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDto>> register(
             @Valid @RequestBody RegisterRequest registerRequest) {

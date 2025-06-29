@@ -197,6 +197,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserDto findByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(
+                        ErrorMessage.USER_NOT_FOUND.getStatus(),
+                        ErrorMessage.USER_NOT_FOUND.getMessage()));
+        return userMapper.toUserDto(user);
+    }
+
     private User createNewUserFromLocal(RegisterRequest request) {
         return User.builder()
                 .email(request.getEmail())
