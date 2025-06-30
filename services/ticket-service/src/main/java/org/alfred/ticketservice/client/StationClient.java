@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "station-service", path = "/api/stations")
+@FeignClient(name = "station-service", url = "http://localhost:4004", path = "/api/stations")
 public interface StationClient {
     @GetMapping("/{id}")
     ApiResponse<StationResponse> getStationById(@PathVariable("id") Long id);
