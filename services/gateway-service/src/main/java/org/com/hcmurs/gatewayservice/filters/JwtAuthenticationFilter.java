@@ -75,6 +75,8 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/bus/**",
             //ticket
 //            "/api/ts/**",
+            "/api/ts/tickets/scan/entry",
+            "/api/ts/tickets/scan/exit",
             "/api/orders/**",
             "/api/ts/fare-matrices/{id}",
             "/api/ts/fare-matrices",
