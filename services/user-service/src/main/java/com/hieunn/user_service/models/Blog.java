@@ -60,6 +60,8 @@ public class Blog extends BaseEntity {
 
     @Column(nullable = false)
     String title;
+
+    @Column(nullable = false)
     String author;
     LocalDateTime date;
     Integer comments;

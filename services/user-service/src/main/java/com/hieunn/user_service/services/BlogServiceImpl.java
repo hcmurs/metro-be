@@ -6,6 +6,7 @@ import com.hieunn.user_service.models.Blog;
 import com.hieunn.user_service.repositories.BlogRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -55,27 +56,63 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void update(Integer id, BlogReq req) {
-
         Blog blog = blogRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Blog not found with id: " + id));
 
-        if (blogRepository.existsByTitleAndIdNot(req.title(), id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title already exists");
+        if (StringUtils.isNotBlank(req.title())) {
+            if (blogRepository.existsByTitleAndIdNot(req.title(), id)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title already exists");
+            }
+            blog.setTitle(req.title());
         }
 
-        blog.setTitle(req.title());
-        blog.setContent(req.content());
-        blog.setAuthor(req.author());
-        blog.setTags(req.tags());
-        blog.setImage(req.image());
-        blog.setDate(req.date());
-        blog.setExcerpt(req.excerpt());
-        blog.setViews(req.views());
-        blog.setComments(req.comments());
-        blog.setReadTime(req.readTime());
-        blog.setCategory(req.category());
-        blog.setCreatedAt(req.createdAt());
-        blog.setUpdatedAt(req.updatedAt());
+        if (StringUtils.isNotBlank(req.content())) {
+            blog.setContent(req.content());
+        }
+
+        if (StringUtils.isNotBlank(req.author())) {
+            blog.setAuthor(req.author());
+        }
+
+        if (req.tags() != null) {
+            blog.setTags(req.tags());
+        }
+
+        if (StringUtils.isNotBlank(req.image())) {
+            blog.setImage(req.image());
+        }
+
+        if (req.date() != null) {
+            blog.setDate(req.date());
+        }
+
+        if (StringUtils.isNotBlank(req.excerpt())) {
+            blog.setExcerpt(req.excerpt());
+        }
+
+        if (req.views() != null) {
+            blog.setViews(req.views());
+        }
+
+        if (req.comments() != null) {
+            blog.setComments(req.comments());
+        }
+
+        if (req.readTime() != null) {
+            blog.setReadTime(req.readTime());
+        }
+
+        if (req.category() != null) {
+            blog.setCategory(req.category());
+        }
+
+        if (req.createdAt() != null) {
+            blog.setCreatedAt(req.createdAt());
+        }
+
+        if (req.updatedAt() != null) {
+            blog.setUpdatedAt(req.updatedAt());
+        }
 
         blogRepository.save(blog);
     }
