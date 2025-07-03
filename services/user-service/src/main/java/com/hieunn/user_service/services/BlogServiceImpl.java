@@ -19,16 +19,8 @@ public class BlogServiceImpl implements BlogService {
     private final BlogRepository blogRepository;
 
     @Override
-    public BlogPageRes getAll(Pageable pageable) {
-        Page<Blog> page = blogRepository.findAll(pageable);
-
-        return new BlogPageRes(
-            page.getContent(),
-            page.getNumber(),
-            page.getSize(),
-            page.getTotalElements(),
-            page.getTotalPages()
-        );
+    public Page<Blog> getAll(Pageable pageable) {
+        return blogRepository.findAll(pageable);
     }
 
     @Override

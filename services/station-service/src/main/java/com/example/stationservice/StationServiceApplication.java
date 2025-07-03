@@ -8,8 +8,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @BrowserLauncher(
-    value = "http://localhost:4004/swagger-ui/index.html",
-    healthCheckEndpoint = "http://localhost:4004/actuator/health"
+    value = "http://localhost:4007/swagger-ui/index.html",
+    healthCheckEndpoint = "http://localhost:4007/api/v1/actuator/health"
 )
 public class StationServiceApplication {
 

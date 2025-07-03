@@ -1,46 +1,47 @@
 package com.hieunn.user_service.dtos.requests;
 
 import com.hieunn.user_service.models.Blog;
+import com.hieunn.user_service.models.Blog.BlogCategory;
+import com.hieunn.user_service.models.Blog.BlogTag;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class BlogDTO {
 
     public record BlogReq(
 //        String id,
-        String category,
+        BlogCategory category,
         String title,
         String author,
-        String date,
+        LocalDateTime date,
         Integer comments,
         String image,
         String content,
-        List<String> tags,
+        List<BlogTag> tags,
         String readTime,
         String excerpt,
         Integer views,
-        String createdAt,
-        String updatedAt,
-        String collectionId,
-        String collectionName
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
 
     }
 
     public record BlogRes(
         String id,
-        String category,
+        BlogCategory category,
         String title,
         String author,
-        String date,
+        LocalDateTime date,
         Integer comments,
         String image,
         String content,
-        List<String> tags,
+        List<BlogTag> tags,
         String readTime,
         String excerpt,
         Integer views,
-        String createdAt,
-        String updatedAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
 
     }
