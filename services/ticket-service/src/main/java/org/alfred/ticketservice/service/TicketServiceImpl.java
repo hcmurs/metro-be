@@ -89,11 +89,11 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
             if( !ticketType.isActive()) {
                 throw new EntityNotFoundException("Ticket type is not active with id: " + ticket.id());
             }
-            if( ticketType.getValidityDuration() ==null) {
-                throw new IllegalArgumentException("Ticket type must have a valid validity duration on days");
+            if( ticketType.getValidityDuration() <0 ) {
+                throw new IllegalArgumentException("Ticket type must have a valid validity duration at least 0");
             }
             String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-            if(ticketType.getValidityDuration()==Duration.STUDENT && !jwtUtil.isStudent(token)){
+            if(ticketType.isForStudent() && !jwtUtil.isStudent(token)){
                 throw new IllegalArgumentException("This ticket only available for students");
             }
             String prefix = "MT";
@@ -123,7 +123,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
         if (ticket == null || ticket.id() == null  ) {
             throw new IllegalArgumentException("Ticket request must contain valid fareMatrixId");
         }
-        TicketTypes ticketType = ticketTypeRepository.findByValidityDuration(Duration.SINGLE);
+        TicketTypes ticketType = ticketTypeRepository.findByValidityDuration(0);
         if (ticketType == null) {
             throw new EntityNotFoundException("Default ticket type not found");
         }
@@ -224,8 +224,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
             if (ticket.getValidFrom().isAfter(currentScanTime)) {
                 throw new TicketProcessingException("Ticket is not valid yet");
             }
-            switch (ticket.getTicketType().getValidityDuration()) {
-                case SINGLE -> {
+            if(ticket.getTicketType().getValidityDuration() == 0) {
                     if(ticket.getFareMatrix() == null) {
                         throw new EntityNotFoundException("Fare matrix not found for ticket with code: " + ticketQrData.ticketCode());
                     }
@@ -242,9 +241,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     ticket.setStatus(TicketStatus.USED);
                     saveTicketUsageLog(ticket, UsageTypes.ENTRY, currentScanTime, ticketScanRequest.stationId());
                 }
-                case ONE_DAY,ONE_MONTH,ONE_WEEK,THREE_DAYS,STUDENT -> {
+                else  {
                     if (ticket.getStatus() == TicketStatus.NOT_USED) {
-                        ticket.setValidUntil(currentScanTime.plusDays(ticket.getTicketType().getValidityDuration().getDurationInDays()));
+                        ticket.setValidUntil(currentScanTime.plusDays(ticket.getTicketType().getValidityDuration()));
                         ticket.setStatus(TicketStatus.USED);
                         ticket.setInTrip(true);
                         saveTicketUsageLog(ticket, UsageTypes.ENTRY, currentScanTime, ticketScanRequest.stationId());
@@ -255,8 +254,6 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                         throw new TicketProcessingException("Ticket is not in a valid state for entry");
                     }
                 }
-                default -> throw new IllegalArgumentException("Invalid validity duration: " + ticket.getTicketType().getValidityDuration());
-            }
             Tickets updatedTicket = ticketRepository.save(ticket);
             return mapToResponse(updatedTicket);
         } catch (JsonProcessingException e) {
@@ -290,8 +287,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 throw new TicketProcessingException("Must enter before exit");
             }
             ticket.setInTrip(false);
-            switch (ticket.getTicketType().getValidityDuration()) {
-                case SINGLE -> {
+            if (ticket.getStatus() == TicketStatus.NOT_USED) {
                     // Single-use ticket: mark as expired after exit
                     if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
                         throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
@@ -304,16 +300,13 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     }
                     ticket.setStatus(TicketStatus.EXPIRED);
                 }
-                case ONE_DAY,ONE_MONTH,ONE_WEEK,THREE_DAYS,STUDENT -> {
+               else {
                     // Multi-day pass: keep status as USED for future entries
                     if (ticket.getStatus() != TicketStatus.USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for exit");
                     }
                     // Status remains USED - no change needed
                 }
-                default -> throw new IllegalArgumentException("Invalid validity duration: " + ticket.getTicketType().getValidityDuration());
-            }
-
             saveTicketUsageLog(ticket, UsageTypes.EXIT, currentScanTime, ticketScanRequest.stationId());
             Tickets updatedTicket = ticketRepository.save(ticket);
             return mapToResponse(updatedTicket);

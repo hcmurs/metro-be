@@ -12,6 +12,7 @@ public record TicketTypeResponse(
         float price,
         int validityDuration,
         boolean isActive,
+        boolean forStudent,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {}

@@ -31,42 +31,43 @@ public class DataInitializer implements CommandLineRunner {
                 TicketTypes.builder()
                         .name("One Day")
                         .description("Vé 1 ngày")
-                        .validityDuration(Duration.ONE_DAY) // 1 day in minutes
+                        .validityDuration(1) // 1 day in minutes
                         .price(20000f)
                         .isActive(true)
                         .build(),
                 TicketTypes.builder()
                         .name("Three Days")
                         .description("Vé 3 ngày")
-                        .validityDuration(Duration.THREE_DAYS) // 3 days in minutes
+                        .validityDuration(3) // 3 days in minutes
                         .price(50000f)
                         .isActive(true)
                         .build(),
                 TicketTypes.builder()
                         .name("One Week")
                         .description("Vé tuần")
-                        .validityDuration(Duration.ONE_WEEK) // 7 days in minutes
+                        .validityDuration(7) // 7 days in minutes
                         .price(100000f)
                         .isActive(true)
                         .build(),
                 TicketTypes.builder()
                         .name("One Month")
                         .description("Vé tháng")
-                        .validityDuration(Duration.ONE_MONTH) // 30 days in minutes
+                        .validityDuration(30) // 30 days in minutes
                         .price(300000f)
                         .isActive(true)
                         .build(),
                 TicketTypes.builder()
                         .name("Single")
                         .description("Vé đơn")
-                        .validityDuration(Duration.SINGLE) // 30 days in minutes
+                        .validityDuration(0) // 30 days in minutes
                         .price(0f)
                         .isActive(true)
                         .build(),
                 TicketTypes.builder()
                         .name("Student")
                         .description("Vé sinh viên")
-                        .validityDuration(Duration.STUDENT) // 30 days in minutes
+                        .validityDuration(30) // 30 days in minutes
+                        .forStudent(true)
                         .price(150000f)
                         .isActive(true)
                         .build()
