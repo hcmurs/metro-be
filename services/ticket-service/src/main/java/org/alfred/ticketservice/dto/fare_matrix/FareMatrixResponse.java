@@ -11,6 +11,7 @@ public record FareMatrixResponse(
         float price,
         float startStationId,
         float endStationId,
+        boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

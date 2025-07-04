@@ -123,6 +123,7 @@ public class FareMatrixServiceImpl implements FareMatrixService{
                 .name(fareMatrix.getName())
                 .startStationId(fareMatrix.getStartStationId())
                 .endStationId(fareMatrix.getEndStationId())
+                .isActive(fareMatrix.isActive())
                 .createdAt(fareMatrix.getCreatedAt())
                 .updatedAt(fareMatrix.getUpdatedAt())
                 .build();
