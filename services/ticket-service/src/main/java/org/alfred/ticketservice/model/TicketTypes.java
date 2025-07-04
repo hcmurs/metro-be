@@ -35,9 +35,10 @@ package org.alfred.ticketservice.model;
         private String description;
 
         @NotNull(message = "Validity duration is required")
-        @Column(name = "validity_duration", nullable = false,unique = true)
-        @Enumerated(EnumType.STRING)
-        private Duration validityDuration; // in minutes
+        @Column(name = "validity_duration", nullable = false)
+        private int validityDuration; // in minutes
+
+        private boolean forStudent;
 
         @Column(name = "is_active", nullable = false)
         private boolean isActive = true;
