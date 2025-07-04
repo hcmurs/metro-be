@@ -1,7 +1,7 @@
 <configuration>
   <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
-  <property name="DEV_HOME" value="logs/gateway-service" />
+  <property name="DEV_HOME" value="logs/eureka-service" />
   <property name="MAX_LOG_FILE_SIZE" value="10MB" />
   <property name="MAX_LOG_HISTORY" value="30" />
 
@@ -50,7 +50,7 @@
 
   </appender>
 
-  <logger name="org.com.hcmurs.gatewayservice" level="debug" additivity="false">
+  <logger name="org.com.hcmurs.eurekaservice" level="debug" additivity="false">
     <appender-ref ref="FILE-AUDIT" />
     <appender-ref ref="STDOUT" />
   </logger>

@@ -11,6 +11,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   jackson:
     date-format: dd/MM/yyyy HH:mm:ss

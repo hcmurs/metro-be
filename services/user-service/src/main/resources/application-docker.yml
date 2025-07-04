@@ -1,17 +1,9 @@
 spring:
-  application:
-    name: user-service
   datasource:
     url: jdbc:postgresql://metro_postgresql:5432/userdb
     driver-class-name: org.postgresql.Driver
     username: admin
     password: admin
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
   jackson:
     date-format: dd/MM/yyyy HH:mm:ss
     time-zone: Asia/Ho_Chi_Minh
@@ -41,11 +33,6 @@ security:
   jwt:
     secret-key: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
     expiration: 3600000 # 1 hour in milliseconds
-
-logging:
-  level:
-    com.netflix.discovery: DEBUG
-    org.springframework.cloud.netflix.eureka: DEBUG
 
 springdoc:
   swagger-ui:

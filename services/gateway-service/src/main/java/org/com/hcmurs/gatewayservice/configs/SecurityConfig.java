@@ -34,12 +34,17 @@ public class SecurityConfig {
             "/api/stations/search",
             "api/stations/route/{routeId}",
             "/api/schedules",
+            "/api/ts/tickets/scan/entry",
+            "/api/ts/tickets/scan/exit",
             "/api/schedules/{id}",
             "/api/schedules/station/{stationId}",
             "/api/orders/payment-methods/get-all",
             "/api/ts/tickets/generate-qr",
             "/api/ts/tickets/qr",
-            "/api/bus/**"
+            "/api/bus/**",
+
+            // User Service
+            "/api/users/blogs/**",
     };
 
     @Bean
