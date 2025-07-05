@@ -8,8 +8,6 @@ package org.alfred.ticketservice.dto.fare_matrix;
 
         public record FareMatrixRequest(
                 // Optional for creation, required for updates
-                Long fareMatrixId,
-
                 @NotNull(message = "Price is required")
                 @PositiveOrZero(message = "Price must be zero or positive")
                 float price,
