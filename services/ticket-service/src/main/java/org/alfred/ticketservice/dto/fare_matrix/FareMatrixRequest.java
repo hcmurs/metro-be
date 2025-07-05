@@ -22,6 +22,9 @@ package org.alfred.ticketservice.dto.fare_matrix;
                 @PositiveOrZero(message = "End station ID must be valid")
                 Long endStationId,
 
+                @NotNull(message = "Is active status is required")
+                boolean isActive,
+
                 @NotBlank(message = "Name cannot be empty")
                 @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
                 String name

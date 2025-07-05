@@ -17,9 +17,7 @@ public record TicketTypeRequest(
                 @PositiveOrZero(message = "Price must be zero or positive")
                 float price,
 
-                // This field seems redundant with validityDuration
-                // Consider removing it if not use
-
+                @NotNull(message = "isActive status is required")
                 boolean isActive,
 
                 @NotNull(message = "Validity duration is required")

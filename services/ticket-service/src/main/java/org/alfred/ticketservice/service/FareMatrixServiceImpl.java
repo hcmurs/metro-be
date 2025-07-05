@@ -36,7 +36,7 @@ public class FareMatrixServiceImpl implements FareMatrixService{
                 .startStationId(fareMatrix.startStationId())
                 .endStationId(fareMatrix.endStationId())
                 .name(fareMatrix.name())
-                .isActive(true)
+                .isActive(fareMatrix.isActive())
                 .build();
         fareMatrixEntity = fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
@@ -53,6 +53,7 @@ public class FareMatrixServiceImpl implements FareMatrixService{
         fareMatrixEntity.setName(fareMatrix.name());
         fareMatrixEntity.setStartStationId(fareMatrix.startStationId());
         fareMatrixEntity.setEndStationId(fareMatrix.endStationId());
+        fareMatrixEntity.setActive(fareMatrix.isActive());
         fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
     }

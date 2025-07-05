@@ -34,7 +34,7 @@ public class TicketTypeServiceImpl implements TicketTypeService{
                 .description(ticketType.description())
                 .price(ticketType.price())
                 .validityDuration(ticketType.validityDuration())
-                .isActive(true)
+                .isActive(ticketType.isActive())
                 .build();
         ticketTypes = ticketTypeRepository.save(ticketTypes);
         return mapToResponse(ticketTypes);
