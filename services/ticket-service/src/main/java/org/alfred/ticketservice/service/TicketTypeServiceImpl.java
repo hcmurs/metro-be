@@ -56,7 +56,6 @@ public class TicketTypeServiceImpl implements TicketTypeService{
     @Override
     public List<TicketTypeResponse> getAll() {
         return ticketTypeRepository.findAll().stream()
-                .filter(TicketTypes::isActive)
                 .map(this::mapToResponse)
                 .toList();
     }

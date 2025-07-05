@@ -38,11 +38,6 @@ public class TicketTypeController {
         return ResponseEntity.ok(ApiResponse.success(ticketTypes, "Ticket types retrieved successfully"));
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<ApiResponse<List<TicketTypeResponse>>> getAllTicketTypesAdmin() {
-        List<TicketTypeResponse> ticketTypes = ticketTypeService.getAllAdmin();
-        return ResponseEntity.ok(ApiResponse.success(ticketTypes, "Ticket types retrieved successfully"));
-    }
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
