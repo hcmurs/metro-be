@@ -51,11 +51,9 @@ public class FareMatrixServiceImpl implements FareMatrixService{
                 .orElseThrow(() -> new EntityNotFoundException("Fare matrix not found"));
         FareMatrix fareMatrixexist = fareMatrixRepository.findByStartStationIdAndEndStationId(
                 fareMatrix.startStationId(), fareMatrix.endStationId());
-        if (!Objects.equals(fareMatrixexist, fareMatrixEntity)) throw new EntityExistsException("Fare matrix already exists for this station pair");
+        if (!Objects.equals(fareMatrixexist, fareMatrixEntity)) throw new EntityExistsException("Fare matrix cant change station");
         fareMatrixEntity.setPrice(fareMatrix.price());
         fareMatrixEntity.setName(fareMatrix.name());
-        fareMatrixEntity.setStartStationId(fareMatrix.startStationId());
-        fareMatrixEntity.setEndStationId(fareMatrix.endStationId());
         fareMatrixEntity.setActive(fareMatrix.isActive());
         fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
