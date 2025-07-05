@@ -15,5 +15,7 @@ public interface TicketTypeService {
 
     List<TicketTypeResponse> getAll();
 
+    List<TicketTypeResponse> getAllAdmin();
+
     void deleteTicketType(Long id);
 }
