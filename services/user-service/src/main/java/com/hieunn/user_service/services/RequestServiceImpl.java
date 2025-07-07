@@ -86,7 +86,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    public void verify(Long requestId, boolean isApproved, String rejectionReason) {
+    public RequestDto verify(Long requestId, boolean isApproved, String rejectionReason) {
         Optional<Request> requestById = requestRepository.findById(requestId);
         if (requestById.isEmpty()) {
             throw new CustomException(
@@ -107,6 +107,6 @@ public class RequestServiceImpl implements RequestService {
             userRepository.save(user);
         }
 
-        requestRepository.save(request);
+        return requestMapper.toRequestDto(requestRepository.save(request));
     }
 }

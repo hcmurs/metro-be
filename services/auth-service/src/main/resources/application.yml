@@ -65,7 +65,7 @@ security:
     key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
     header: X-API-KEY
   oauth2:
-    authorized-redirect-url-frontend: http://localhost:3000/oauth2/redirect
+    authorized-redirect-url-frontend: http://localhost:3000/login
 
 service:
   users:
