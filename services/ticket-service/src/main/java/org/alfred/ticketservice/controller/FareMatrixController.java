@@ -53,7 +53,6 @@ public class FareMatrixController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
     public ResponseEntity<ApiResponse<FareMatrixResponse>> updateFareMatrix(@Valid @RequestBody FareMatrixRequest request,
                                                                            @PathVariable Long fareMatrixId)  {
-        log.info("Request to update fare matrix with ID: {}", request.fareMatrixId());
         FareMatrixResponse updatedFareMatrix = fareMatrixService.updateFareMatrix(request,fareMatrixId);
         return ResponseEntity.ok(ApiResponse.success(updatedFareMatrix, "Fare matrix updated successfully"));
     }

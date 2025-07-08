@@ -102,6 +102,7 @@ public class OrdersServiceImpl implements OrdersService {
                 .status(OrderStatus.PENDING)
                 .amount(BigDecimal.valueOf(ticketResponse.actualPrice()))
                 .createdAt(LocalDateTime.now())
+                .stripeSessionId(null)
                 .build();
         Orders savedOrder = ordersRepository.save(orders);
 
