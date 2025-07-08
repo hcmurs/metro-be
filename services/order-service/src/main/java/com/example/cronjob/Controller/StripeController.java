@@ -7,6 +7,8 @@ import com.example.cronjob.Service.StripeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/payment/stripe")
 @RequiredArgsConstructor
@@ -18,13 +20,13 @@ public class StripeController {
         return ApiResponse.success(stripeService.checkoutOrder(request));
     }
 
-    @PostMapping("/success")
-    public ApiResponse<String> paymentCallbackSuccess(@RequestParam String sessionId) {
-        return ApiResponse.success(stripeService.paymentCallbackSuccess(sessionId));
+    @GetMapping("/success")
+    public ApiResponse<Map<String, Object>> paymentCallbackSuccess(@RequestParam String session_id) {
+        return ApiResponse.success(stripeService.paymentCallbackSuccess(session_id));
     }
 
-    @PostMapping("/failed")
-    public ApiResponse<String> paymentCallbackFailed(@RequestParam String sessionId) {
-        return ApiResponse.success(stripeService.paymentCallbackFailed(sessionId));
+    @GetMapping("/failed")
+    public ApiResponse<Map<String, Object>> paymentCallbackFailed(@RequestParam String session_id) {
+        return ApiResponse.success(stripeService.paymentCallbackFailed(session_id));
     }
 }

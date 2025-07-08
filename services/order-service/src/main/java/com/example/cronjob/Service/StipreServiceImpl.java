@@ -1,6 +1,7 @@
 package com.example.cronjob.Service;
 
 import com.example.cronjob.DTO.Request.StripeRequest;
+import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.DTO.Response.StripeResponse;
 import com.example.cronjob.DTO.Response.TicketResponse;
 import com.example.cronjob.Pojos.Orders;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class StipreServiceImpl implements StripeService{
@@ -68,8 +71,8 @@ public class StipreServiceImpl implements StripeService{
                 .setQuantity(1L)
                 .build();
         SessionCreateParams params = SessionCreateParams.builder().setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:8080/success")
-                .setCancelUrl("http://localhost:8080/cancel")
+                .setSuccessUrl("http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl("http://localhost:3000/payment/failure?session_id={CHECKOUT_SESSION_ID}")
                 .addLineItem(lineItem)
                 .build();
         Session session = null;
@@ -91,20 +94,29 @@ public class StipreServiceImpl implements StripeService{
     }
 
     @Override
-    public String paymentCallbackSuccess(String sessionId) {
+    public Map<String, Object> paymentCallbackSuccess(String sessionId) {
         try {
             Stripe.apiKey = stripeSecretKey;
             Session session = Session.retrieve(sessionId);
-
+            Map<String, Object> result = new HashMap<>();
             if ("paid".equalsIgnoreCase(session.getPaymentStatus())) {
                 Orders order = ordersRepository.findByStripeSessionId(sessionId);
                 if (order == null) {
                     throw new EntityNotFoundException("Order Not Found");
                 }
                 ordersService.updateTransactionSuccess(order.getOrderId());
-                return "Payment success for orderId: " + order.getOrderId();
+                result.put("status", "success");
+                result.put("message", "Payment completed successfully");
+                result.put("transactionId", order.getTransaction().getTransactionId());
+//                result.put("amount", Long.parseLong(String.valueOf(order.getAmount())));
+                result.put("responseCode", "00");
+                result.put("transactionStatus", "00");
+                result.put("paymentTime", session.getCreated());
+                return result;
             } else {
-                return "Payment not completed";
+                result.put("status", "invalid");
+                result.put("message", "Invalid signature");
+                return result;
             }
         } catch (StripeException e) {
             throw new RuntimeException("Stripe error: " + e.getMessage());
@@ -112,11 +124,11 @@ public class StipreServiceImpl implements StripeService{
     }
 
     @Override
-    public String paymentCallbackFailed(String sessionId) {
+    public Map<String, Object> paymentCallbackFailed(String sessionId) {
         try {
             Stripe.apiKey = stripeSecretKey;
             Session session = Session.retrieve(sessionId);
-
+            Map<String, Object> result = new HashMap<>();
             Orders order = ordersRepository.findByStripeSessionId(sessionId);
             if (order == null) {
                 throw  new EntityNotFoundException("Order Not Found");
@@ -125,9 +137,16 @@ public class StipreServiceImpl implements StripeService{
             // Nếu chưa thanh toán, thì đánh dấu là fail
             if (!"paid".equalsIgnoreCase(session.getPaymentStatus())) {
                 ordersService.updateTransactionFailed(order.getOrderId());
-                return "Payment failed for orderId: " + order.getOrderId();
+                result.put("status", "failed");
+                result.put("message", "Payment failed");
+                result.put("transactionId", order.getTransaction().getTransactionId());
+                result.put("responseCode", "01");
+                result.put("transactionStatus", "01");
+                return result;
             } else {
-                return "Payment was successful, not failed";
+                result.put("status", "invalid");
+                result.put("message", "Invalid signature");
+                return result;
             }
         } catch (StripeException e) {
             throw new RuntimeException("Stripe error: " + e.getMessage());
