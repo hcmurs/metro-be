@@ -45,6 +45,7 @@ public class SecurityConfig {
 
             // User Service
             "/api/users/blogs/**",
+            "/api/users/requests/**"
     };
 
     @Bean
