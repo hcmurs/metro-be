@@ -36,6 +36,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/users/is-username-exist", "/users/is-email-exist").permitAll()
+                        .requestMatchers("/users/reset-password").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/swagger-ui.html/**").permitAll()
                         .anyRequest().authenticated()
                 )
