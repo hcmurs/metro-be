@@ -3,17 +3,14 @@ package com.hieunn.user_service.controllers;
 import com.hieunn.user_service.dtos.requests.LocalLoginRequest;
 import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.requests.ResetPasswordRequest;
-import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
+import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.dtos.responses.UserDto;
-import com.hieunn.user_service.exceptions.ErrorMessage;
-import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
