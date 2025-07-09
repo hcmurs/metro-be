@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/users/register",
             "/api/users/reset-password",
             "/api/users/requests/**",
+            "/api/users/feedbacks/**",
             //Notification
             "/api/notifications/send-otp",
             "/api/notifications/verify-otp",
@@ -70,7 +71,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/stations",
             "/api/stations/{id}",
             "/api/stations/search",
-            "api/stations/route/{routeId}",
+            "/api/stations/route/{routeId}",
             "/api/schedules",
             "/api/schedules/{id}",
             "/api/schedules/station/{stationId}",

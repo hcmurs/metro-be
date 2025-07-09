@@ -30,7 +30,7 @@ public class StationsServiceImpl implements StationsService {
     public StationsResponse createStation(StationsRequest request) {
         Routes route = routesRepository.findById(request.getRouteId())
                 .orElseThrow(() -> new EntityNotFoundException("Route not found with id: " + request.getRouteId()));
-        // Check if station code already exists
+
         if (stationsRepository.existsByStationCode(request.getStationCode())) {
             throw new EntityExistsException("Station code already exists: " + request.getStationCode());
         }
@@ -90,9 +90,7 @@ public class StationsServiceImpl implements StationsService {
         Stations existingStation = stationsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + id));
 
-        // Update fields if they are not null
         if (stationUpdate.getStationCode() != null) {
-            // Check if new station code already exists (excluding current station)
             if (!existingStation.getStationCode().equals(stationUpdate.getStationCode()) &&
                     stationsRepository.existsByStationCode(stationUpdate.getStationCode())) {
                 throw new EntityNotFoundException("Station code already exists: " + stationUpdate.getStationCode());
@@ -147,7 +145,6 @@ public class StationsServiceImpl implements StationsService {
             throw new EntityNotFoundException("Station not found with id: " + id);
         }
 
-        // Check if station has schedules before deleting
         Optional<Stations> station = stationsRepository.findById(id);
         if (station.isPresent() && station.get().getSchedules() != null && !station.get().getSchedules().isEmpty()) {
             throw new RuntimeException("Cannot delete station with existing schedules. Delete schedules first.");
