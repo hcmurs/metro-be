@@ -49,11 +49,9 @@
         }
         @GetMapping("/profile")
         public ResponseEntity<ApiResponse<UserDto>> getUserProfile(@RequestHeader("Authorization") String authorizationHeader) {
-            // authorizationHeader sẽ có dạng "Bearer <token>"
-            // Bạn cần trích xuất token và truyền vào service
             ApiResponse<UserDto> response = authService.getUserProfileFromToken(authorizationHeader);
             return ResponseEntity
-                    .status(response.getStatus()) // Sử dụng status từ ApiResponse
+                    .status(response.getStatus())
                     .body(response);
         }
     }

@@ -11,6 +11,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     Orders findByOrderId(Long orderId);
     boolean existsByOrderId(Long orderId);
     List<Orders> findByUserId(Long userId);
-
+    Orders findByStripeSessionId(String stripeSessionId);
     boolean existsByUserId(Long userId);
 }

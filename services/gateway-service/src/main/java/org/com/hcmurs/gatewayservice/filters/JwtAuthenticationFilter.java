@@ -57,6 +57,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/users/is-email-exist",
             "/api/users/register",
             "/api/users/reset-password",
+            "/api/users/requests/**",
             //Notification
             "/api/notifications/send-otp",
             "/api/notifications/verify-otp",
@@ -90,6 +91,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/aggregate/**",
             "/api/orders/payment-methods/get-all",
             "/api/ts/tickets/qr"
+
             );
 
     @NotNull
