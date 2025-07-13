@@ -24,5 +24,5 @@ public record UpdateTicketTypeRequest(
                                               @NotNull(message = "Validity duration is required")
                                               @Positive(message = "Validity duration must be greater than zero")
                                               @Max(value = 365, message = "Validity duration cannot exceed 365")
-                                              Duration validityDuration
+                                              int validityDuration
                                       ) {}

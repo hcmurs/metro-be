@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_TRANSACTION_POOLER_PORT}/postgres?currentSchema=${PROD_ORDER_DB_NAME}&user=${PROD_SPRING_DATASOURCE_USERNAME}&password=${PROD_SPRING_DATASOURCE_PASSWORD}&prepareThreshold=0
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+stripe:
+  secret: sk_test_51RhDaTR1Z2NQalNLeClF6dsNsFW1LnzM6v98c8OQ5ZZKHSpfOhqqLLeBEqx6Q1JgwXP906qQiXdBEs1s5rg5FCb300F8SYrr1Y
+  publishable: pk_test_51RhDaTR1Z2NQalNLXVx9pppFy2tEDMw5ehfDwdeMl6K0yEcHOsR3u5UJ7kpHhHex1MPht1PaCYOGZZqTlS4lDK6c00EQJWcg0W

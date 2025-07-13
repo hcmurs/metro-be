@@ -9,8 +9,9 @@ public record FareMatrixResponse(
         Long fareMatrixId,
         String name,
         float price,
-        float startStationId,
-        float endStationId,
+        Long startStationId,
+        Long endStationId,
+        boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

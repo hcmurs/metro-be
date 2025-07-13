@@ -40,20 +40,21 @@ public class DataInitializer implements CommandLineRunner {
         Routes route = modelMapper.map(routesResponse, Routes.class);
 
         List<Stations> stations = List.of(
-                create("BXMD", "Bến xe Miền Đông", "Xa lộ Hà Nội, P. Tân Phú, TP Thủ Đức", 10.870, 106.807, 1, route),
-                create("ST", "Suối Tiên", "Xa lộ Hà Nội, P. Linh Trung, TP Thủ Đức", 10.867, 106.800, 2, route),
-                create("CNC", "Khu Công nghệ cao", "Xa lộ Hà Nội, P. Hiệp Phú, TP Thủ Đức", 10.860, 106.789, 3, route),
-                create("TDU", "Thủ Đức", "Xa lộ Hà Nội, P. Bình Thọ, TP Thủ Đức", 10.850, 106.782, 4, route),
-                create("BTH", "Bình Thái", "Xa lộ Hà Nội, P. Trường Thọ, TP Thủ Đức", 10.843, 106.776, 5, route),
-                create("PL", "Phước Long", "Xa lộ Hà Nội, P. Phước Long A, TP Thủ Đức", 10.833, 106.765, 6, route),
-                create("RC", "Rạch Chiếc", "Xa lộ Hà Nội, P. An Phú, TP Thủ Đức", 10.824, 106.752, 7, route),
-                create("AP", "An Phú", "Xa lộ Hà Nội, P. An Phú, TP Thủ Đức", 10.817, 106.741, 8, route),
-                create("TD", "Thảo Điền", "Xa lộ Hà Nội, P. Thảo Điền, TP Thủ Đức", 10.810, 106.735, 9, route),
-                create("TC", "Tân Cảng", "Xa lộ Hà Nội, P. 22, Q. Bình Thạnh", 10.805, 106.722, 10, route),
-                create("CVVT", "Công viên Văn Thánh", "Nguyễn Hữu Cảnh, P. 22, Q. Bình Thạnh", 10.798, 106.715, 11, route),
-                create("BS", "Ba Son", "Tôn Đức Thắng, P. Bến Nghé, Q.1", 10.783, 106.705, 12, route),
-                create("NHTP", "Nhà hát Thành phố", "Lê Lợi, P. Bến Nghé, Q.1", 10.777, 106.702, 13, route),
-                create("BT", "Bến Thành", "Lê Lợi, P. Bến Thành, Q.1", 10.772, 106.698, 14, route)
+                create("BXMD", "Bến xe Miền Đông", "Bến xe Miền Đông mới (Suối Tiên)", 10.879512241390108, 106.81409560253722, 1, route),
+                create("NHTP", "Trường Đại học Quốc gia (National University)", "Linh Trung, Thủ Đức", 10.866291781126687, 106.80124945301374, 2, route),
+                create("HTP", "Khu Công nghệ cao (Hi-tech Park)", "Thủ Đức", 10.858999986669915, 106.78878017918157, 3, route),
+                create("TDU", "Thủ Đức", "Bình Thọ, Thủ Đức", 10.846372121206313, 106.77159999068043, 4, route),
+                create("BTH", "Bình Thái", "Trường Thọ, Thủ Đức", 10.832601114841145, 106.76384478331777, 5, route),
+                create("PL", "Phước Long", "Phước Long A, Thủ Đức", 10.821356644499083, 106.75813941185976, 6, route),
+                create("RC", "Rạch Chiếc", "An Phú, Thủ Đức", 10.808476742610557, 106.75525715663437, 7, route),
+                create("AP", "An Phú", "An Phú, Thủ Đức", 10.802069265420103, 106.74227526515422, 8, route),
+                create("TD", "Thảo Điền", "Thảo Điền, Thủ Đức", 10.800467374750985, 106.73367073862954, 9, route),
+                create("TC", "Tân Cảng", "Bình Thạnh", 10.798550415101449, 106.72329887103433, 10, route),
+                create("CVVT", "Công viên Văn Thánh (Văn Thánh Park)", "Bình Thạnh", 10.796069240758085, 106.71553225518468, 11, route),
+                create("BS", "Ba Son", "Bình Thạnh", 10.781570288538946, 106.70799481205246, 12, route),
+                create("NHTP", "Nhà hát Thành phố (Opera House)", "Q.1", 10.776254445807423, 106.70298994292116, 13, route),
+                create("BT", "Bến Thành", "Q.1", 10.77099020206032, 106.69837125466249, 14, route)
+
         );
 
        List<Stations> savedStations= stationsRepository.saveAll(stations);

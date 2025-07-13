@@ -1,0 +1,2507 @@
+[
+
+
+ {
+  "id": 46,
+  "name": "Bến xe buýt Sài Gòn",
+  "latitude": 10.7675,
+  "longitude": 106.689476,
+  "is_active": 1,
+  "address": "BẾN XE BUÝT SÀI GÒN Lê Lai, Phường Phạm Ngũ Lão, Quận 1",
+  "code": "BX 01"
+ },
+ {
+  "id": 47,
+  "name": "Tôn Thất Tùng",
+  "latitude": 10.767669,
+  "longitude": 106.690916,
+  "is_active": 1,
+  "address": "277-279-275Y Phạm Ngũ Lão, Phường Phạm Ngũ Lão, Quận 1",
+  "code": "Q1 190"
+ },
+ {
+  "id": 48,
+  "name": "Nguyễn Thị Nghĩa",
+  "latitude": 10.768762,
+  "longitude": 106.693689,
+  "is_active": 1,
+  "address": "187 Phạm Ngũ Lão, Phường Phạm Ngũ Lão, Quận 1",
+  "code": "Q1 191"
+ },
+ {
+  "id": 49,
+  "name": "Trường Emst Thalmann",
+  "latitude": 10.769511,
+  "longitude": 106.695562,
+  "is_active": 1,
+  "address": "Trường Emst Thalmann Phạm Ngũ Lão, Phường Phạm Ngũ Lão, Quận 1",
+  "code": "Q1 192"
+ },
+ {
+  "id": 50,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.770996,
+  "longitude": 106.700722,
+  "is_active": 1,
+  "address": "Hàm nghi 3 Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 178"
+ },
+ {
+  "id": 51,
+  "name": "Chợ Cũ",
+  "latitude": 10.77083,
+  "longitude": 106.702022,
+  "is_active": 1,
+  "address": "89A Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 195"
+ },
+ {
+  "id": 52,
+  "name": "Đền Thờ Ấn Giáo, Pasteur",
+  "latitude": 10.7735,
+  "longitude": 106.70135,
+  "is_active": 1,
+  "address": "Đền Thờ Ấn Giáo Pasteur, Quận 1",
+  "code": "Q1 078"
+ },
+ {
+  "id": 53,
+  "name": "Lê Thánh Tôn",
+  "latitude": 10.775073,
+  "longitude": 106.700749,
+  "is_active": 1,
+  "address": "144 Pasteur, Quận 1",
+  "code": "Q1 079"
+ },
+ {
+  "id": 54,
+  "name": "Lý Tự Trọng",
+  "latitude": 10.777121,
+  "longitude": 106.6996,
+  "is_active": 1,
+  "address": "158 Pasteur, Quận 1",
+  "code": "Q1 080"
+ },
+ {
+  "id": 55,
+  "name": "Lê Duẫn",
+  "latitude": 10.778174,
+  "longitude": 106.698475,
+  "is_active": 1,
+  "address": "178 Pasteur, Quận 1",
+  "code": "Q1 081"
+ },
+ {
+  "id": 56,
+  "name": "Nhà Văn Hóa Thanh Niên",
+  "latitude": 10.781946,
+  "longitude": 106.69674,
+  "is_active": 1,
+  "address": "6B-8 Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 116"
+ },
+ {
+  "id": 57,
+  "name": "Đại học Kinh tế",
+  "latitude": 10.783946,
+  "longitude": 106.694527,
+  "is_active": 1,
+  "address": "18Bis Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 076"
+ },
+ {
+  "id": 58,
+  "name": "Điện Biên Phủ",
+  "latitude": 10.785131,
+  "longitude": 106.693255,
+  "is_active": 1,
+  "address": "42 Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 077"
+ },
+ {
+  "id": 59,
+  "name": "Công viên Lê Văn Tám",
+  "latitude": 10.787391,
+  "longitude": 106.69257,
+  "is_active": 1,
+  "address": "Đối diện 245 Hai Bà Trưng, Quận 1",
+  "code": "Q1 062"
+ },
+ {
+  "id": 60,
+  "name": "Nhà thờ Tân Định",
+  "latitude": 10.789193,
+  "longitude": 106.690387,
+  "is_active": 1,
+  "address": "298 Hai Bà Trưng, Quận 1",
+  "code": "Q1 063"
+ },
+ {
+  "id": 61,
+  "name": "Chợ Tân Định",
+  "latitude": 10.790498,
+  "longitude": 106.688723,
+  "is_active": 1,
+  "address": "372-374 Hai Bà Trưng, Quận 1",
+  "code": "Q1 064"
+ },
+ {
+  "id": 62,
+  "name": "Bà Lê Chân",
+  "latitude": 10.7916,
+  "longitude": 106.690226,
+  "is_active": 1,
+  "address": "151Bis Trần Quang Khải, Quận 1",
+  "code": "Q1 071"
+ },
+ {
+  "id": 63,
+  "name": "Chợ Dakao",
+  "latitude": 10.792404,
+  "longitude": 106.694523,
+  "is_active": 1,
+  "address": "45-47 Trần Quang Khải, Quận 1",
+  "code": "Q1 072"
+ },
+ {
+  "id": 173,
+  "name": "Đa Kao",
+  "latitude": 10.792563,
+  "longitude": 106.69499,
+  "is_active": 1,
+  "address": "30 Trần Quang Khải, Quận 1",
+  "code": "Q1 069"
+ },
+ {
+  "id": 174,
+  "name": "Nguyễn Hữu Cầu",
+  "latitude": 10.792209,
+  "longitude": 106.692896,
+  "is_active": 1,
+  "address": "98-100 Trần Quang Khải, Phường Tân Định, Quận 1",
+  "code": "Q1 070"
+ },
+ {
+  "id": 175,
+  "name": "Chợ Tân Định",
+  "latitude": 10.788708,
+  "longitude": 106.690775,
+  "is_active": 1,
+  "address": "295 Hai Bà Trưng, Quận 3",
+  "code": "Q3 030"
+ },
+ {
+  "id": 176,
+  "name": "Phạm Ngọc Thạch",
+  "latitude": 10.786355,
+  "longitude": 106.691778,
+  "is_active": 1,
+  "address": "61-63 Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 079"
+ },
+ {
+  "id": 177,
+  "name": "Điện Biên Phủ",
+  "latitude": 10.784895,
+  "longitude": 106.693342,
+  "is_active": 1,
+  "address": "43 Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 080"
+ },
+ {
+  "id": 178,
+  "name": "Đại học Kinh tế",
+  "latitude": 10.783233,
+  "longitude": 106.695111,
+  "is_active": 1,
+  "address": "17 Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 081"
+ },
+ {
+  "id": 179,
+  "name": "Nhà Văn Hóa Thanh Niên",
+  "latitude": 10.781683,
+  "longitude": 106.696751,
+  "is_active": 1,
+  "address": "3-5 Phạm Ngọc Thạch, Quận 3",
+  "code": "Q3 117"
+ },
+ {
+  "id": 180,
+  "name": "Nhà Thờ Đức Bà",
+  "latitude": 10.779146,
+  "longitude": 106.699138,
+  "is_active": 1,
+  "address": "1 Công xã Paris, Quận 1",
+  "code": "Q1 005"
+ },
+ {
+  "id": 181,
+  "name": "Pasteur",
+  "latitude": 10.778225,
+  "longitude": 106.69919,
+  "is_active": 1,
+  "address": "84 Nguyễn Du, Quận 1",
+  "code": "Q1 159"
+ },
+ {
+  "id": 182,
+  "name": "Nam Kỳ Khởi Nghĩa",
+  "latitude": 10.777253,
+  "longitude": 106.698331,
+  "is_active": 1,
+  "address": "100 Nguyễn Du, Quận 1",
+  "code": "Q1 160"
+ },
+ {
+  "id": 183,
+  "name": "Tòa án Nhân dân Thành Phố",
+  "latitude": 10.776057,
+  "longitude": 106.698705,
+  "is_active": 1,
+  "address": "131 Nam Kỳ Khởi Nghĩa, Quận 1",
+  "code": "Q1 075"
+ },
+ {
+  "id": 184,
+  "name": "Chùa Ông",
+  "latitude": 10.773961,
+  "longitude": 106.699772,
+  "is_active": 1,
+  "address": "Đối diện 96A Nam Kỳ Khởi Nghĩa, Quận 1",
+  "code": "Q1 076"
+ },
+ {
+  "id": 185,
+  "name": "Trường CĐKT Cao Thắng",
+  "latitude": 10.771412,
+  "longitude": 106.700862,
+  "is_active": 1,
+  "address": "Đối diện 86 Nam Kỳ Khởi Nghĩa, Quận 1",
+  "code": "Q1 077"
+ },
+ {
+  "id": 186,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.771254,
+  "longitude": 106.699537,
+  "is_active": 1,
+  "address": "Hàm Nghi 14 (138) Hàm Nghi, Phường Bến Thành, Quận 1",
+  "code": "Q1 186"
+ },
+ {
+  "id": 187,
+  "name": "Khách sạn New World",
+  "latitude": 10.770922,
+  "longitude": 106.695954,
+  "is_active": 1,
+  "address": "Đối diện cây xanh số 105 Lê Lai, Phường Bến Thành, Quận 1",
+  "code": "Q1 187"
+ },
+ {
+  "id": 188,
+  "name": "Nguyễn Thị Nghĩa",
+  "latitude": 10.769939,
+  "longitude": 106.6935,
+  "is_active": 1,
+  "address": "94-96 Lê Lai, Phường Bến Thành, Quận 1",
+  "code": "Q1 188"
+ },
+ {
+  "id": 189,
+  "name": "Tôn Thất Tùng",
+  "latitude": 10.768707,
+  "longitude": 106.690484,
+  "is_active": 1,
+  "address": "202-204 Lê Lai, Phường Bến Thành, Quận 1",
+  "code": "Q1 189"
+ },
+
+
+
+
+
+ {
+  "id": 385,
+  "name": "Diamond Plaza",
+  "latitude": 10.780838,
+  "longitude": 106.699113,
+  "is_active": 1,
+  "address": "47 Lê Duẩn, Quận 1",
+  "code": "Q1 083"
+ },
+ {
+  "id": 386,
+  "name": "Khách sạn Sofitel",
+  "latitude": 10.784121,
+  "longitude": 106.702346,
+  "is_active": 1,
+  "address": "Sofitel Plaza Lê Duẩn, Quận 1",
+  "code": "Q1 084"
+ },
+ {
+  "id": 387,
+  "name": "Đại học Khoa học xã hội nhân văn",
+  "latitude": 10.785721,
+  "longitude": 106.702716,
+  "is_active": 1,
+  "address": "10 Đinh Tiên Hoàng, Quận 1",
+  "code": "Q1 011"
+ },
+ {
+  "id": 388,
+  "name": "SVĐ Hoa Lư",
+  "latitude": 10.787084,
+  "longitude": 106.701202,
+  "is_active": 1,
+  "address": "2 Đinh Tiên Hoàng, Quận 1",
+  "code": "Q1 012"
+ },
+ {
+  "id": 389,
+  "name": "Trường Trung cấp kỹ thuật nông nghiệp Tp HCM",
+  "latitude": 10.789309,
+  "longitude": 106.698769,
+  "is_active": 1,
+  "address": "40 Đinh Tiên Hoàng, Phường Đa Kao, Quận 1",
+  "code": "Q1 013"
+ },
+
+
+ {
+  "id": 478,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.771235,
+  "longitude": 106.699331,
+  "is_active": 1,
+  "address": "Hàm Nghi 16 (140) Hàm Nghi, Phường Bến Thành, Quận 1",
+  "code": "Q1 023"
+ },
+ {
+  "id": 479,
+  "name": "Đền Trần Hưng Đạo",
+  "latitude": 10.79118,
+  "longitude": 106.695122,
+  "is_active": 1,
+  "address": "18 Võ Thị Sáu, Quận 1",
+  "code": "Q1 073"
+ },
+ {
+  "id": 480,
+  "name": "Công viên Lê Văn Tám",
+  "latitude": 10.788932,
+  "longitude": 106.692875,
+  "is_active": 1,
+  "address": "78 Võ Thị Sáu, Quận 1",
+  "code": "Q1 074"
+ },
+ {
+  "id": 481,
+  "name": "Công viên Lê Văn Tám",
+  "latitude": 10.787167,
+  "longitude": 106.692656,
+  "is_active": 1,
+  "address": "243 Hai Bà Trưng, Phường 06, Quận 3",
+  "code": "Q3 031"
+ },
+ {
+  "id": 482,
+  "name": "Trần Cao Vân",
+  "latitude": 10.783973,
+  "longitude": 106.696737,
+  "is_active": 1,
+  "address": "157 Hai Bà Trưng, Quận 3",
+  "code": "Q3 032"
+ },
+ {
+  "id": 483,
+  "name": "Lê Duẩn",
+  "latitude": 10.781924,
+  "longitude": 106.699049,
+  "is_active": 1,
+  "address": "Đối diện Lãnh sự quán Pháp Hai Bà Trưng, Phường Bến Nghé, Quận 1",
+  "code": "Q1 065"
+ },
+ {
+  "id": 484,
+  "name": "Diamond Plaza",
+  "latitude": 10.780803,
+  "longitude": 106.698787,
+  "is_active": 1,
+  "address": "34 Lê Duẩn, Quận 1",
+  "code": "Q1 086"
+ },
+
+
+ {
+  "id": 666,
+  "name": "Tùng Thiện Vương",
+  "latitude": 10.744907,
+  "longitude": 106.657154,
+  "is_active": 1,
+  "address": "388 Tùng Thiện Vương, Quận 8",
+  "code": "Q8 110"
+ },
+ {
+  "id": 668,
+  "name": "Bến xe buýt Chợ Lớn - A",
+  "latitude": 10.751225,
+  "longitude": 106.652621,
+  "is_active": 1,
+  "address": "BẾN XE BUÝT CHỢ LỚN A Lê Quang Sung, Phường 01, Quận 6",
+  "code": "BX101"
+ },
+ {
+  "id": 669,
+  "name": "Nguyễn Thị Nhỏ",
+  "latitude": 10.751805,
+  "longitude": 106.650604,
+  "is_active": 1,
+  "address": "14-16 Nguyễn Thị Nhỏ, Phường 01, Quận 6",
+  "code": "Q6 063"
+ },
+ {
+  "id": 759,
+  "name": "Cầu Đen",
+  "latitude": 10.8,
+  "longitude": 106.734245,
+  "is_active": 1,
+  "address": "794 Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 071"
+ },
+ {
+  "id": 760,
+  "name": "Thảo Điền",
+  "latitude": 10.800811,
+  "longitude": 106.738417,
+  "is_active": 1,
+  "address": "Đối diện ngã 3 Thảo Điền Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 072"
+ },
+ {
+  "id": 761,
+  "name": "Metro Quận 2",
+  "latitude": 10.801716,
+  "longitude": 106.743333,
+  "is_active": 1,
+  "address": "170 Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 073"
+ },
+ {
+  "id": 762,
+  "name": "Cát Lái",
+  "latitude": 10.802588,
+  "longitude": 106.748103,
+  "is_active": 1,
+  "address": "Khu dân cư Estella Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 074"
+ },
+ {
+  "id": 763,
+  "name": "Xi măng hà tiên - trạm thu phí",
+  "latitude": 10.819205,
+  "longitude": 106.758383,
+  "is_active": 1,
+  "address": "249B Xa Lộ Hà Nội, Quận 9",
+  "code": "Q9 210"
+ },
+ {
+  "id": 764,
+  "name": "Ngã 4 Tây Hòa (RMK)",
+  "latitude": 10.825918,
+  "longitude": 106.760881,
+  "is_active": 1,
+  "address": "185A Xa Lộ Hà Nội, Quận 9",
+  "code": "Q9 211"
+ },
+ {
+  "id": 765,
+  "name": "Trạm xây dựng",
+  "latitude": 10.830163,
+  "longitude": 106.76318,
+  "is_active": 1,
+  "address": "354A Xa Lộ Hà Nội, Quận 9",
+  "code": "Q9 212"
+ },
+ {
+  "id": 766,
+  "name": "Khu QLGTDT số 2",
+  "latitude": 10.83321,
+  "longitude": 106.764852,
+  "is_active": 1,
+  "address": "Khu QLGTĐT số 2 Xa Lộ Hà Nội, Quận 9",
+  "code": "Q9 213"
+ },
+ {
+  "id": 767,
+  "name": "Ngã 4 Bình Thái",
+  "latitude": 10.836222,
+  "longitude": 106.766573,
+  "is_active": 1,
+  "address": "Kho 71 Xa Lộ Hà Nội, Quận 9",
+  "code": "Q9 214"
+ },
+ {
+  "id": 768,
+  "name": "UBND quận 9",
+  "latitude": 10.840597,
+  "longitude": 106.769039,
+  "is_active": 1,
+  "address": "1B Xa Lộ Hà Nội, Quận 9",
+  "code": "Q9 215"
+ },
+ {
+  "id": 769,
+  "name": "Bê tông Hải Âu",
+  "latitude": 10.843788,
+  "longitude": 106.770873,
+  "is_active": 1,
+  "address": "Bê tông Hải Âu Xa Lộ Hà Nội, Phường Hiệp Phú, Quận 9",
+  "code": "Q9 216"
+ },
+ {
+  "id": 770,
+  "name": "Ngã 4 Thủ Đức",
+  "latitude": 10.847311,
+  "longitude": 106.772982,
+  "is_active": 1,
+  "address": "716-720 Xa Lộ Hà Nội, Phường Hiệp Phú, Quận 9",
+  "code": "Q9 217"
+ },
+ {
+  "id": 771,
+  "name": "Siêu thị Coopmart",
+  "latitude": 10.848157,
+  "longitude": 106.774996,
+  "is_active": 1,
+  "address": "4-6 Lê Văn Việt, Quận 9",
+  "code": "Q9 089"
+ },
+ {
+  "id": 772,
+  "name": "Bệnh viện 7C-Trường Quân y 2",
+  "latitude": 10.846294,
+  "longitude": 106.778134,
+  "is_active": 1,
+  "address": "50 Lê Văn Việt, Quận 9",
+  "code": "Q9 090"
+ },
+ {
+  "id": 773,
+  "name": "Nhà sách Thành Nghĩa",
+  "latitude": 10.844831,
+  "longitude": 106.780587,
+  "is_active": 1,
+  "address": "142-144 Lê Văn Việt, Quận 9",
+  "code": "Q9 091"
+ },
+ {
+  "id": 774,
+  "name": "Trạm y tế Phường Hiệp Phú",
+  "latitude": 10.844102,
+  "longitude": 106.782003,
+  "is_active": 1,
+  "address": "192-194 (188) Lê Văn Việt, Phường Tăng Nhơn Phú B, Quận 9",
+  "code": "Q9 092"
+ },
+ {
+  "id": 775,
+  "name": "Chợ Hiệp Phú",
+  "latitude": 10.844163,
+  "longitude": 106.784258,
+  "is_active": 1,
+  "address": "(278) 284 Lê Văn Việt, Phường Tăng Nhơn Phú B, Quận 9",
+  "code": "Q9 093"
+ },
+ {
+  "id": 776,
+  "name": "Chợ Tăng Nhơn Phú A",
+  "latitude": 10.844731,
+  "longitude": 106.788108,
+  "is_active": 1,
+  "address": "424A-424B Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9",
+  "code": "Q9 094"
+ },
+ {
+  "id": 777,
+  "name": "Bệnh viện Quận 9",
+  "latitude": 10.844447,
+  "longitude": 106.790874,
+  "is_active": 1,
+  "address": "Đối diện Bệnh viện Quận 9 Lê Văn Việt, Quận 9",
+  "code": "Q9 095"
+ },
+ {
+  "id": 778,
+  "name": "Đại Học GTVT",
+  "latitude": 10.845229,
+  "longitude": 106.79394,
+  "is_active": 1,
+  "address": "Đối diện 451 Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9",
+  "code": "Q9 096"
+ },
+ {
+  "id": 779,
+  "name": "Chung cư C7",
+  "latitude": 10.846778,
+  "longitude": 106.799978,
+  "is_active": 1,
+  "address": "Kế 482 (498) Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9",
+  "code": "Q9 097"
+ },
+ {
+  "id": 780,
+  "name": "Công Ty FILIED",
+  "latitude": 10.848662,
+  "longitude": 106.807823,
+  "is_active": 1,
+  "address": "Công ty Filied Lê Văn Việt, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 098"
+ },
+ {
+  "id": 781,
+  "name": "Ngã ba Mỹ Thành",
+  "latitude": 10.84988,
+  "longitude": 106.812828,
+  "is_active": 1,
+  "address": "582 (570A) Lê Văn Việt, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 099"
+ },
+ {
+  "id": 782,
+  "name": "Ngã 3 Mỹ Thành",
+  "latitude": 10.851437,
+  "longitude": 106.813724,
+  "is_active": 1,
+  "address": "10A-12A (Đối diện 15-17) Hoàng Hữu Nam, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 262"
+ },
+ {
+  "id": 783,
+  "name": "Đường cầu xây",
+  "latitude": 10.854672,
+  "longitude": 106.813672,
+  "is_active": 1,
+  "address": "54A-56 (58) Hoàng Hữu Nam, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 263"
+ },
+ {
+  "id": 784,
+  "name": "Cầu Xây",
+  "latitude": 10.856961,
+  "longitude": 106.813631,
+  "is_active": 1,
+  "address": "Đối diện 151 Hoàng Hữu Nam, Phường Tân Phú, Quận 9",
+  "code": "Q9 282"
+ },
+ {
+  "id": 785,
+  "name": "Học viện Thanh Thiếu niên Việt Nam",
+  "latitude": 10.862806,
+  "longitude": 106.813531,
+  "is_active": 1,
+  "address": "284 (304) Hoàng Hữu Nam, Phường Tân Phú, Quận 9",
+  "code": "Q9 265"
+ },
+ {
+  "id": 786,
+  "name": "Sân Golf",
+  "latitude": 10.868281,
+  "longitude": 106.8139,
+  "is_active": 1,
+  "address": "382-384 Hoàng Hữu Nam, Phường Tân Phú, Quận 9",
+  "code": "Q9 284"
+ },
+ {
+  "id": 787,
+  "name": "Ngã ba Lâm Viên 1",
+  "latitude": 10.870863,
+  "longitude": 106.812048,
+  "is_active": 1,
+  "address": "Đối diện 100 D400, Phường Tân Phú, Quận 9",
+  "code": "Q9 059"
+ },
+ {
+  "id": 788,
+  "name": "Nghĩa trang liệt sĩ Tp.HCM",
+  "latitude": 10.871393,
+  "longitude": 106.809763,
+  "is_active": 1,
+  "address": "Đối diện 28 D400, Phường Tân Phú, Quận 9",
+  "code": "Q9 060"
+ },
+ {
+  "id": 789,
+  "name": "Bến xe Miền Đông mới",
+  "latitude": 10.878527,
+  "longitude": 106.814909,
+  "is_active": 1,
+  "address": "Bến xe Miền Đông mới Quốc lộ 1, Phường Long Bình, Quận 9",
+  "code": "BX 33"
+ },
+ {
+  "id": 790,
+  "name": "Đường Hoàng Hữu Nam",
+  "latitude": 10.871143,
+  "longitude": 106.814233,
+  "is_active": 1,
+  "address": "373 Hoàng Hữu Nam, Phường Long Bình, Quận 9",
+  "code": "Q9 267"
+ },
+ {
+  "id": 791,
+  "name": "Sân Golf",
+  "latitude": 10.868116,
+  "longitude": 106.81377,
+  "is_active": 1,
+  "address": "Kế 305 (cột điện T66L) Hoàng Hữu Nam, Phường Tân Phú, Quận 9",
+  "code": "Q9 283"
+ },
+ {
+  "id": 792,
+  "name": "Học Viện Thanh Thiếu niên Việt Nam",
+  "latitude": 10.862335,
+  "longitude": 106.813381,
+  "is_active": 1,
+  "address": "261 (265-267) Hoàng Hữu Nam, Phường Tân Phú, Quận 9",
+  "code": "Q9 268"
+ },
+ {
+  "id": 793,
+  "name": "Cầu Xây",
+  "latitude": 10.857388,
+  "longitude": 106.813519,
+  "is_active": 1,
+  "address": "173 (195) Hoàng Hữu Nam, Phường Tân Phú, Quận 9",
+  "code": "Q9 269"
+ },
+ {
+  "id": 794,
+  "name": "Đường cầu xây",
+  "latitude": 10.854808,
+  "longitude": 106.813547,
+  "is_active": 1,
+  "address": "109 (93) Hoàng Hữu Nam, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 270"
+ },
+ {
+  "id": 795,
+  "name": "Ngã 3 Mỹ Thành",
+  "latitude": 10.850689,
+  "longitude": 106.81361,
+  "is_active": 1,
+  "address": "21 Hoàng Hữu Nam, Quận 9",
+  "code": "Q9 271"
+ },
+ {
+  "id": 796,
+  "name": "Ngã ba Mỹ Thành",
+  "latitude": 10.85012,
+  "longitude": 106.812883,
+  "is_active": 1,
+  "address": "687-689 Lê Văn Việt, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 100"
+ },
+ {
+  "id": 797,
+  "name": "Công Ty FILIED",
+  "latitude": 10.848787,
+  "longitude": 106.807395,
+  "is_active": 1,
+  "address": "Đối diện công ty Filied Lê Văn Việt, Phường Long Thạnh Mỹ, Quận 9",
+  "code": "Q9 101"
+ },
+ {
+  "id": 798,
+  "name": "Chung cư C7",
+  "latitude": 10.847042,
+  "longitude": 106.800192,
+  "is_active": 1,
+  "address": "Chung cư C7 (Đối diện 504) Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9",
+  "code": "Q9 102"
+ },
+ {
+  "id": 799,
+  "name": "Đại Học GTVT",
+  "latitude": 10.845583,
+  "longitude": 106.794459,
+  "is_active": 1,
+  "address": "Trung tâm thông tin thư viện Lê Văn Việt, Quận 9",
+  "code": "Q9 103"
+ },
+ {
+  "id": 800,
+  "name": "Bệnh viện Quận 9",
+  "latitude": 10.844634,
+  "longitude": 106.790566,
+  "is_active": 1,
+  "address": "99 Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9",
+  "code": "Q9 104"
+ },
+ {
+  "id": 801,
+  "name": "Chợ Tăng Nhơn Phú A",
+  "latitude": 10.844888,
+  "longitude": 106.78819,
+  "is_active": 1,
+  "address": "Đối diện chợ Tăng Nhơn Phú Lê Văn Việt, Phường Tăng Nhơn Phú A, Quận 9",
+  "code": "Q9 105"
+ },
+ {
+  "id": 802,
+  "name": "Chợ Hiệp Phú",
+  "latitude": 10.8442,
+  "longitude": 106.784097,
+  "is_active": 1,
+  "address": "241-243 (249) Lê Văn Việt, Phường Hiệp Phú, Quận 9",
+  "code": "Q9 106"
+ },
+ {
+  "id": 803,
+  "name": "Trạm y tế Phường Hiệp Phú",
+  "latitude": 10.844315,
+  "longitude": 106.781698,
+  "is_active": 1,
+  "address": "189-191 Lê Văn Việt, Phường Hiệp Phú, Quận 9",
+  "code": "Q9 107"
+ },
+ {
+  "id": 805,
+  "name": "Bệnh viện 7C-Trường Quân y 2",
+  "latitude": 10.846781,
+  "longitude": 106.777509,
+  "is_active": 1,
+  "address": "91-93-95 Lê Văn Việt, Quận 9",
+  "code": "Q9 109"
+ },
+ {
+  "id": 806,
+  "name": "Siêu thị Coopmart",
+  "latitude": 10.848365,
+  "longitude": 106.775051,
+  "is_active": 1,
+  "address": "21 (17-19) Lê Văn Việt, Phường Hiệp Phú, Quận 9",
+  "code": "Q9 110"
+ },
+ {
+  "id": 807,
+  "name": "Ngã tư Thủ Đức",
+  "latitude": 10.848334,
+  "longitude": 106.773106,
+  "is_active": 1,
+  "address": "Đối diện Coopmart Xa Lộ Hà Nội, Phường Bình Thọ, Quận Thủ Đức",
+  "code": "QTD 077"
+ },
+ {
+  "id": 808,
+  "name": "Betong Hải Âu",
+  "latitude": 10.844209,
+  "longitude": 106.770629,
+  "is_active": 1,
+  "address": "Đối diện Betong Hải Âu Xa Lộ Hà Nội, Phường Bình Thọ, Quận Thủ Đức",
+  "code": "QTD 078"
+ },
+ {
+  "id": 809,
+  "name": "UBND Quận 9",
+  "latitude": 10.841002,
+  "longitude": 106.768839,
+  "is_active": 1,
+  "address": "126 Xa Lộ Hà Nội, Phường Bình Thọ, Quận Thủ Đức",
+  "code": "QTD 079"
+ },
+ {
+  "id": 810,
+  "name": "Du lịch Công đoàn Quận Thủ Đức",
+  "latitude": 10.836535,
+  "longitude": 106.766289,
+  "is_active": 1,
+  "address": "Đối diện 461 Nguyễn Văn Bá, Quận Thủ Đức",
+  "code": "QTD 053"
+ },
+ {
+  "id": 811,
+  "name": "Ngã 4 Bình Thái",
+  "latitude": 10.834848,
+  "longitude": 106.765315,
+  "is_active": 1,
+  "address": "Đối diện 592C Xa Lộ Hà Nội, Phường Trường Thọ, Quận Thủ Đức",
+  "code": "QTD 080"
+ },
+ {
+  "id": 812,
+  "name": "Công ty truyền tải điện 4",
+  "latitude": 10.831215,
+  "longitude": 106.763281,
+  "is_active": 1,
+  "address": "Công ty truyền tải điện 4 Xa Lộ Hà Nội, Phường Trường Thọ, Quận Thủ Đức",
+  "code": "QTD 081"
+ },
+ {
+  "id": 813,
+  "name": "Ngã 4 Tây Hòa (RMK)",
+  "latitude": 10.825401,
+  "longitude": 106.76,
+  "is_active": 1,
+  "address": "Nhà máy thép Thủ Đức Xa Lộ Hà Nội, Phường Trường Thọ, Quận Thủ Đức",
+  "code": "QTD 082"
+ },
+ {
+  "id": 814,
+  "name": "Xi măng Hà Tiên",
+  "latitude": 10.820335,
+  "longitude": 106.758108,
+  "is_active": 1,
+  "address": "Xi măng Hà Tiên 1 Xa Lộ Hà Nội, Phường Trường Thọ, Quận Thủ Đức",
+  "code": "QTD 083"
+ },
+ {
+  "id": 815,
+  "name": "Cát Lái",
+  "latitude": 10.802956,
+  "longitude": 106.747934,
+  "is_active": 1,
+  "address": "Đối diện Esstella Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 075"
+ },
+ {
+  "id": 816,
+  "name": "Metro Quận 2",
+  "latitude": 10.8021,
+  "longitude": 106.743098,
+  "is_active": 1,
+  "address": "655 Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 076"
+ },
+ {
+  "id": 817,
+  "name": "Thảo Điền",
+  "latitude": 10.8013,
+  "longitude": 106.738939,
+  "is_active": 1,
+  "address": "Ngã ba Thảo Điền Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 077"
+ },
+ {
+  "id": 818,
+  "name": "Cầu Đen",
+  "latitude": 10.800457,
+  "longitude": 106.734397,
+  "is_active": 1,
+  "address": "Đối diện Cầu Đen Xa Lộ Hà Nội, Quận 2",
+  "code": "Q2 078"
+ },
+
+
+ {
+  "id": 846,
+  "name": "Lê Thị Hồng Gấm",
+  "latitude": 10.769061,
+  "longitude": 106.698447,
+  "is_active": 1,
+  "address": "134 (đối diện 141) Calmette, Quận 1",
+  "code": "Q1 002"
+ },
+ {
+  "id": 847,
+  "name": "Khách sạn Golden",
+  "latitude": 10.773149,
+  "longitude": 106.696022,
+  "is_active": 1,
+  "address": "189 - 191 Lý Tự Trọng, Phường Bến Thành, Quận 1",
+  "code": "Q1 106"
+ },
+ {
+  "id": 848,
+  "name": "Thư Viện Khoa Học Tổng Hợp",
+  "latitude": 10.775453,
+  "longitude": 106.69882,
+  "is_active": 1,
+  "address": "69 Lý Tự Trọng, Quận 1",
+  "code": "Q1 108"
+ },
+ {
+  "id": 849,
+  "name": "Sở Tài nguyên Môi trường",
+  "latitude": 10.77719,
+  "longitude": 106.700402,
+  "is_active": 1,
+  "address": "63 Lý Tự Trọng, Quận 1",
+  "code": "Q1 109"
+ },
+ {
+  "id": 850,
+  "name": "TTTM Vincom",
+  "latitude": 10.778826,
+  "longitude": 106.701894,
+  "is_active": 1,
+  "address": "47 Lý Tự Trọng, Quận 1",
+  "code": "Q1 110"
+ },
+ {
+  "id": 851,
+  "name": "Bệnh viện Nhi Đồng 2",
+  "latitude": 10.780541,
+  "longitude": 106.703457,
+  "is_active": 1,
+  "address": "23 Lý Tự Trọng, Quận 1",
+  "code": "Q1 111"
+ },
+ {
+  "id": 852,
+  "name": "Tòa án nhân dân Q1",
+  "latitude": 10.78253,
+  "longitude": 106.70528,
+  "is_active": 1,
+  "address": "3B Lý Tự Trọng, Quận 1",
+  "code": "Q1 112"
+ },
+ {
+  "id": 853,
+  "name": "Ba Son",
+  "latitude": 10.781634,
+  "longitude": 106.706662,
+  "is_active": 1,
+  "address": "Đối diện số 2 Tôn Đức Thắng, Phường Bến Nghé, Quận 1",
+  "code": "Q1 026"
+ },
+ {
+  "id": 854,
+  "name": "Ba Son",
+  "latitude": 10.781718,
+  "longitude": 106.707212,
+  "is_active": 1,
+  "address": "2 Tôn Đức Thắng, Quận 1",
+  "code": "Q1 027"
+ },
+ {
+  "id": 855,
+  "name": "Nguyễn Hữu Cảnh",
+  "latitude": 10.783312,
+  "longitude": 106.707146,
+  "is_active": 1,
+  "address": "Cây xanh số 17 (13-15) Nguyễn Hữu Cảnh, Quận 1",
+  "code": "Q1 032"
+ },
+ {
+  "id": 856,
+  "name": "Mầm non Hoa Lư",
+  "latitude": 10.785072,
+  "longitude": 106.708601,
+  "is_active": 1,
+  "address": "2A Nguyễn Hữu Cảnh, Quận 1",
+  "code": "Q1 033"
+ },
+ {
+  "id": 857,
+  "name": "Hồ Bơi Hải Quân",
+  "latitude": 10.789115,
+  "longitude": 106.710745,
+  "is_active": 1,
+  "address": "18 Nguyễn Hữu Cảnh, Quận Bình Thạnh",
+  "code": "QBTH 077"
+ },
+ {
+  "id": 858,
+  "name": "Cầu vượt Thủ Thiêm",
+  "latitude": 10.791029,
+  "longitude": 106.71492,
+  "is_active": 1,
+  "address": "173 Ngô Tất Tố, Quận Bình Thạnh",
+  "code": "QBTH 080"
+ },
+ {
+  "id": 859,
+  "name": "Trường Trung học cơ sở Phú Mỹ",
+  "latitude": 10.792614,
+  "longitude": 106.712185,
+  "is_active": 1,
+  "address": "83 Ngô Tất Tố, Quận Bình Thạnh",
+  "code": "QBTH 081"
+ },
+ {
+  "id": 860,
+  "name": "Đại học Tôn Đức Thắng",
+  "latitude": 10.793286,
+  "longitude": 106.709758,
+  "is_active": 1,
+  "address": "15 Ngô Tất Tố, Quận Bình Thạnh",
+  "code": "QBTH 082"
+ },
+ {
+  "id": 861,
+  "name": "Trường khiếm thính Hy vọng",
+  "latitude": 10.794389,
+  "longitude": 106.709725,
+  "is_active": 1,
+  "address": "Đối diện 9 Nguyễn Văn Lạc, Quận Bình Thạnh",
+  "code": "QBTH 067"
+ },
+ {
+  "id": 862,
+  "name": "Trung tâm Dưỡng Lão",
+  "latitude": 10.796551,
+  "longitude": 106.710498,
+  "is_active": 1,
+  "address": "138 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 125"
+ },
+ {
+  "id": 863,
+  "name": "Trường trung học Gia Định",
+  "latitude": 10.798969,
+  "longitude": 106.7112,
+  "is_active": 1,
+  "address": "246 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 124"
+ },
+ {
+  "id": 864,
+  "name": "Chùa Bửu Liên",
+  "latitude": 10.810823,
+  "longitude": 106.713711,
+  "is_active": 1,
+  "address": "256 (572) Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 011"
+ },
+ {
+  "id": 865,
+  "name": "Coop Mart Cầu kinh",
+  "latitude": 10.812226,
+  "longitude": 106.715361,
+  "is_active": 1,
+  "address": "664-666 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 012"
+ },
+ {
+  "id": 866,
+  "name": "Chung cư Thanh Đa",
+  "latitude": 10.817095,
+  "longitude": 106.720766,
+  "is_active": 1,
+  "address": "0011 Lô A Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 014"
+ },
+ {
+  "id": 867,
+  "name": "Chung cư Thanh Đa",
+  "latitude": 10.818106,
+  "longitude": 106.722628,
+  "is_active": 1,
+  "address": "0053 Lô B Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 015"
+ },
+ {
+  "id": 868,
+  "name": "Trung tâm TDTT Thanh Đa",
+  "latitude": 10.8204,
+  "longitude": 106.72691,
+  "is_active": 1,
+  "address": "256A Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 016"
+ },
+ {
+  "id": 869,
+  "name": "Hồ bơi Misha",
+  "latitude": 10.821396,
+  "longitude": 106.728707,
+  "is_active": 1,
+  "address": "298 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 017"
+ },
+ {
+  "id": 870,
+  "name": "Trung tâm cai nghiện Ma túy",
+  "latitude": 10.822604,
+  "longitude": 106.730832,
+  "is_active": 1,
+  "address": "330 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 018"
+ },
+ {
+  "id": 871,
+  "name": "UBND Phường 28, Quận Bình Thạnh",
+  "latitude": 10.824197,
+  "longitude": 106.733192,
+  "is_active": 1,
+  "address": "392 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 019"
+ },
+ {
+  "id": 872,
+  "name": "Chợ Bình Quới",
+  "latitude": 10.826577,
+  "longitude": 106.736109,
+  "is_active": 1,
+  "address": "456 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 020"
+ },
+ {
+  "id": 873,
+  "name": "Khu du lịch Bình Quới",
+  "latitude": 10.82837,
+  "longitude": 106.737888,
+  "is_active": 1,
+  "address": "520 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 021"
+ },
+ {
+  "id": 874,
+  "name": "Nhà hàng Hàn Quốc",
+  "latitude": 10.829839,
+  "longitude": 106.740324,
+  "is_active": 1,
+  "address": "546B - 546C Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 022"
+ },
+ {
+  "id": 875,
+  "name": "Bến đò Bình Quới",
+  "latitude": 10.831706,
+  "longitude": 106.742668,
+  "is_active": 1,
+  "address": "ĐẦU BẾN BẾN ĐÒ BÌNH QUỚI Bình Quới, Quận Bình Thạnh",
+  "code": "BX45"
+ },
+ {
+  "id": 876,
+  "name": "Nhà hàng Hàn Quốc",
+  "latitude": 10.829654,
+  "longitude": 106.739738,
+  "is_active": 1,
+  "address": "401 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 023"
+ },
+ {
+  "id": 877,
+  "name": "Khu du lịch Bình Quới",
+  "latitude": 10.827884,
+  "longitude": 106.73733,
+  "is_active": 1,
+  "address": "387-389 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 024"
+ },
+ {
+  "id": 878,
+  "name": "Chợ Bình Quới",
+  "latitude": 10.826497,
+  "longitude": 106.735918,
+  "is_active": 1,
+  "address": "357 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 025"
+ },
+ {
+  "id": 879,
+  "name": "UBND Phường 28, Quận Bình Thạnh",
+  "latitude": 10.824152,
+  "longitude": 106.733024,
+  "is_active": 1,
+  "address": "1075 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 026"
+ },
+ {
+  "id": 880,
+  "name": "Trung tâm cai nghiện Ma túy",
+  "latitude": 10.822339,
+  "longitude": 106.7302,
+  "is_active": 1,
+  "address": "1051 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 027"
+ },
+ {
+  "id": 881,
+  "name": "Cư xá Thanh Đa",
+  "latitude": 10.821376,
+  "longitude": 106.728547,
+  "is_active": 1,
+  "address": "1027 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 028"
+ },
+ {
+  "id": 882,
+  "name": "Trung tâm TDTT Thanh Đa",
+  "latitude": 10.82013,
+  "longitude": 106.726294,
+  "is_active": 1,
+  "address": "1017 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 029"
+ },
+ {
+  "id": 883,
+  "name": "Chung cư Thanh Đa",
+  "latitude": 10.818306,
+  "longitude": 106.722813,
+  "is_active": 1,
+  "address": "131 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 030"
+ },
+ {
+  "id": 884,
+  "name": "Chợ Thanh Đa",
+  "latitude": 10.816636,
+  "longitude": 106.719717,
+  "is_active": 1,
+  "address": "130 Bình Quới, Quận Bình Thạnh",
+  "code": "QBTH 031"
+ },
+ {
+  "id": 885,
+  "name": "Coop Mart Cầu kinh",
+  "latitude": 10.812331,
+  "longitude": 106.715181,
+  "is_active": 1,
+  "address": "689 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 032"
+ },
+ {
+  "id": 886,
+  "name": "Chùa Bửu Liên",
+  "latitude": 10.810827,
+  "longitude": 106.713468,
+  "is_active": 1,
+  "address": "609 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 033"
+ },
+ {
+  "id": 887,
+  "name": "Chợ Phường 25",
+  "latitude": 10.80838,
+  "longitude": 106.714487,
+  "is_active": 1,
+  "address": "đối diện 134\/4A Ung Văn Khiêm, Quận Bình Thạnh",
+  "code": "QBTH 131"
+ },
+ {
+  "id": 888,
+  "name": "Ngã Tư D2",
+  "latitude": 10.807355,
+  "longitude": 106.717034,
+  "is_active": 1,
+  "address": "88 Ung Văn Khiêm, Quận Bình Thạnh",
+  "code": "QBTH 132"
+ },
+ {
+  "id": 889,
+  "name": "Ngã Ba Cảng than",
+  "latitude": 10.805377,
+  "longitude": 106.720908,
+  "is_active": 1,
+  "address": "214 Ung Văn Khiêm, Quận Bình Thạnh",
+  "code": "QBTH 133"
+ },
+ {
+  "id": 890,
+  "name": "Trường THPT Hồng Đức",
+  "latitude": 10.803394,
+  "longitude": 106.720633,
+  "is_active": 1,
+  "address": "175 Nguyễn Văn Thương, Quận Bình Thạnh",
+  "code": "QBTH 036"
+ },
+ {
+  "id": 891,
+  "name": "Chợ Văn Thánh",
+  "latitude": 10.801565,
+  "longitude": 106.718879,
+  "is_active": 1,
+  "address": "57-59 Nguyễn Văn Thương, Quận Bình Thạnh",
+  "code": "QBTH 037"
+ },
+ {
+  "id": 892,
+  "name": "Trường trung học Gia Định",
+  "latitude": 10.799797,
+  "longitude": 106.711086,
+  "is_active": 1,
+  "address": "221 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 130"
+ },
+ {
+  "id": 893,
+  "name": "Trường Tiểu học Hồng Hà",
+  "latitude": 10.797306,
+  "longitude": 106.710634,
+  "is_active": 1,
+  "address": "153 Xô Viết Nghệ Tĩnh, Quận Bình Thạnh",
+  "code": "QBTH 129"
+ },
+ {
+  "id": 894,
+  "name": "Trường khiếm thính Hy vọng",
+  "latitude": 10.7949,
+  "longitude": 106.709801,
+  "is_active": 1,
+  "address": "25 Nguyễn Văn Lạc, Quận Bình Thạnh",
+  "code": "QBTH 066"
+ },
+ {
+  "id": 895,
+  "name": "Đại học Tôn Đức Thắng",
+  "latitude": 10.793153,
+  "longitude": 106.710036,
+  "is_active": 1,
+  "address": "12C Ngô Tất Tố, Quận Bình Thạnh",
+  "code": "QBTH 083"
+ },
+ {
+  "id": 896,
+  "name": "Trường Trung học cơ sở Phú Mỹ",
+  "latitude": 10.79244,
+  "longitude": 106.712558,
+  "is_active": 1,
+  "address": "010 Lô A Ngô Tất Tố, Quận Bình Thạnh",
+  "code": "QBTH 084"
+ },
+ {
+  "id": 897,
+  "name": "Cầu vượt Thủ Thiêm",
+  "latitude": 10.790881,
+  "longitude": 106.714891,
+  "is_active": 1,
+  "address": "120 Ngô Tất Tố, Quận Bình Thạnh",
+  "code": "QBTH 085"
+ },
+ {
+  "id": 898,
+  "name": "Hồ Bơi Hải Quân",
+  "latitude": 10.789493,
+  "longitude": 106.71063,
+  "is_active": 1,
+  "address": "22 Nguyễn Hữu Cảnh, Quận Bình Thạnh",
+  "code": "QBTH 076"
+ },
+ {
+  "id": 899,
+  "name": "Mầm non Hoa Lư",
+  "latitude": 10.78416,
+  "longitude": 106.707526,
+  "is_active": 1,
+  "address": "1 Nguyễn Hữu Cảnh, Quận 1",
+  "code": "Q1 034"
+ },
+ {
+  "id": 900,
+  "name": "TTTM Sài Gòn",
+  "latitude": 10.784282,
+  "longitude": 106.704335,
+  "is_active": 1,
+  "address": "6 Tôn Đức Thắng, Quận 1",
+  "code": "Q1 028"
+ },
+ {
+  "id": 901,
+  "name": "TTTM Sài Gòn",
+  "latitude": 10.783889,
+  "longitude": 106.704228,
+  "is_active": 1,
+  "address": "35 Tôn Đức Thắng, Quận 1",
+  "code": "Q1 029"
+ },
+ {
+  "id": 902,
+  "name": "Chu Mạnh Trinh",
+  "latitude": 10.780824,
+  "longitude": 106.70488,
+  "is_active": 1,
+  "address": "Đối diện 15 (dd 15\/3) Lê Thánh Tôn, Quận 1",
+  "code": "Q1 035"
+ },
+ {
+  "id": 904,
+  "name": "Sở Kế Hoạch & Đầu Tư",
+  "latitude": 10.779214,
+  "longitude": 106.70345,
+  "is_active": 1,
+  "address": "32 Lê Thánh Tôn, Quận 1",
+  "code": "Q1 036"
+ },
+ {
+  "id": 905,
+  "name": "Trung tâm Vincom",
+  "latitude": 10.777757,
+  "longitude": 106.702226,
+  "is_active": 1,
+  "address": "70 Lê Thánh Tôn, Quận 1",
+  "code": "Q1 037"
+ },
+ {
+  "id": 906,
+  "name": "Phố đi bộ Nguyễn Huệ",
+  "latitude": 10.775363,
+  "longitude": 106.700158,
+  "is_active": 1,
+  "address": "86Bis Lê Thánh Tôn, Quận 1",
+  "code": "Q1 038"
+ },
+ {
+  "id": 907,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.77107,
+  "longitude": 106.699486,
+  "is_active": 1,
+  "address": "Hàm Nghi 4 Hàm Nghi, Phường Bến Thành, Quận 1",
+  "code": "Q1 102"
+ },
+ {
+  "id": 908,
+  "name": "Calmette",
+  "latitude": 10.767821,
+  "longitude": 106.699268,
+  "is_active": 1,
+  "address": "97 Calmette, Quận 1",
+  "code": "Q1 001"
+ },
+ {
+  "id": 951,
+  "name": "Thảo Cầm Viên",
+  "latitude": 10.790638,
+  "longitude": 106.705311,
+  "is_active": 1,
+  "address": "2A Nguyễn Thị Minh Khai, Quận 1",
+  "code": "Q1 098"
+ },
+ {
+  "id": 952,
+  "name": "Đài truyền hình",
+  "latitude": 10.787222,
+  "longitude": 106.702114,
+  "is_active": 1,
+  "address": "Đối diện 9 Nguyễn Thị Minh Khai, Quận 1",
+  "code": "Q1 099"
+ },
+ {
+  "id": 953,
+  "name": "nhà thờ Mạc Ti Nho",
+  "latitude": 10.786153,
+  "longitude": 106.701147,
+  "is_active": 1,
+  "address": "16A Nguyễn Thị Minh Khai, Phường Đa Kao, Quận 1",
+  "code": "Q1 100"
+ },
+ {
+  "id": 954,
+  "name": "Phùng Khắc Khoan",
+  "latitude": 10.783976,
+  "longitude": 106.698618,
+  "is_active": 1,
+  "address": "2 - 4 Phùng Khắc Khoan, Quận 1",
+  "code": "Q1 101"
+ },
+ {
+  "id": 955,
+  "name": "Hồ Con Rùa",
+  "latitude": 10.783263,
+  "longitude": 106.696467,
+  "is_active": 1,
+  "address": "24 - 26 Trần Cao Vân, Quận 3",
+  "code": "Q3 085"
+ },
+ {
+  "id": 956,
+  "name": "Sân Phan Đình Phùng",
+  "latitude": 10.781026,
+  "longitude": 106.694419,
+  "is_active": 1,
+  "address": "8 Võ Văn Tần, Quận 3",
+  "code": "Q3 105"
+ },
+ {
+  "id": 957,
+  "name": "Bảo tàng chứng tích chiến tranh",
+  "latitude": 10.778926,
+  "longitude": 106.692482,
+  "is_active": 1,
+  "address": "28 Võ Văn Tần, Quận 3",
+  "code": "Q3 106"
+ },
+ {
+  "id": 958,
+  "name": "Trần Quốc Thảo",
+  "latitude": 10.777837,
+  "longitude": 106.691464,
+  "is_active": 1,
+  "address": "44 Võ Văn Tần, Phường 06, Quận 3",
+  "code": "Q3 107"
+ },
+ {
+  "id": 959,
+  "name": "Đại học Mở thành phố HCM",
+  "latitude": 10.77634,
+  "longitude": 106.690047,
+  "is_active": 1,
+  "address": "62 Võ Văn Tần, Quận 3",
+  "code": "Q3 108"
+ },
+ {
+  "id": 961,
+  "name": "Cách Mạng tháng 8",
+  "latitude": 10.773373,
+  "longitude": 106.689109,
+  "is_active": 1,
+  "address": "284 Nguyễn Thị Minh Khai, Quận 3",
+  "code": "Q3 069"
+ },
+ {
+  "id": 962,
+  "name": "Tôn Thất Tùng",
+  "latitude": 10.770806,
+  "longitude": 106.686676,
+  "is_active": 1,
+  "address": "414 Nguyễn Thị Minh Khai, Quận 3",
+  "code": "Q3 070"
+ },
+ {
+  "id": 963,
+  "name": "Bệnh viện Từ Dũ",
+  "latitude": 10.76957,
+  "longitude": 106.685502,
+  "is_active": 1,
+  "address": "436 Nguyễn Thị Minh Khai, Quận 3",
+  "code": "Q3 071"
+ },
+ {
+  "id": 964,
+  "name": "Trung ương Hội Chữ thập đỏ TP",
+  "latitude": 10.767677,
+  "longitude": 106.683714,
+  "is_active": 1,
+  "address": "464 - 466 Nguyễn Thị Minh Khai, Quận 3",
+  "code": "Q3 072"
+ },
+ {
+  "id": 965,
+  "name": "Nhà sách Minh Khai",
+  "latitude": 10.766323,
+  "longitude": 106.682459,
+  "is_active": 1,
+  "address": "488 Nguyễn Thị Minh Khai, Quận 3",
+  "code": "Q3 073"
+ },
+
+
+ {
+  "id": 978,
+  "name": "Nguyễn Thị Minh Khai",
+  "latitude": 10.775089,
+  "longitude": 106.690197,
+  "is_active": 1,
+  "address": "17 Bà Huyện Thanh Quan, Quận 3",
+  "code": "Q3 005"
+ },
+ {
+  "id": 979,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.770968,
+  "longitude": 106.700681,
+  "is_active": 1,
+  "address": "Hàm nghi 5 Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 179"
+ },
+ {
+  "id": 980,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.77087,
+  "longitude": 106.700783,
+  "is_active": 1,
+  "address": "Hàm Nghi 7 Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 180"
+ },
+ {
+  "id": 981,
+  "name": "Nam Kỳ Khởi Nghĩa",
+  "latitude": 10.770839,
+  "longitude": 106.701358,
+  "is_active": 1,
+  "address": "Nam Kỳ Khởi Nghĩa",
+  "code": "Q1 1950"
+ },
+ {
+  "id": 982,
+  "name": "Giao lộ Hàm Nghi - Tôn Thất Đạm",
+  "latitude": 10.770715,
+  "longitude": 106.702991,
+  "is_active": 1,
+  "address": "81-83-83B Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 200"
+ },
+ {
+  "id": 983,
+  "name": "Hồ Tùng Mậu",
+  "latitude": 10.770682,
+  "longitude": 106.704071,
+  "is_active": 1,
+  "address": "67 Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 017"
+ },
+ {
+  "id": 984,
+  "name": "Bến Bạch Đằng",
+  "latitude": 10.774095,
+  "longitude": 106.70664,
+  "is_active": 1,
+  "address": "Bến thủy nội địa Thủ Thiêm Tôn Đức Thắng, Quận 1",
+  "code": "Q1 024"
+ },
+ {
+  "id": 985,
+  "name": "Công Trường Mê Linh",
+  "latitude": 10.775967,
+  "longitude": 106.705757,
+  "is_active": 1,
+  "address": "2 Hai Bà Trưng, Quận 1",
+  "code": "Q1 057"
+ },
+ {
+  "id": 986,
+  "name": "Nhà Hát Thành Phố",
+  "latitude": 10.778116,
+  "longitude": 106.703381,
+  "is_active": 1,
+  "address": "74\/A2-74\/A4 Hai Bà Trưng, Quận 1",
+  "code": "Q1 058"
+ },
+ {
+  "id": 987,
+  "name": "Bệnh viện Nhi Đồng 2",
+  "latitude": 10.779852,
+  "longitude": 106.701441,
+  "is_active": 1,
+  "address": "Đối diện 115Ter Hai Bà Trưng, Quận 1",
+  "code": "Q1 059"
+ },
+ {
+  "id": 988,
+  "name": "Bưu Điện Thành Phố",
+  "latitude": 10.780548,
+  "longitude": 106.700647,
+  "is_active": 1,
+  "address": "86 Hai Bà Trưng, Quận 1",
+  "code": "Q1 060"
+ },
+ {
+  "id": 989,
+  "name": "Sở Công Thương",
+  "latitude": 10.784297,
+  "longitude": 106.696458,
+  "is_active": 1,
+  "address": "142 Hai Bà Trưng, Quận 1",
+  "code": "Q1 061"
+ },
+
+ {
+  "id": 997,
+  "name": "Trần Quang Khải",
+  "latitude": 10.790871,
+  "longitude": 106.68814,
+  "is_active": 1,
+  "address": "423 A Hai Bà Trưng, Phường 08, Quận 3",
+  "code": "Q3 029"
+ },
+ {
+  "id": 998,
+  "name": "Bệnh viện Nhi Đồng 2",
+  "latitude": 10.779496,
+  "longitude": 106.701769,
+  "is_active": 1,
+  "address": "Kế 115 Hai Bà Trưng, Quận 1",
+  "code": "Q1 066"
+ },
+ {
+  "id": 999,
+  "name": "Nhà Hát Thành Phố",
+  "latitude": 10.777898,
+  "longitude": 106.703553,
+  "is_active": 1,
+  "address": "101 Hai Bà Trưng, Quận 1",
+  "code": "Q1 067"
+ },
+ {
+  "id": 1000,
+  "name": "Công Trường Mê Linh",
+  "latitude": 10.775981,
+  "longitude": 106.705653,
+  "is_active": 1,
+  "address": "Đối diện 2 Hai Bà Trưng, Quận 1",
+  "code": "Q1 068"
+ },
+ {
+  "id": 1001,
+  "name": "Bến Bạch Đằng",
+  "latitude": 10.773297,
+  "longitude": 106.706414,
+  "is_active": 1,
+  "address": "21 Tôn Đức Thắng, Quận 1",
+  "code": "Q1 031"
+ },
+ {
+  "id": 1002,
+  "name": "Cục Hải Quan Thành Phố",
+  "latitude": 10.770889,
+  "longitude": 106.70541,
+  "is_active": 1,
+  "address": "2-4 Hàm Nghi, Phường Bến Nghé, Quận 1",
+  "code": "Q1 020"
+ },
+ {
+  "id": 1003,
+  "name": "Chợ Cũ",
+  "latitude": 10.771029,
+  "longitude": 106.703224,
+  "is_active": 1,
+  "address": "84 Hàm Nghi, Phường Bến Nghé, Quận 1",
+  "code": "Q1 193"
+ },
+ {
+  "id": 1004,
+  "name": "Trường Cao Thắng",
+  "latitude": 10.771092,
+  "longitude": 106.701825,
+  "is_active": 1,
+  "address": "Trường Cao Thắng Hàm Nghi, Phường Bến Nghé, Quận 1",
+  "code": "Q1 194"
+ },
+ {
+  "id": 1005,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.77114,
+  "longitude": 106.699999,
+  "is_active": 1,
+  "address": "Hàm Nghi 6 Hàm Nghi, Phường Bến Thành, Quận 1",
+  "code": "Q1 184"
+ },
+ {
+  "id": 1006,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.771176,
+  "longitude": 106.699604,
+  "is_active": 1,
+  "address": "Hàm Nghi 8 Hàm Nghi, Phường Bến Thành, Quận 1",
+  "code": "Q1 183"
+ },
+ {
+  "id": 1007,
+  "name": "Trần Hưng Đạo",
+  "latitude": 10.768571,
+  "longitude": 106.694994,
+  "is_active": 1,
+  "address": "197 Nguyễn Thái Học, Quận 1",
+  "code": "Q1 118"
+ },
+ {
+  "id": 1008,
+  "name": "Cầu Ông Lãnh",
+  "latitude": 10.766786,
+  "longitude": 106.696039,
+  "is_active": 1,
+  "address": "65G (75) Nguyễn Thái Học, Phường Cầu Ông Lãnh, Quận 1",
+  "code": "Q1 119"
+ },
+
+ {
+  "id": 1082,
+  "name": "Cầu Ông Lãnh ",
+  "latitude": 10.766108,
+  "longitude": 106.696586,
+  "is_active": 1,
+  "address": "82 - 84 (82A) Nguyễn Thái Học, Phường Cầu Ông Lãnh, Quận 1",
+  "code": "Q1 120"
+ },
+ {
+  "id": 1083,
+  "name": "Trần Hưng Đạo",
+  "latitude": 10.76841,
+  "longitude": 106.695241,
+  "is_active": 1,
+  "address": "Đối diện số 179 Nguyễn Thái Học, Phường Phạm Ngũ Lão, Quận 1",
+  "code": "Q1 121"
+ },
+
+ {
+  "id": 1152,
+  "name": "Trạm Trung chuyển trên đường Hàm Nghi",
+  "latitude": 10.770972,
+  "longitude": 106.699351,
+  "is_active": 1,
+  "address": "Hàm Nghi 15 (99) Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 161"
+ },
+ {
+  "id": 1153,
+  "name": "Tòa nhà Bitexco",
+  "latitude": 10.770693,
+  "longitude": 106.704729,
+  "is_active": 1,
+  "address": "31-33-35 Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 018"
+ },
+ {
+  "id": 1154,
+  "name": "Cục Hải Quan Thành Phố",
+  "latitude": 10.770593,
+  "longitude": 106.705747,
+  "is_active": 1,
+  "address": "1 Hàm Nghi, Phường Nguyễn Thái Bình, Quận 1",
+  "code": "Q1 019"
+ },
+
+ {
+  "id": 1216,
+  "name": "Tôn Thất Tùng",
+  "latitude": 10.76869,
+  "longitude": 106.690501,
+  "is_active": 0,
+  "address": "Đối diện 204 Lê Lai",
+  "code": "Q1 041"
+ },
+ {
+  "id": 1217,
+  "name": "Nguyễn Thị Nghĩa",
+  "latitude": 10.769904,
+  "longitude": 106.693519,
+  "is_active": 0,
+  "address": "Đối diện 96 Lê Lai",
+  "code": "Q1 042"
+ },
+ {
+  "id": 1218,
+  "name": "Khách sạn New world",
+  "latitude": 10.770878,
+  "longitude": 106.695926,
+  "is_active": 0,
+  "address": "Đối diện 1A Phạm Hồng Thái Lê Lai",
+  "code": "Q1 043"
+ },
+ {
+  "id": 1219,
+  "name": "Bến Thành F",
+  "latitude": 10.771062,
+  "longitude": 106.698217,
+  "is_active": 0,
+  "address": "Bến Thành Phạm Ngũ Lão",
+  "code": "Q1TC1F"
+ },
+ {
+  "id": 1220,
+  "name": " Ngã năm Liệt Sĩ",
+  "latitude": 10.812034,
+  "longitude": 106.710654,
+  "is_active": 1,
+  "address": "222\/4 Ter Nguyễn Xí",
+  "code": "QBTH 071"
+ },
+ {
+  "id": 1221,
+  "name": "Đại học Ngoại Thương ",
+  "latitude": 10.806671,
+  "longitude": 106.71615,
+  "is_active": 1,
+  "address": "8A Đường D2",
+  "code": "QBTH 034"
+ },
+ {
+  "id": 1222,
+  "name": "Trường ĐH Giao thông Vận tải Tp. HCM",
+  "latitude": 10.804712,
+  "longitude": 106.71589,
+  "is_active": 1,
+  "address": "74 Cư xá Văn Thánh Bắc Đường D2",
+  "code": "QBTH 035"
+ },
+ {
+  "id": 1223,
+  "name": "Nhà hàng Sinh Đôi",
+  "latitude": 10.76592,
+  "longitude": 106.680375,
+  "is_active": 1,
+  "address": "120 Lý Thái Tổ",
+  "code": "Q3 037"
+ },
+ {
+  "id": 1224,
+  "name": "Nguyễn Đình Chiểu",
+  "latitude": 10.7666,
+  "longitude": 106.67819,
+  "is_active": 1,
+  "address": "170 Lý Thái Tổ",
+  "code": "Q3 038"
+ },
+ {
+  "id": 1225,
+  "name": "Hồ Thị Kỷ",
+  "latitude": 10.767372,
+  "longitude": 106.675717,
+  "is_active": 1,
+  "address": "306 Lý Thái Tổ",
+  "code": "Q3 039"
+ },
+
+ {
+  "id": 1227,
+  "name": "Bện viện Nhi Đồng 1",
+  "latitude": 10.767969,
+  "longitude": 106.669856,
+  "is_active": 1,
+  "address": "Bệnh viện Nhi đồng 1 Lý Thái Tổ",
+  "code": "Q10 030"
+ },
+ {
+  "id": 1228,
+  "name": "Nguyễn Kim",
+  "latitude": 10.765109,
+  "longitude": 106.662158,
+  "is_active": 1,
+  "address": "626-628 Đường 3\/2",
+  "code": "Q10 008"
+ },
+ {
+  "id": 1229,
+  "name": "Xóm Đất",
+  "latitude": 10.758622,
+  "longitude": 106.650275,
+  "is_active": 1,
+  "address": "1196 Đường 3\/2",
+  "code": "Q11 004"
+ },
+ {
+  "id": 1230,
+  "name": "Đội Giao Thông Phú Lâm",
+  "latitude": 10.757332,
+  "longitude": 106.647876,
+  "is_active": 1,
+  "address": "1274 Đường 3\/2",
+  "code": "Q11 005"
+ },
+ {
+  "id": 1231,
+  "name": "Chùa Phụng Sơn",
+  "latitude": 10.756492,
+  "longitude": 106.6463,
+  "is_active": 1,
+  "address": "1354 Đường 3\/2",
+  "code": "Q11 006"
+ },
+ {
+  "id": 1232,
+  "name": "Trường Nguyễn Thi",
+  "latitude": 10.755242,
+  "longitude": 106.64388,
+  "is_active": 1,
+  "address": "1456 Đường 3\/2",
+  "code": "Q11 007"
+ },
+ {
+  "id": 1233,
+  "name": "Chùa Huê Lâm",
+  "latitude": 10.754524,
+  "longitude": 106.641256,
+  "is_active": 1,
+  "address": "690 (138) Hồng Bàng",
+  "code": "Q11 097"
+ },
+ {
+  "id": 1234,
+  "name": "Tân Hóa",
+  "latitude": 10.754739,
+  "longitude": 106.639089,
+  "is_active": 1,
+  "address": "732 Hồng Bàng",
+  "code": "Q11 098"
+ },
+ {
+  "id": 1235,
+  "name": "Trường Mạc Đỉnh Chi",
+  "latitude": 10.754668,
+  "longitude": 106.635546,
+  "is_active": 1,
+  "address": "832-834 Hồng Bàng",
+  "code": "Q6 038"
+ },
+
+ {
+  "id": 1248,
+  "name": "Cầu Ông Buông",
+  "latitude": 10.754595,
+  "longitude": 106.638415,
+  "is_active": 1,
+  "address": "963 Hồng Bàng",
+  "code": "Q6 039"
+ },
+ {
+  "id": 1249,
+  "name": "Ngân hàng ACB",
+  "latitude": 10.754288,
+  "longitude": 106.641345,
+  "is_active": 1,
+  "address": "871 Hồng Bàng",
+  "code": "Q6 040"
+ },
+ {
+  "id": 1250,
+  "name": "Trường Nguyễn Thi",
+  "latitude": 10.755265,
+  "longitude": 106.644277,
+  "is_active": 1,
+  "address": "1559 Đường 3\/2",
+  "code": "Q11 008"
+ },
+ {
+  "id": 1251,
+  "name": "Chùa Phụng Sơn",
+  "latitude": 10.756169,
+  "longitude": 106.645887,
+  "is_active": 1,
+  "address": "1479 Đường 3\/2",
+  "code": "Q11 009"
+ },
+ {
+  "id": 1252,
+  "name": "Hàn Hải Nguyên",
+  "latitude": 10.757507,
+  "longitude": 106.648399,
+  "is_active": 1,
+  "address": "1375 Đường 3\/2",
+  "code": "Q11 010"
+ },
+ {
+  "id": 1253,
+  "name": "Xóm Đất",
+  "latitude": 10.758612,
+  "longitude": 106.650494,
+  "is_active": 1,
+  "address": "1293 Đường 3\/2",
+  "code": "Q11 011"
+ },
+ {
+  "id": 1254,
+  "name": "Công an P12, Q11",
+  "latitude": 10.759476,
+  "longitude": 106.652053,
+  "is_active": 1,
+  "address": "1231 Đường 3\/2",
+  "code": "Q11 012"
+ },
+ {
+  "id": 1255,
+  "name": "Nguyễn Kim",
+  "latitude": 10.764233,
+  "longitude": 106.660792,
+  "is_active": 1,
+  "address": "781 Đường 3\/2",
+  "code": "Q10 009"
+ },
+ {
+  "id": 1256,
+  "name": "Nhà thờ tin lành Nguyễn Tri Phương",
+  "latitude": 10.766229,
+  "longitude": 106.664471,
+  "is_active": 1,
+  "address": "635 Đường 3\/2",
+  "code": "Q10 010"
+ },
+ {
+  "id": 1257,
+  "name": "Bệnh viện nhi đồng 1",
+  "latitude": 10.767824,
+  "longitude": 106.670348,
+  "is_active": 1,
+  "address": "359 Lý Thái Tổ",
+  "code": "Q10 031"
+ },
+ {
+  "id": 1258,
+  "name": "Chợ P10, Q10",
+  "latitude": 10.767684,
+  "longitude": 106.67331,
+  "is_active": 1,
+  "address": "183 Lý Thái Tổ",
+  "code": "Q10 032"
+ },
+ {
+  "id": 1259,
+  "name": "Hồ Thị Kỳ",
+  "latitude": 10.767289,
+  "longitude": 106.675592,
+  "is_active": 1,
+  "address": "93 (27B) Lý Thái Tổ",
+  "code": "Q10 033"
+ },
+ {
+  "id": 1260,
+  "name": "Nhà Khách Chính Phủ",
+  "latitude": 10.766602,
+  "longitude": 106.677788,
+  "is_active": 1,
+  "address": "Đối diện 180 (1B) Lý Thái Tổ",
+  "code": "Q10 034"
+ },
+ {
+  "id": 1261,
+  "name": "Ngã 6 Cộng Hòa",
+  "latitude": 10.76569,
+  "longitude": 106.680762,
+  "is_active": 1,
+  "address": "Đối diện 30-32 Lý Thái Tổ",
+  "code": "Q10 035"
+ },
+ {
+  "id": 1262,
+  "name": "Phạm Viết Chánh",
+  "latitude": 10.766196,
+  "longitude": 106.682475,
+  "is_active": 1,
+  "address": "Đối diện 492 Nguyễn Thị Minh Khai",
+  "code": "Q1 088"
+ },
+ {
+  "id": 1263,
+  "name": "Bệnh viện Tù Dũ",
+  "latitude": 10.76875,
+  "longitude": 106.684892,
+  "is_active": 1,
+  "address": "Đối diện 446 Nguyễn Thị Minh Khai",
+  "code": "Q1 089"
+ },
+ {
+  "id": 1264,
+  "name": "Tôn Thất Tùng",
+  "latitude": 10.77217,
+  "longitude": 106.6881,
+  "is_active": 1,
+  "address": "99 Nguyễn Thị Minh Khai",
+  "code": "Q1 090"
+ },
+ {
+  "id": 1265,
+  "name": "Sở Y Tế",
+  "latitude": 10.774412,
+  "longitude": 106.690186,
+  "is_active": 1,
+  "address": "Đối diện 214-216 Nguyễn Thị Minh Khai",
+  "code": "Q1 091"
+ },
+ {
+  "id": 1266,
+  "name": "Nhà Văn Hóa Lao Động",
+  "latitude": 10.777072,
+  "longitude": 106.692656,
+  "is_active": 1,
+  "address": "Đối diện số 138 Nguyễn Thị Minh Khai",
+  "code": "Q1 092"
+ },
+ {
+  "id": 1267,
+  "name": "Pasteur",
+  "latitude": 10.781028,
+  "longitude": 106.696389,
+  "is_active": 1,
+  "address": "43 - 45 - 47 Nguyễn Thị Minh Khai",
+  "code": "Q1 093"
+ },
+ {
+  "id": 1268,
+  "name": "Mạc Đỉnh Chi",
+  "latitude": 10.784144,
+  "longitude": 106.699268,
+  "is_active": 1,
+  "address": "21 Nguyễn Thị Minh Khai",
+  "code": "Q1 094"
+ },
+ {
+  "id": 1269,
+  "name": "Đinh Tiên Hoàng",
+  "latitude": 10.786282,
+  "longitude": 106.701307,
+  "is_active": 1,
+  "address": "15C-15D Nguyễn Thị Minh Khai",
+  "code": "Q1 095"
+ },
+ {
+  "id": 1270,
+  "name": "Thảo Cầm Viên",
+  "latitude": 10.789607,
+  "longitude": 106.70448,
+  "is_active": 1,
+  "address": "3 Nguyễn Thị Minh Khai",
+  "code": "Q1 096"
+ },
+ {
+  "id": 1271,
+  "name": "Cầu Thị Nghè",
+  "latitude": 10.790574,
+  "longitude": 106.705416,
+  "is_active": 1,
+  "address": "1A Nguyễn Thị Minh Khai",
+  "code": "Q1 097"
+ },
+ {
+  "id": 1272,
+  "name": "Nhà Thờ Thị Nghè",
+  "latitude": 10.793367,
+  "longitude": 106.708027,
+  "is_active": 1,
+  "address": "22 B Xô Viết Nghệ Tĩnh",
+  "code": "QBTH 126"
+ },
+ {
+  "id": 1273,
+  "name": "Trạm Bến Thành",
+  "latitude": 10.772461,
+  "longitude": 106.698055,
+  "is_active": 1,
+  "address": "Lê Lợi, P. Bến Thành, Q.1",
+  "code": "Q1BT001"
+ },
+ {
+  "id": 1274,
+  "name": "Trạm Lê Lợi",
+  "latitude": 10.773020,
+  "longitude": 106.697850,
+  "is_active": 1,
+  "address": "234 Lê Lợi, P. Bến Thành, Q.1",
+  "code": "Q1LL001"
+ },
+ {
+  "id": 1275,
+  "name": "Trạm Nhà Hát Thành Phố",
+  "latitude": 10.776889,
+  "longitude": 106.703056,
+  "is_active": 1,
+  "address": "7 Lam Sơn, P. Bến Nghé, Q.1",
+  "code": "Q1NH001"
+ },
+ {
+  "id": 1276,
+  "name": "Trạm Ba Son",
+  "latitude": 10.776944,
+  "longitude": 106.705833,
+  "is_active": 1,
+  "address": "Tôn Đức Thắng, P. Bến Nghé, Q.1",
+  "code": "Q1BS001"
+ },
+ {
+  "id": 1277,
+  "name": "Trạm Tôn Đức Thắng",
+  "latitude": 10.778333,
+  "longitude": 106.706944,
+  "is_active": 1,
+  "address": "Tôn Đức Thắng, P. Bến Nghé, Q.1",
+  "code": "Q1TD001"
+ },
+ {
+  "id": 1278,
+  "name": "Trạm Văn Thánh",
+  "latitude": 10.790833,
+  "longitude": 106.713611,
+  "is_active": 1,
+  "address": "Văn Thánh, P.25, Q. Bình Thạnh",
+  "code": "BTVT001"
+ },
+ {
+  "id": 1279,
+  "name": "Trạm Tân Cảng",
+  "latitude": 10.788056,
+  "longitude": 106.717222,
+  "is_active": 1,
+  "address": "Nguyễn Tất Thành, P.12, Q. Bình Thạnh",
+  "code": "BTTC001"
+ },
+ {
+  "id": 1280,
+  "name": "Trạm Hàng Xanh",
+  "latitude": 10.787500,
+  "longitude": 106.720556,
+  "is_active": 1,
+  "address": "Điện Biên Phủ, P.21, Q. Bình Thạnh",
+  "code": "BTHX001"
+ },
+ {
+  "id": 1281,
+  "name": "Trạm Thảo Điền",
+  "latitude": 10.801944,
+  "longitude": 106.734167,
+  "is_active": 1,
+  "address": "Quốc Hương, P. Thảo Điền, Q.2",
+  "code": "Q2TD001"
+ },
+ {
+  "id": 1282,
+  "name": "Trạm An Phú",
+  "latitude": 10.802778,
+  "longitude": 106.740556,
+  "is_active": 1,
+  "address": "Nguyễn Hoàng, P. An Phú, Q.2",
+  "code": "Q2AP001"
+ },
+ {
+  "id": 1283,
+  "name": "Trạm Rạch Chiếc",
+  "latitude": 10.806944,
+  "longitude": 106.746667,
+  "is_active": 1,
+  "address": "Mai Chí Thọ, P. An Phú, Q.2",
+  "code": "Q2RC001"
+ },
+ {
+  "id": 1284,
+  "name": "Trạm Phước Long",
+  "latitude": 10.825556,
+  "longitude": 106.759722,
+  "is_active": 1,
+  "address": "Võ Nguyên Giáp, P. Phước Long B, TP. Thủ Đức",
+  "code": "TDPL001"
+ },
+ {
+  "id": 1285,
+  "name": "Trạm Bình Thái",
+  "latitude": 10.835278,
+  "longitude": 106.763889,
+  "is_active": 1,
+  "address": "Đường số 7, P. Bình Thái, TP. Thủ Đức",
+  "code": "TDBT001"
+ },
+ {
+  "id": 1286,
+  "name": "Trạm KCN Cao",
+  "latitude": 10.850278,
+  "longitude": 106.765000,
+  "is_active": 1,
+  "address": "Đường D1, KCN Cao, TP. Thủ Đức",
+  "code": "TDKC001"
+ },
+ {
+  "id": 1287,
+  "name": "Trạm Xa Lộ Hà Nội",
+  "latitude": 10.852222,
+  "longitude": 106.771111,
+  "is_active": 1,
+  "address": "Xa Lộ Hà Nội, P. Long Thạnh Mỹ, TP. Thủ Đức",
+  "code": "TDXL001"
+ },
+ {
+  "id": 1288,
+  "name": "Trạm Depot",
+  "latitude": 10.862500,
+  "longitude": 106.774444,
+  "is_active": 1,
+  "address": "Đường Số 1, P. Long Bình, TP. Thủ Đức",
+  "code": "TDDP001"
+ },
+ {
+  "id": 1289,
+  "name": "Trạm Suối Tiên",
+  "latitude": 10.871667,
+  "longitude": 106.787222,
+  "is_active": 1,
+  "address": "Hà Nội, P. Long Bình, TP. Thủ Đức",
+  "code": "TDST001"
+ },
+ {
+  "id": 1290,
+  "name": "Trạm Công Viên Suối Tiên",
+  "latitude": 10.872778,
+  "longitude": 106.789444,
+  "is_active": 1,
+  "address": "120 Hà Nội, P. Long Bình, TP. Thủ Đức",
+  "code": "TDCV001"
+ }
+]

@@ -76,6 +76,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(response);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<Void>> handleGeneralRuntimeException(Exception ex) {
+        ex.printStackTrace(); // Consider using proper logging instead
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unexpected error occurred in runtime");
+        return ResponseEntity.ok().body(response);
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ApiResponse<Void>> handleAccessDenied(AuthorizationDeniedException ex) {

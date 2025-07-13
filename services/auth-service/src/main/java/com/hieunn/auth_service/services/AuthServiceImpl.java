@@ -100,31 +100,26 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ApiResponse<TokenResponse> processGoogleLogin(String idToken) {
         try {
-            // Configure the Google ID token verifier
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
                     new NetHttpTransport(), new GsonFactory())
                     .setAudience(Collections.singletonList(googleClientId))
                     .build();
 
-            // Verify the token
             GoogleIdToken googleIdToken = verifier.verify(idToken);
             if (googleIdToken == null) {
                 return ApiResponse.success(null, "Invalid Google ID token");
             }
 
-            // Extract user information
             GoogleIdToken.Payload payload = googleIdToken.getPayload();
             String email = payload.getEmail();
             String name = (String) payload.get("name");
             String pictureUrl = (String) payload.get("picture");
             String providerId = payload.getSubject();
 
-            // Find or create user in your system
             SocialLoginUserRequest socialLoginRequest = new SocialLoginUserRequest(
                     email, name, providerId, pictureUrl, AuthProvider.GOOGLE);
             UserDto user = userServiceClient.processSocialLogin(socialLoginRequest).getData();
 
-            // Generate JWT token
             String accessToken = jwtUtil.generateToken(user);
 
             return ApiResponse.success(new TokenResponse(accessToken));

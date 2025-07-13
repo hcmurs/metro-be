@@ -73,14 +73,12 @@ public class RoutesServiceImpl implements RoutesService {
             Routes existingRoute = routesRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Route not found with id: " + id));
 
-            // Check if new route code already exists (excluding current route)
             if (routeUpdate.getRouteCode() != null &&
                     !existingRoute.getRouteCode().equals(routeUpdate.getRouteCode()) &&
                     routesRepository.existsByRouteCode(routeUpdate.getRouteCode())) {
                 throw new RuntimeException("Route code already exists: " + routeUpdate.getRouteCode());
             }
 
-            // Update fields if they are not null
             if (routeUpdate.getRouteCode() != null && !routeUpdate.getRouteCode().trim().isEmpty()) {
                 existingRoute.setRouteCode(routeUpdate.getRouteCode().trim());
             }

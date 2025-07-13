@@ -185,16 +185,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     ErrorMessage.USER_NOT_FOUND.getMessage());
         }
 
-        User user = userByEmail.get();
-
         if (redisTemplate.opsForValue().get(email) == null) {
             throw new CustomException(
                     ErrorMessage.EMAIL_NOT_VERIFIED.getStatus(),
                     ErrorMessage.EMAIL_NOT_VERIFIED.getMessage());
         }
+        redisTemplate.delete(email);
 
+        User user = userByEmail.get();
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserDto findByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(
+                        ErrorMessage.USER_NOT_FOUND.getStatus(),
+                        ErrorMessage.USER_NOT_FOUND.getMessage()));
+        return userMapper.toUserDto(user);
     }
 
     private User createNewUserFromLocal(RegisterRequest request) {

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +35,10 @@ public class RequestServiceImpl implements RequestService {
     @PreAuthorize("authentication.principal.userId == #userId or hasRole('ADMIN')")
     public List<RequestDto> findByUserId(Long userId) {
         List<Request> requests = requestRepository.findByUser_UserId(userId);
+
         return requests
                 .stream()
+                .sorted(Comparator.comparing(Request::getCreatedAt).reversed())
                 .map(requestMapper::toRequestDto)
                 .toList();
     }
@@ -56,8 +59,10 @@ public class RequestServiceImpl implements RequestService {
             );
         }
 
+        int requestOrder = passRequests.size() + 1;
         Request request = Request.builder()
                 .content(requestCreationRequest.getContent())
+                .title("Request #" + requestOrder)
                 .studentCardImage(requestCreationRequest.getStudentCardImage())
                 .citizenIdentityCardImage(requestCreationRequest.getCitizenIdentityCardImage())
                 .user(user)
@@ -81,7 +86,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    public void verify(Long requestId, boolean isApproved) {
+    public RequestDto verify(Long requestId, boolean isApproved, String rejectionReason) {
         Optional<Request> requestById = requestRepository.findById(requestId);
         if (requestById.isEmpty()) {
             throw new CustomException(
@@ -92,6 +97,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = requestById.get();
         if (!isApproved) {
             request.setRequestStatus(RequestStatus.REJECTED);
+            request.setRejectionReason(rejectionReason);
         } else {
             request.setRequestStatus(RequestStatus.APPROVED);
             request.setStartDate(LocalDate.now());
@@ -101,6 +107,6 @@ public class RequestServiceImpl implements RequestService {
             userRepository.save(user);
         }
 
-        requestRepository.save(request);
+        return requestMapper.toRequestDto(requestRepository.save(request));
     }
 }

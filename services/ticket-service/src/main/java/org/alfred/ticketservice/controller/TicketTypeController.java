@@ -38,6 +38,7 @@ public class TicketTypeController {
         return ResponseEntity.ok(ApiResponse.success(ticketTypes, "Ticket types retrieved successfully"));
     }
 
+
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<TicketTypeResponse>> createTicketType(@Valid @RequestBody TicketTypeRequest request) {

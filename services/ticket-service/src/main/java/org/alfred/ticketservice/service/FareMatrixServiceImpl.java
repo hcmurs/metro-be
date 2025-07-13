@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class FareMatrixServiceImpl implements FareMatrixService{
     @Autowired
@@ -36,7 +38,7 @@ public class FareMatrixServiceImpl implements FareMatrixService{
                 .startStationId(fareMatrix.startStationId())
                 .endStationId(fareMatrix.endStationId())
                 .name(fareMatrix.name())
-                .isActive(true)
+                .isActive(fareMatrix.isActive())
                 .build();
         fareMatrixEntity = fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
@@ -44,15 +46,15 @@ public class FareMatrixServiceImpl implements FareMatrixService{
 
     @Override
     public FareMatrixResponse updateFareMatrix(FareMatrixRequest fareMatrix, Long id) {
+
+        FareMatrix fareMatrixEntity = fareMatrixRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fare matrix not found"));
         FareMatrix fareMatrixexist = fareMatrixRepository.findByStartStationIdAndEndStationId(
                 fareMatrix.startStationId(), fareMatrix.endStationId());
-        if (fareMatrixexist != null) throw new EntityExistsException("Fare matrix already exists for this station pair");
-        FareMatrix fareMatrixEntity = fareMatrixRepository.findById(fareMatrix.fareMatrixId())
-                .orElseThrow(() -> new EntityNotFoundException("Fare matrix not found"));
+        if (!Objects.equals(fareMatrixexist, fareMatrixEntity)) throw new EntityExistsException("Fare matrix cant change station");
         fareMatrixEntity.setPrice(fareMatrix.price());
         fareMatrixEntity.setName(fareMatrix.name());
-        fareMatrixEntity.setStartStationId(fareMatrix.startStationId());
-        fareMatrixEntity.setEndStationId(fareMatrix.endStationId());
+        fareMatrixEntity.setActive(fareMatrix.isActive());
         fareMatrixRepository.save(fareMatrixEntity);
         return mapToResponse(fareMatrixEntity);
     }
@@ -123,6 +125,7 @@ public class FareMatrixServiceImpl implements FareMatrixService{
                 .name(fareMatrix.getName())
                 .startStationId(fareMatrix.getStartStationId())
                 .endStationId(fareMatrix.getEndStationId())
+                .isActive(fareMatrix.isActive())
                 .createdAt(fareMatrix.getCreatedAt())
                 .updatedAt(fareMatrix.getUpdatedAt())
                 .build();

@@ -1,4 +1,7 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://sa:12345@mongocloud.7ts3d83.mongodb.net/Bus?retryWrites=true&w=majority&appName=MongoCloud
   datasource:
     url: jdbc:postgresql://localhost:5432/station-db
     username: postgres
@@ -10,6 +13,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:

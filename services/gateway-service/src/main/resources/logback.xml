@@ -1,7 +1,7 @@
 <configuration>
   <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
-  <property name="DEV_HOME" value="logs" />
+  <property name="DEV_HOME" value="logs/gateway-service" />
   <property name="MAX_LOG_FILE_SIZE" value="10MB" />
   <property name="MAX_LOG_HISTORY" value="30" />
 

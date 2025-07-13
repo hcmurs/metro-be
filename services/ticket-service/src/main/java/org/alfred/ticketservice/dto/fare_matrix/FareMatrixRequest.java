@@ -8,8 +8,6 @@ package org.alfred.ticketservice.dto.fare_matrix;
 
         public record FareMatrixRequest(
                 // Optional for creation, required for updates
-                Long fareMatrixId,
-
                 @NotNull(message = "Price is required")
                 @PositiveOrZero(message = "Price must be zero or positive")
                 float price,
@@ -21,6 +19,9 @@ package org.alfred.ticketservice.dto.fare_matrix;
                 @NotNull(message = "End station ID is required")
                 @PositiveOrZero(message = "End station ID must be valid")
                 Long endStationId,
+
+                @NotNull(message = "Is active status is required")
+                boolean isActive,
 
                 @NotBlank(message = "Name cannot be empty")
                 @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")

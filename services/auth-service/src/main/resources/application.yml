@@ -20,8 +20,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 642093341387-4ts23qfc08ukhfkifq7k2d2a2nr928t5.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${PROD_CLIENT_ID:hehehe}
+            client-secret: ${PROD_CLIENT_SECRET:hehehe}
             client-name: Google
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:4006/api/v1/login/oauth2/code/google
@@ -65,7 +65,7 @@ security:
     key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
     header: X-API-KEY
   oauth2:
-    authorized-redirect-url-frontend: http://localhost:3000/oauth2/redirect
+    authorized-redirect-url-frontend: http://localhost:3000/login
 
 service:
   users:

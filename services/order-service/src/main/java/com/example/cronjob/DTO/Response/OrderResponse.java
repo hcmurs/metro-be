@@ -16,6 +16,15 @@ public class OrderResponse {
     private BigDecimal amount;
     private LocalDateTime createdAt;
     private TransactionResponse transaction;
+    @Builder
+    public record OrderDetailResponse(
+            Long orderId,
+            Long userId,
+            OrderStatus status,
+            BigDecimal amount,
+            TicketResponse ticket
+    ) {
+    }
 
     public OrderResponse() {
     }

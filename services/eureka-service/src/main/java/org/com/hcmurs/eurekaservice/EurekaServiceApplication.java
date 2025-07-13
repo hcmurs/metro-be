@@ -19,34 +19,8 @@ public class EurekaServiceApplication {
 		var activeProfiles = env.getActiveProfiles();
 		List<String> profilesList = Arrays.asList(activeProfiles);
 
-		if (!profilesList.contains("docker") && !profilesList.contains("test") && !profilesList.contains("zimaos")) {
-			// Get the actual port from environment
-			String port = env.getProperty("server.port", "8761");
-			String url = "http://localhost:" + port;
-
-			// Health check before opening browser
-			try {
-				java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
-					.connectTimeout(java.time.Duration.ofSeconds(5))
-					.build();
-				java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-					.uri(java.net.URI.create(url + "/actuator/health"))
-					.timeout(java.time.Duration.ofSeconds(5))
-					.GET()
-					.build();
-
-				java.net.http.HttpResponse<String> response = client.send(
-					request, java.net.http.HttpResponse.BodyHandlers.ofString());
-
-				if (response.statusCode() == 200) {
-					System.out.println("Eureka server is healthy, opening browser at " + url);
-					JavaBrowserLauncher.openHomePage(url);
-				} else {
-					System.out.println("Eureka server health check failed with status: " + response.statusCode());
-				}
-			} catch (Exception e) {
-				System.out.println("Eureka server health check failed: " + e.getMessage());
-			}
-		}
+//		if (!Arrays.asList(activeProfiles).contains("docker") && !Arrays.asList(activeProfiles).contains("test") && !Arrays.asList(activeProfiles).contains("zimaos")) {
+//			JavaBrowserLauncher.openHomePage("http://localhost:8761");
+//		}
 	}
 }

@@ -34,7 +34,7 @@ public class TicketTypeServiceImpl implements TicketTypeService{
                 .description(ticketType.description())
                 .price(ticketType.price())
                 .validityDuration(ticketType.validityDuration())
-                .isActive(true)
+                .isActive(ticketType.isActive())
                 .build();
         ticketTypes = ticketTypeRepository.save(ticketTypes);
         return mapToResponse(ticketTypes);
@@ -61,6 +61,13 @@ public class TicketTypeServiceImpl implements TicketTypeService{
     }
 
     @Override
+    public List<TicketTypeResponse> getAllAdmin() {
+        return ticketTypeRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
     public void deleteTicketType(Long id) {
         TicketTypes ticketTypes = ticketTypeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket type not found"));
@@ -75,6 +82,7 @@ public class TicketTypeServiceImpl implements TicketTypeService{
                 .description(ticketTypes.getDescription())
                 .price(ticketTypes.getPrice())
                 .validityDuration(ticketTypes.getValidityDuration())
+                .forStudent(ticketTypes.isForStudent())
                 .isActive(ticketTypes.isActive())
                 .createdAt(ticketTypes.getCreatedAt())
                 .updatedAt(ticketTypes.getUpdatedAt())

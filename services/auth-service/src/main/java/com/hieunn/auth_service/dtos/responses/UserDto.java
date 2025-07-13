@@ -1,6 +1,8 @@
 package com.hieunn.auth_service.dtos.responses;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hieunn.auth_service.models.AuthProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,8 +29,12 @@ public class UserDto {
     String pictureUrl;
     @JsonIgnore
     String googleId;
+    @JsonProperty("isStudent")
     boolean isStudent;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate studentExpiredDate;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdAt;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime updatedAt;
 }

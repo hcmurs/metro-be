@@ -1,0 +1,62 @@
+<configuration>
+  <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+  <property name="DEV_HOME" value="logs/notification-service" />
+  <property name="MAX_LOG_FILE_SIZE" value="10MB" />
+  <property name="MAX_LOG_HISTORY" value="30" />
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE-AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${DEV_HOME}/debug.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+      </Pattern>
+    </encoder>
+
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily and when the file reaches 10 MegaBytes -->
+      <fileNamePattern>${DEV_HOME}/archived/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFileNamingAndTriggeringPolicy">
+        <maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+  </appender>
+
+  <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${DEV_HOME}/error.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+      </Pattern>
+    </encoder>
+
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily and when the file reaches 10 MegaBytes -->
+      <fileNamePattern>${DEV_HOME}/archived/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFileNamingAndTriggeringPolicy">
+        <maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+
+  </appender>
+
+  <logger name="org.com.hcmurs.notificationservice" level="debug" additivity="false">
+    <appender-ref ref="FILE-AUDIT" />
+    <appender-ref ref="STDOUT" />
+  </logger>
+
+  <root level="info">
+    <appender-ref ref="FILE-ERROR" />
+  </root>
+
+</configuration>

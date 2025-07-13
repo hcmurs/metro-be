@@ -52,10 +52,13 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/auth/**",
             "/api/v1/auth/**",
             //User
+            "/api/users/blogs/**",
             "/api/users/is-username-exist",
             "/api/users/is-email-exist",
             "/api/users/register",
             "/api/users/reset-password",
+            "/api/users/requests/**",
+            "/api/users/feedbacks/**",
             //Notification
             "/api/notifications/send-otp",
             "/api/notifications/verify-otp",
@@ -68,23 +71,30 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/stations",
             "/api/stations/{id}",
             "/api/stations/search",
-            "api/stations/route/{routeId}",
+            "/api/stations/route/{routeId}",
             "/api/schedules",
             "/api/schedules/{id}",
             "/api/schedules/station/{stationId}",
+            "/api/bus/**",
             //ticket
 //            "/api/ts/**",
-//            "/user/orders/**",
+            "/api/ts/tickets/scan/entry",
+            "/api/ts/tickets/scan/exit",
+            "/api/orders/**",
             "/api/ts/fare-matrices/{id}",
             "/api/ts/fare-matrices",
             "/api/ts/fare-matrices/by-station/{stationId}",
             "/api/ts/fare-matrices/get-fare",
             "/api/ts/ticket-types/{id}",
             "/api/ts/ticket-types",
+            "/api/ts/tickets/generate-qr",
             "api/payment/callback/**",
-            "/aggregate/**"
+            "/aggregate/**",
+            "/api/orders/payment-methods/get-all",
+            "/api/ts/tickets/qr",
+            "/api/payment/stripe/**"
 
-    );
+            );
 
     @NotNull
     @Override

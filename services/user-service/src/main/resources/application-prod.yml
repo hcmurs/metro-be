@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_TRANSACTION_POOLER_PORT}/postgres?currentSchema=${PROD_USER_DB_NAME}&user=${PROD_SPRING_DATASOURCE_USERNAME}&password=${PROD_SPRING_DATASOURCE_PASSWORD}&prepareThreshold=0
+
+  jpa:
+    hibernate:
+      ddl-auto: update

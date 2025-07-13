@@ -5,7 +5,11 @@ import com.example.stationservice.dto.StationsRequest;
 import com.example.stationservice.dto.StationsResponse;
 import com.example.stationservice.service.StationsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import java.nio.file.Files;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stations")
-@CrossOrigin(origins = "*")
+@Slf4j
 @Tag(name = "Stations", description = "Operations related to stations")
 public class StationsController {
 
@@ -32,6 +36,17 @@ public class StationsController {
     public ApiResponse<List<StationsResponse>> getAllStations() {
         List<StationsResponse> stations = stationsService.getAllStations();
         return ApiResponse.success(stations, "Stations retrieved successfully");
+    }
+
+    @GetMapping(value = "/static-bus-stations", produces = "application/json")
+    public String getStationsJson() {
+        try {
+            ClassPathResource resource = new ClassPathResource("json/station.json");
+            return Files.readString(resource.getFile().toPath());
+        } catch (IOException e) {
+            log.error("Failed to read file: " + e.getMessage());
+        }
+        return "[]";
     }
 
     @GetMapping("/{id}")

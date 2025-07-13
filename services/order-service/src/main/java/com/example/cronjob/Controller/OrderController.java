@@ -5,6 +5,7 @@ import com.example.cronjob.DTO.Request.OrderTicketSingleRequest;
 import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.DTO.Response.OrderResponse;
 import com.example.cronjob.DTO.Response.TransactionResponse;
+import com.example.cronjob.Enum.TicketStatus;
 import com.example.cronjob.Service.OrdersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,12 +56,20 @@ public class OrderController {
         return ordersService.getOrderById(orderId);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     @Operation(summary = "Get order by user ID", description = "Retrieves an order by the user's ID.")
     public ApiResponse<List<OrderResponse>> getOrderByUserId(@RequestHeader ("Authorization") String token) {
         String validatedToken = token.startsWith("Bearer ") ? token.substring(7) : token;
         return ordersService.getOrderByUserId(validatedToken);
+    }
+
+    @GetMapping("/user/details")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @Operation(summary = "Get order by user ID", description = "Retrieves an order by the user's ID.")
+    public ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByUserId(@RequestHeader ("Authorization") String token) {
+        String validatedToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+        return ordersService.getOrderDetailByUserId(validatedToken);
     }
 
     @PutMapping("update-success/{orderId}")
@@ -82,6 +91,16 @@ public class OrderController {
     @Operation(summary = "Update transaction for an order", description = "Updates the transaction details for an existing order by its ID.")
     public ApiResponse<OrderResponse> updateTransaction(@PathVariable Long orderId) {
         return ordersService.updateOrder(orderId);
+    }
+
+    @GetMapping("/user/details/status")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @Operation(summary = "Get order details by status", description = "Retrieves order details by status for the authenticated user.")
+    public ApiResponse<List<OrderResponse.OrderDetailResponse>> getOrderDetailByStatus(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("status") String status) {
+        String validatedToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+        return ordersService.getOrderDetailByStatus(validatedToken, TicketStatus.valueOf(status));
     }
 
 }

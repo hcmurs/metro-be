@@ -175,6 +175,7 @@ public class VNPayServiceImpl implements VNPayService {
                 result.put("amount", Long.parseLong(vnp_Amount) / 100);
                 result.put("responseCode", vnp_ResponseCode);
                 result.put("transactionStatus", vnp_TransactionStatus);
+                result.put("paymentTime", vnp_Params.get("vnp_PayDate"));
                 ordersService.updateTransactionSuccess(Long.parseLong(vnp_Params.get("vnp_OrderInfo")));
 
             } else {

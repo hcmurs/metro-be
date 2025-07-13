@@ -1,0 +1,4 @@
+### Get blogs with pagination
+GET http://localhost:4007/api/v1/users/blogs?page=0&size=1&sort=id,asc
+accept: */*
+X-API-KEY: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a

@@ -19,7 +19,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/routes")
-@CrossOrigin(origins = "*")
 @Tag(name = "Routes", description = "Operations related to routes")
 public class RoutesController {
 
