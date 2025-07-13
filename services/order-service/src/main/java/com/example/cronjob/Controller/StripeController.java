@@ -29,4 +29,19 @@ public class StripeController {
     public ApiResponse<Map<String, Object>> paymentCallbackFailed(@RequestParam String session_id) {
         return ApiResponse.success(stripeService.paymentCallbackFailed(session_id));
     }
+
+    @PostMapping("/checkout-mb")
+    public ApiResponse<StripeResponse.StripePaymentMobileResponse> checkoutOrderMobile(@RequestBody StripeRequest.ProductRequest request) {
+        return ApiResponse.success(stripeService.checkoutOrderMobile(request));
+    }
+
+    @GetMapping("/success-mb")
+    public ApiResponse<Map<String, Object>> paymentCallbackSuccessMobile(@RequestParam String session_id) {
+        return ApiResponse.success(stripeService.paymentCallbackSuccessMobile(session_id));
+    }
+
+    @GetMapping("/failed-mb")
+    public ApiResponse<Map<String, Object>> paymentCallbackFailedMobile(@RequestParam String session_id) {
+        return ApiResponse.success(stripeService.paymentCallbackFailedMobile(session_id));
+    }
 }

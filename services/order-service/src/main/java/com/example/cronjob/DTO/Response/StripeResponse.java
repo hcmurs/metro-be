@@ -12,4 +12,13 @@ public class StripeResponse {
             String sessionId,
             String sessionUrl
     ) { }
+
+    @Builder
+    public record StripePaymentMobileResponse(
+            String status,
+            String message,
+            String sessionId,
+            String clientSecret
+    ){}
+
 }

@@ -46,7 +46,9 @@ public class SecurityConfig {
             // User Service
             "/api/users/blogs/**",
             "/api/users/requests/**",
-            "/api/users/feedbacks/**"
+            "/api/users/feedbacks/**",
+
+            "/api/payment/stripe/**"
     };
 
     @Bean

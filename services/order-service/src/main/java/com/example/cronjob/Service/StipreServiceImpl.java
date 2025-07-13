@@ -9,9 +9,12 @@ import com.example.cronjob.Repository.OrdersRepository;
 import com.example.cronjob.client.TicketClient;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
+import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
-
+@Slf4j
 @Service
 public class StipreServiceImpl implements StripeService{
     @Value("${stripe.secret}")
@@ -97,6 +100,7 @@ public class StipreServiceImpl implements StripeService{
     public Map<String, Object> paymentCallbackSuccess(String sessionId) {
         try {
             Stripe.apiKey = stripeSecretKey;
+            System.out.println("Stripe key: " + stripeSecretKey);
             Session session = Session.retrieve(sessionId);
             Map<String, Object> result = new HashMap<>();
             if ("paid".equalsIgnoreCase(session.getPaymentStatus())) {
@@ -148,6 +152,119 @@ public class StipreServiceImpl implements StripeService{
                 result.put("message", "Invalid signature");
                 return result;
             }
+        } catch (StripeException e) {
+            throw new RuntimeException("Stripe error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public StripeResponse.StripePaymentMobileResponse checkoutOrderMobile(StripeRequest.ProductRequest request) {
+        log.info("⏳ Bắt đầu xử lý thanh toán cho orderId: {}", request.orderId());
+        System.out.println("Đang kiểm tra orderId: " + request.orderId());
+
+        Orders order = ordersRepository.findByOrderId(request.orderId());
+
+        if (order == null) {
+            System.out.println("Không tìm thấy order với ID = " + request.orderId());
+            throw new EntityNotFoundException("Order Not Found");
+        }
+
+        BigDecimal vndAmount = order.getAmount();
+        BigDecimal usdExchangeRate = BigDecimal.valueOf(26145);
+        BigDecimal usdAmount = vndAmount.divide(usdExchangeRate, 2, RoundingMode.HALF_UP);
+        Long usdCents = usdAmount.multiply(BigDecimal.valueOf(100)).longValue();
+
+        Stripe.apiKey = stripeSecretKey;
+        try {
+            PaymentIntentCreateParams createParams = PaymentIntentCreateParams.builder()
+                    .setCurrency("usd")
+                    .setAmount(usdCents)
+                    .setAutomaticPaymentMethods(
+                            PaymentIntentCreateParams.AutomaticPaymentMethods
+                                    .builder()
+                                    .setEnabled(true)
+                                    .build())
+                    .build();
+
+            PaymentIntent intent = PaymentIntent.create(createParams);
+            log.info("✅ Tạo PaymentIntent thành công: {}", intent.getId());
+            order.setStripeSessionId(intent.getId());
+            ordersRepository.save(order);
+
+            return StripeResponse.StripePaymentMobileResponse.builder()
+                    .status("SUCCESS")
+                    .message("PaymentIntent created successfully")
+                    .sessionId(intent.getId())
+                    .clientSecret(intent.getClientSecret())
+                    .build();
+
+        } catch (StripeException e) {
+            log.error("❌ Stripe Exception: {}", e.getMessage(), e);
+
+            throw new RuntimeException("Stripe Error: " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public Map<String, Object> paymentCallbackSuccessMobile(String sessionId) {
+        try {
+            Stripe.apiKey = stripeSecretKey;
+            PaymentIntent intent = PaymentIntent.retrieve(sessionId);
+
+            Map<String, Object> result = new HashMap<>();
+            if ("succeeded".equalsIgnoreCase(intent.getStatus())) {
+                Orders order = ordersRepository.findByStripeSessionId(sessionId);
+                if (order == null) {
+                    throw new EntityNotFoundException("Order Not Found");
+                }
+
+                ordersService.updateTransactionSuccess(order.getOrderId());
+
+                result.put("status", "success");
+                result.put("message", "Payment completed successfully");
+                result.put("transactionId", order.getTransaction().getTransactionId());
+                result.put("responseCode", "00");
+                result.put("transactionStatus", "00");
+                result.put("paymentTime", intent.getCreated());
+                return result;
+            } else {
+                result.put("status", "invalid");
+                result.put("message", "Payment not completed");
+                return result;
+            }
+
+        } catch (StripeException e) {
+            throw new RuntimeException("Stripe error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Map<String, Object> paymentCallbackFailedMobile(String sessionId) {
+        try {
+            Stripe.apiKey = stripeSecretKey;
+            PaymentIntent intent = PaymentIntent.retrieve(sessionId);
+
+            Map<String, Object> result = new HashMap<>();
+            Orders order = ordersRepository.findByStripeSessionId(sessionId);
+            if (order == null) {
+                throw new EntityNotFoundException("Order Not Found");
+            }
+
+            if (!"succeeded".equalsIgnoreCase(intent.getStatus())) {
+                ordersService.updateTransactionFailed(order.getOrderId());
+                result.put("status", "failed");
+                result.put("message", "Payment failed or canceled");
+                result.put("transactionId", order.getTransaction().getTransactionId());
+                result.put("responseCode", "01");
+                result.put("transactionStatus", "01");
+                return result;
+            } else {
+                result.put("status", "invalid");
+                result.put("message", "Invalid status");
+                return result;
+            }
+
         } catch (StripeException e) {
             throw new RuntimeException("Stripe error: " + e.getMessage());
         }

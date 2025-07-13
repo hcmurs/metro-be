@@ -91,7 +91,8 @@ public class JwtAuthenticationFilter implements WebFilter {
             "api/payment/callback/**",
             "/aggregate/**",
             "/api/orders/payment-methods/get-all",
-            "/api/ts/tickets/qr"
+            "/api/ts/tickets/qr",
+            "/api/payment/stripe/**"
 
             );
 

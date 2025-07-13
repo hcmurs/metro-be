@@ -10,4 +10,10 @@ public interface StripeService {
     StripeResponse.StripePaymentResponse checkoutOrder(StripeRequest.ProductRequest request);
     Map<String, Object> paymentCallbackSuccess(String sessionId);
     Map<String, Object> paymentCallbackFailed(String sessionId);
+
+    StripeResponse.StripePaymentMobileResponse checkoutOrderMobile(StripeRequest.ProductRequest request);
+    Map<String, Object> paymentCallbackSuccessMobile(String sessionId);
+    Map<String, Object> paymentCallbackFailedMobile(String sessionId);
+
+
 }
