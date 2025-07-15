@@ -63,6 +63,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = Request.builder()
                 .content(requestCreationRequest.getContent())
                 .title("Request #" + requestOrder)
+                .citizenIdNumber(requestCreationRequest.getCitizenIdNumber())
                 .studentCardImage(requestCreationRequest.getStudentCardImage())
                 .citizenIdentityCardImage(requestCreationRequest.getCitizenIdentityCardImage())
                 .user(user)
