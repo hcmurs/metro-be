@@ -1,9 +1,7 @@
 package org.alfred.ticketservice.dto.ticket_type;
 
-import lombok.Builder;
-import org.alfred.ticketservice.model.enums.Duration;
-
 import java.time.LocalDateTime;
+import lombok.Builder;
 @Builder
 public record TicketTypeResponse(
         Long id,

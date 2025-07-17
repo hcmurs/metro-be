@@ -7,10 +7,9 @@ import com.example.cronjob.Mapping.PaymentMethodMapping;
 import com.example.cronjob.Pojos.PaymentMethod;
 import com.example.cronjob.Repository.PaymentMethodRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PaymentMethodServiceImpl implements PaymentMethodService {

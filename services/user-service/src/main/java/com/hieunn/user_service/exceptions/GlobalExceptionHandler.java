@@ -2,6 +2,8 @@ package com.hieunn.user_service.exceptions;
 
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +11,6 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

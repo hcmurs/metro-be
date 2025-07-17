@@ -1,11 +1,9 @@
 package com.example.cronjob.DTO.Response;
 
 import com.example.cronjob.Enum.TransactionStatus;
-import com.example.cronjob.Pojos.PaymentMethod;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.Builder;
 
 @Builder
 public class TransactionResponse {

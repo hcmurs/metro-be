@@ -2,10 +2,9 @@ package com.example.cronjob.Mapping;
 
 import com.example.cronjob.DTO.Response.TransactionResponse;
 import com.example.cronjob.Pojos.Transactions;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapping {

@@ -1,0 +1,194 @@
+networks:
+  metro-be:
+    driver: bridge
+
+volumes:
+  redis-data:
+  gateway-logs:
+  station-logs:
+  auth-logs:
+  order-logs:
+  ticket-logs:
+  user-logs:
+  notification-logs:
+#  eureka-logs:
+
+services:
+
+  redis:
+    image: docker.io/redis:7.2.3
+    container_name: redis-container
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - metro-be
+
+#  eureka:
+#    container_name: metro-eureka-service
+#    build:
+#      context: .
+#      dockerfile: services/eureka-service/Dockerfile
+#    ports:
+#      - "8761:8761"
+#    # restart: on-failure
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://metro-eureka-service:8761/actuator/health" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+#      start_period: 40s
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=zimaos
+#      - EUREKA_INSTANCE_HOSTNAME=metro-eureka-service  # Override hostname via env var
+#    volumes:
+#      - eureka-logs:/logs/eureka
+#    networks:
+#      - metro-be
+
+  gateway:
+    container_name: metro-gateway-service
+    build:
+      context: .
+      dockerfile: services/gateway-service/Dockerfile
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://metro-gateway-service:4003/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    ports:
+      - "4003:4003"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - GATEWAY_DOCKER_HOST=true
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - gateway-logs:/logs/gateway
+    networks:
+      - metro-be
+
+  station:
+    container_name: metro-station-service
+    build:
+      context: .
+      dockerfile: services/station-service/Dockerfile
+    ports:
+      - "4004:4004"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - station-logs:/logs/station
+    networks:
+      - metro-be
+
+  auth:
+    container_name: metro-auth-service
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    ports:
+      - "4006:4006"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      gateway:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - auth-logs:/logs/auth
+    networks:
+      - metro-be
+
+  order:
+    container_name: metro-order-service
+    build:
+      context: .
+      dockerfile: services/order-service/Dockerfile
+    ports:
+      - "4009:4009"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - order-logs:/logs/order
+    networks:
+      - metro-be
+
+  ticket:
+    container_name: metro-ticket-service
+    build:
+      context: .
+      dockerfile: services/ticket-service/Dockerfile
+    ports:
+      - "4005:4005"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ticket-logs:/logs/ticket
+    networks:
+      - metro-be
+
+  user:
+    container_name: metro-user-service
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile
+    ports:
+      - "4007:4007"
+    # restart: on-failure
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      gateway:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - user-logs:/logs/user
+    networks:
+      - metro-be
+
+  notification:
+    container_name: metro-notification-service
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    ports:
+      - "4008:4008"
+    depends_on:
+      gateway:
+        condition: service_healthy
+    volumes:
+      - notification-logs:/logs/notification
+    networks:
+      - metro-be

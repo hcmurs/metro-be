@@ -2,15 +2,16 @@ package org.alfred.ticketservice.service;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Objects;
 import org.alfred.ticketservice.client.StationClient;
-import org.alfred.ticketservice.dto.fare_matrix.*;
+import org.alfred.ticketservice.dto.fare_matrix.FareMatrixRequest;
+import org.alfred.ticketservice.dto.fare_matrix.FareMatrixResponse;
+import org.alfred.ticketservice.dto.fare_matrix.FindFareRequest;
 import org.alfred.ticketservice.model.FareMatrix;
 import org.alfred.ticketservice.repository.FareMatrixRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class FareMatrixServiceImpl implements FareMatrixService{

@@ -4,10 +4,8 @@ import com.example.stationservice.model.Schedules;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.Data;
 
 @Data
 public class SchedulesRequest {

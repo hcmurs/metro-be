@@ -6,18 +6,28 @@ import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
 import org.alfred.ticketservice.config.JwtUtil;
-import org.alfred.ticketservice.exception.TicketProcessingException;
 import org.alfred.ticketservice.dto.ticket.TicketQrData;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;
 import org.alfred.ticketservice.dto.ticket.TicketScanRequest;
+import org.alfred.ticketservice.exception.TicketProcessingException;
 import org.alfred.ticketservice.model.FareMatrix;
 import org.alfred.ticketservice.model.TicketTypes;
 import org.alfred.ticketservice.model.TicketUsageLogs;
 import org.alfred.ticketservice.model.Tickets;
-import org.alfred.ticketservice.model.enums.Duration;
 import org.alfred.ticketservice.model.enums.TicketStatus;
 import org.alfred.ticketservice.model.enums.UsageTypes;
 import org.alfred.ticketservice.repository.FareMatrixRepository;
@@ -30,18 +40,6 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -459,7 +457,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String nowStr = LocalDateTime.now().format(formatter);
-            String untilStr = LocalDateTime.now().plusMinutes(2).format(formatter);
+            String untilStr = LocalDateTime.now().plusMinutes(30).format(formatter);
             // First build without signature
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())

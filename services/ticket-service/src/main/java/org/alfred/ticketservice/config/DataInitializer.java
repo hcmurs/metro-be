@@ -1,15 +1,13 @@
 package org.alfred.ticketservice.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.alfred.ticketservice.model.FareMatrix;
 import org.alfred.ticketservice.model.TicketTypes;
-import org.alfred.ticketservice.model.enums.Duration;
 import org.alfred.ticketservice.repository.FareMatrixRepository;
 import org.alfred.ticketservice.repository.TicketTypeRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

@@ -2,15 +2,14 @@ package com.hieunn.user_service.scheduler;
 
 import com.hieunn.user_service.models.User;
 import com.hieunn.user_service.repositories.UserRepository;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

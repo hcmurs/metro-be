@@ -5,7 +5,6 @@ import com.hieunn.user_service.dtos.requests.RegisterRequest;
 import com.hieunn.user_service.dtos.requests.SocialLoginRequest;
 import com.hieunn.user_service.dtos.responses.UserDto;
 import com.hieunn.user_service.models.User;
-
 import java.util.List;
 
 public interface UserService {

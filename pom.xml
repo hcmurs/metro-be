@@ -72,7 +72,7 @@
     <!-- Custom Libraries -->
     <common-lib.version>1.0.0</common-lib.version>
     <common-spring.version>1.0.0</common-spring.version>
-    <lcaohoanq-brlc.version>1.0.0</lcaohoanq-brlc.version>
+    <lcaohoanq-brlc.version>2.1.1</lcaohoanq-brlc.version>
   </properties>
 
   <profiles>

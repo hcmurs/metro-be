@@ -1,7 +1,12 @@
 package org.alfred.ticketservice.dto.ticket_type;
 
-import jakarta.validation.constraints.*;
-import org.alfred.ticketservice.model.enums.Duration;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 public record UpdateTicketTypeRequest(
                                               @NotNull(message = "Ticket type ID is required for updates")

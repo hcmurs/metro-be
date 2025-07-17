@@ -1,7 +1,6 @@
 package com.hieunn.user_service.services;
 
 import com.hieunn.user_service.dtos.requests.BlogDTO;
-import com.hieunn.user_service.dtos.requests.BlogDTO.BlogPageRes;
 import com.hieunn.user_service.models.Blog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

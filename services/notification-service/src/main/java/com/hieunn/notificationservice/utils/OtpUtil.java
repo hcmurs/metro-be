@@ -1,8 +1,7 @@
 package com.hieunn.notificationservice.utils;
 
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.ThreadLocalRandom;
+import org.springframework.stereotype.Component;
 
 @Component
 public class OtpUtil {

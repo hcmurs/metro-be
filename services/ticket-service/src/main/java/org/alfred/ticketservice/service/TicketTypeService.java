@@ -1,9 +1,8 @@
 package org.alfred.ticketservice.service;
 
+import java.util.List;
 import org.alfred.ticketservice.dto.ticket_type.TicketTypeRequest;
 import org.alfred.ticketservice.dto.ticket_type.TicketTypeResponse;
-
-import java.util.List;
 
 public interface TicketTypeService {
 

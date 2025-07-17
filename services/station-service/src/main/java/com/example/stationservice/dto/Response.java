@@ -1,11 +1,9 @@
 package com.example.stationservice.dto;
 
 import com.example.stationservice.model.BusRoutes;
-import com.example.stationservice.model.BusStations;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Builder
 @Data

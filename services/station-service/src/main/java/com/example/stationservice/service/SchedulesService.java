@@ -2,9 +2,6 @@ package com.example.stationservice.service;
 
 import com.example.stationservice.dto.SchedulesRequest;
 import com.example.stationservice.dto.SchedulesResponse;
-import com.example.stationservice.model.Schedules;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

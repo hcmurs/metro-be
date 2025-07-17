@@ -1,6 +1,8 @@
 package org.alfred.ticketservice.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;
 import org.alfred.ticketservice.dto.ticket_usage.TicketUsageLogRequest;
 import org.alfred.ticketservice.dto.ticket_usage.TicketUsageLogResponse;
@@ -12,9 +14,6 @@ import org.alfred.ticketservice.repository.TicketRepository;
 import org.alfred.ticketservice.repository.TicketUsageLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class TicketUsageLogServiceImpl implements TicketUsageLogService {

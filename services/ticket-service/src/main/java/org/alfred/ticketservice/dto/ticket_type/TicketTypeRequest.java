@@ -1,7 +1,10 @@
 package org.alfred.ticketservice.dto.ticket_type;
 
-        import jakarta.validation.constraints.*;
-        import org.alfred.ticketservice.model.enums.Duration;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 public record TicketTypeRequest(
                 // Optional for creation, required for updates

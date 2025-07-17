@@ -1,12 +1,11 @@
 package org.alfred.ticketservice.service;
 
 
+import java.util.List;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;
 import org.alfred.ticketservice.dto.ticket.TicketScanRequest;
 import org.alfred.ticketservice.model.enums.TicketStatus;
-
-import java.util.List;
 
 public interface TicketService {
     TicketResponse getTicketById(Long ticketId);

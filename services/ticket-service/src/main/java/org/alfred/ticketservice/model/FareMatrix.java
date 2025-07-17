@@ -1,11 +1,24 @@
 package org.alfred.ticketservice.model;
 
-    import jakarta.persistence.*;
-    import jakarta.validation.constraints.*;
-    import lombok.*;
-
-    import java.math.BigDecimal;
-    import java.time.LocalDateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
     @Table(name = "fare_matrix", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"start_station_id", "end_station_id"}, name = "uk_fare_matrix_stations")

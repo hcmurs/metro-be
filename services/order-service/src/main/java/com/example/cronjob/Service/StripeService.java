@@ -1,9 +1,7 @@
 package com.example.cronjob.Service;
 
 import com.example.cronjob.DTO.Request.StripeRequest;
-import com.example.cronjob.DTO.Response.ApiResponse;
 import com.example.cronjob.DTO.Response.StripeResponse;
-
 import java.util.Map;
 
 public interface StripeService {

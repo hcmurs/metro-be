@@ -1,10 +1,8 @@
 package com.hieunn.user_service.services;
 
-import com.hieunn.user_service.dtos.requests.BlogDTO.BlogPageRes;
 import com.hieunn.user_service.dtos.requests.BlogDTO.BlogReq;
 import com.hieunn.user_service.models.Blog;
 import com.hieunn.user_service.repositories.BlogRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;

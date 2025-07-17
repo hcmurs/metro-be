@@ -1,9 +1,8 @@
 package com.example.cronjob.DTO.Response;
 
-import lombok.Builder;
 import com.example.cronjob.Enum.TicketStatus;
-
 import java.time.LocalDateTime;
+import lombok.Builder;
 
 @Builder
 public record TicketResponse(

@@ -7,6 +7,7 @@ import com.hieunn.auth_service.exceptions.ErrorMessage;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
 import com.hieunn.auth_service.models.AuthProvider;
 import com.hieunn.auth_service.models.CustomOAuth2User;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,8 +17,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

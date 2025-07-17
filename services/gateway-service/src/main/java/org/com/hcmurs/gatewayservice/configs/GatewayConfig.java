@@ -12,61 +12,61 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class GatewayConfig {
 
     private final String API_PREFIX = "/api";
-    private final String STATION_SERVICE = "lb://station-service";
-    private final String TICKET_SERVICE = "lb://ticket-service";
-    private final String ORDER_SERVICE = "lb://order-service";
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("station_service_route", r -> r
-                        .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**", API_PREFIX + "/routes/**",
-                              API_PREFIX + "/bus/**")
-                        .uri("http://localhost:4004"))
+            .route("station_service_route", r -> r
+                .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**",
+                      API_PREFIX + "/routes/**",
+                      API_PREFIX + "/bus/**")
+                .uri("http://localhost:4004"))
 
-                .route("ticket_service_route", r -> r
-                        .path(API_PREFIX + "/ts/**")
-                        .uri("http://localhost:4005"))
+            .route("ticket_service_route", r -> r
+                .path(API_PREFIX + "/ts/**")
+                .uri("http://localhost:4005"))
 
-                .route("order_service_route", r -> r
-                        .path(API_PREFIX + "/user/orders/**")
-                        .uri("http://localhost:4009"))
+            .route("order_user_route", r -> r
+                .path(API_PREFIX + "/user/orders/**")
+                .uri("http://localhost:4009"))
 
-                .route("user_service_route", r -> r
-                        .path(API_PREFIX + "/users/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/users(?<segment>/?.*)",
-                                "/api/v1/users${segment}"
-                        ))
-                        .uri("http://localhost:4007"))
+            .route("order_payment_route", r -> r
+                .path(API_PREFIX + "/orders/**", API_PREFIX + "/payment/**")
+                .uri("http://localhost:4009"))
 
-                .route("auth_service_route", r -> r
-                        .path(API_PREFIX + "/auth/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/auth(?<segment>/?.*)",
-                                "/api/v1/auth${segment}"
-                        ))
-                        .uri("http://localhost:4006"))
+            .route("user_service_route", r -> r
+                .path(API_PREFIX + "/users/**")
+                .filters(f -> f.rewritePath(
+                    "/api/users(?<segment>/?.*)",
+                    "/api/v1/users${segment}"
+                ))
+                .uri("http://localhost:4007"))
 
-                .route("auth_service_route", r -> r
-                        .path(API_PREFIX + "/oauth2/authorization/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/oauth2/authorization(?<segment>/?.*)",
-                                "/api/v1/oauth2/authorization${segment}"
-                        ))
-                        .uri("http://localhost:4006"))
+            .route("auth_service_route", r -> r
+                .path(API_PREFIX + "/auth/**")
+                .filters(f -> f.rewritePath(
+                    "/api/auth(?<segment>/?.*)",
+                    "/api/v1/auth${segment}"
+                ))
+                .uri("http://localhost:4006"))
 
-                .route("notification_service_route", r -> r
-                        .path(API_PREFIX + "/notifications/**")
-                        .filters(f -> f.rewritePath(
-                                "/api/notifications(?<segment>/?.*)",
-                                "/api/v1/notifications${segment}"
-                        ))
-                        .uri("http://localhost:4008"))
-                .route("order_service_route", r -> r
-                        .path(API_PREFIX + "/orders/**", API_PREFIX + "/payment/**")
-                        .uri("http://localhost:4009"))
-                .build();
+            .route("oauth2_service_route", r -> r
+                .path(API_PREFIX + "/oauth2/authorization/**")
+                .filters(f -> f.rewritePath(
+                    "/api/oauth2/authorization(?<segment>/?.*)",
+                    "/api/v1/oauth2/authorization${segment}"
+                ))
+                .uri("http://localhost:4006"))
+
+            .route("notification_service_route", r -> r
+                .path(API_PREFIX + "/notifications/**")
+                .filters(f -> f.rewritePath(
+                    "/api/notifications(?<segment>/?.*)",
+                    "/api/v1/notifications${segment}"
+                ))
+                .uri("http://localhost:4008"))
+
+            .build();
     }
 
     @Bean

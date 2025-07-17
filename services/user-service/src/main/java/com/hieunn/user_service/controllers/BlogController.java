@@ -1,7 +1,6 @@
 package com.hieunn.user_service.controllers;
 
 import com.hieunn.user_service.dtos.requests.BlogDTO;
-import com.hieunn.user_service.dtos.requests.BlogDTO.BlogPageRes;
 import com.hieunn.user_service.dtos.responses.ApiResponse;
 import com.hieunn.user_service.models.Blog;
 import com.hieunn.user_service.services.BlogService;
@@ -14,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

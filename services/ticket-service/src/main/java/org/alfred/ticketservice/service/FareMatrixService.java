@@ -1,8 +1,9 @@
 package org.alfred.ticketservice.service;
 
-import org.alfred.ticketservice.dto.fare_matrix.*;
-
 import java.util.List;
+import org.alfred.ticketservice.dto.fare_matrix.FareMatrixRequest;
+import org.alfred.ticketservice.dto.fare_matrix.FareMatrixResponse;
+import org.alfred.ticketservice.dto.fare_matrix.FindFareRequest;
 
 public interface FareMatrixService {
     FareMatrixResponse getFareMatrixById(Long id);

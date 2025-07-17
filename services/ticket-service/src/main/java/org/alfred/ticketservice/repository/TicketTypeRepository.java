@@ -1,7 +1,6 @@
 package org.alfred.ticketservice.repository;
 
 import org.alfred.ticketservice.model.TicketTypes;
-import org.alfred.ticketservice.model.enums.Duration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

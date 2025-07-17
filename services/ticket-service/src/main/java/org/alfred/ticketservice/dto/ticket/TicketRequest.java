@@ -1,6 +1,7 @@
 package org.alfred.ticketservice.dto.ticket;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class TicketRequest{
     public record TicketType(
