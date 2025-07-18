@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/stations","/api/stations/{id}","/api/stations/search","/api/stations/route/{routeId}").permitAll()
                         .requestMatchers("/api/schedules","/api/schedules/{id}","/api/schedules/station/{stationId}").permitAll()
                         .requestMatchers("/api/bus/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 // Handle exceptions for unauthorized access and access denied filters
                 // if use the rule url

@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**")
                                 .permitAll()
                         .requestMatchers("/api/ts/ticket-types/{id}","/api/ts/ticket-types").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 // Handle exceptions for unauthorized access and access denied filters
                 // if use the rule url

@@ -22,10 +22,14 @@ package org.alfred.ticketservice.model;
         @Column(name = "fare_matrix_id")
         private Long fareMatrixId;
 
-        @NotNull(message = "Price is required")
-        @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
+        @NotNull(message = "distanceInKm is required")
+        @DecimalMin(value = "0.0", inclusive = false, message = "distanceInKm must be greater than zero")
         @Column(nullable = false)
-        private float price;
+        private int distanceInKm;
+
+        @ManyToOne()
+        @JoinColumn(name = "fare_pricing_id", nullable = false)
+        private FarePricing farePricing;
 
         @NotBlank(message = "Name is required")
         @Size(max = 100, message = "Name must be less than 100 characters")
@@ -48,6 +52,11 @@ package org.alfred.ticketservice.model;
 
         @Column(name = "is_active", nullable = false)
         private boolean isActive = true;
+        // Trong FareMatrix
+        @AssertTrue(message = "Start and end stations must be different")
+        public boolean isValidStations() {
+            return !startStationId.equals(endStationId);
+        }
 
         @PrePersist
         public void prePersist() {

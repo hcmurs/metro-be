@@ -147,7 +147,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 .build();
         newTicket.setValidFrom(LocalDateTime.now());
         newTicket.setValidUntil(LocalDateTime.now().plusDays(30));
-        newTicket.setActualPrice(fareMatrix.getPrice());
+        newTicket.setActualPrice(fareMatrix.getFarePricing().getPrice());
         newTicket.setName(fareMatrix.getName());
         Tickets savedTicket = ticketRepository.save(newTicket);
         return mapToResponse(savedTicket);

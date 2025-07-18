@@ -6,3 +6,42 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    connection-timeout: 60000
+    requested-heartbeat: 60
+
+    # Publisher configuration (cho RabbitTemplate nếu cần)
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+    template:
+      mandatory: true
+      reply-timeout: 60000
+      retry:
+        enabled: true
+        initial-interval: 1000
+        max-attempts: 3
+        multiplier: 1.5
+        max-interval: 10000
+
+    # Consumer configuration (quan trọng cho consumer)
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 5
+        prefetch: 1
+        acknowledge-mode: auto
+        default-requeue-rejected: false
+
+        # Retry configuration - CHỈ CẦN Ở CONSUMER
+        retry:
+          enabled: true
+          initial-interval: 1000    # Retry sau 1 giây
+          max-attempts: 3           # Retry tối đa 3 lần
+          multiplier: 1.5           # Tăng dần thời gian retry
+          max-interval: 10000       # Tối đa 10 giây giữa các retry

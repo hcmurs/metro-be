@@ -15,6 +15,22 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    connection-timeout: 60000
+    requested-heartbeat: 60
+
+    # Publisher configuration (quan trọng cho producer)
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+    template:
+      mandatory: true
+      reply-timeout: 60000
 
 server:
   port: 4004
