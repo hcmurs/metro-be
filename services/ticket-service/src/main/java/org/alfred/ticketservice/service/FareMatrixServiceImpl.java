@@ -90,7 +90,8 @@ public class FareMatrixServiceImpl implements FareMatrixService{
     public boolean isStationInFareMatrix(Long stationId, Long fareMatrixId) {
         FareMatrix fareMatrixEntity = fareMatrixRepository.findById(fareMatrixId)
                 .orElseThrow(() -> new EntityNotFoundException("Fare matrix not found"));
-        if (stationClient.checkStationExists(stationId).getData() == null || !stationClient.checkStationExists(stationId).getData() ) {
+        if (stationClient.checkStationExists(stationId).getStatus() != 200 ) {
+            System.out.println(stationClient.checkStationExists(stationId).getMessage());
             throw new EntityNotFoundException("Station not found with id: " + stationId);
         }
         long startStationId = fareMatrixEntity.getStartStationId();

@@ -287,14 +287,12 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 throw new TicketProcessingException("Must enter before exit");
             }
             ticket.setInTrip(false);
-            if (ticket.getStatus() == TicketStatus.NOT_USED) {
+            if (ticket.getStatus() == TicketStatus.USED) {
                     // Single-use ticket: mark as expired after exit
                     if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
                         throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
                     }
-                    if (ticket.getStatus() != TicketStatus.USED) {
-                        throw new TicketProcessingException("Ticket is not in a valid state for exit");
-                    }
+
                     if (!fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getFareMatrix().getFareMatrixId())) {
                         throw new TicketProcessingException("Ticket is not valid for exit at this station");
                     }
