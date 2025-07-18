@@ -72,6 +72,15 @@ public class TicketUsageLogServiceImpl implements TicketUsageLogService {
                 .toList();
     }
 
+    @Override
+    public List<TicketUsageLogResponse> findAllByUsageTimeBetween(LocalDateTime start, LocalDateTime end) {
+        List<TicketUsageLogs> ticketUsageLogs = ticketUsageLogRepository.findAllByUsageTimeBetween(start, end);
+        return ticketUsageLogs
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
     private TicketUsageLogResponse mapToResponse(TicketUsageLogs ticketUsageLog) {
         return TicketUsageLogResponse.builder()
                 .ticketUsageLogId(ticketUsageLog.getTicketUsageLogId())

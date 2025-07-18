@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","swagger-ui.html/**")
                                 .permitAll()
                         .requestMatchers("/api/ts/ticket-types/{id}","/api/ts/ticket-types").permitAll()
+                        .requestMatchers("/api/ts/ticket-usage-logs/between").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Handle exceptions for unauthorized access and access denied filters

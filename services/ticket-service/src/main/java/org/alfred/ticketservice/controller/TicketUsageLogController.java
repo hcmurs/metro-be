@@ -1,18 +1,16 @@
 package org.alfred.ticketservice.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alfred.ticketservice.config.ApiResponse;
-import org.alfred.ticketservice.dto.ticket_usage.TicketUsageLogRequest;
 import org.alfred.ticketservice.dto.ticket_usage.TicketUsageLogResponse;
 import org.alfred.ticketservice.service.TicketUsageLogService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -49,6 +47,14 @@ public class TicketUsageLogController {
             @PathVariable Long stationId) {
         log.info("Request to get ticket usage logs for station ID: {}", stationId);
         List<TicketUsageLogResponse> usageLogs = ticketUsageLogService.getTicketUsageLogByStation(stationId);
+        return ResponseEntity.ok(ApiResponse.success(usageLogs, "Ticket usage logs retrieved successfully"));
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<ApiResponse<List<TicketUsageLogResponse>>> getAllTicketUsageLogs(
+            @RequestParam LocalDateTime start,
+            @RequestParam LocalDateTime end) {
+        List<TicketUsageLogResponse> usageLogs = ticketUsageLogService.findAllByUsageTimeBetween(start, end);
         return ResponseEntity.ok(ApiResponse.success(usageLogs, "Ticket usage logs retrieved successfully"));
     }
 }

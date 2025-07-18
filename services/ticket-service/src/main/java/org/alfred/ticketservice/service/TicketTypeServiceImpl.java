@@ -4,6 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.alfred.ticketservice.dto.ticket_type.TicketTypeRequest;
 import org.alfred.ticketservice.dto.ticket_type.TicketTypeResponse;
 import org.alfred.ticketservice.model.TicketTypes;
+import org.alfred.ticketservice.model.Tickets;
+import org.alfred.ticketservice.repository.TicketRepository;
 import org.alfred.ticketservice.repository.TicketTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ import java.util.List;
 public class TicketTypeServiceImpl implements TicketTypeService{
     @Autowired
     TicketTypeRepository ticketTypeRepository;
+
+    @Autowired
+    TicketRepository ticketRepository;
 
     @Override
     public TicketTypeResponse getTicketTypeById(Long id) {
@@ -73,6 +78,12 @@ public class TicketTypeServiceImpl implements TicketTypeService{
                 .orElseThrow(() -> new EntityNotFoundException("Ticket type not found"));
         ticketTypes.setActive(false);
         ticketTypeRepository.save(ticketTypes);
+    }
+
+    @Override
+    public TicketTypeResponse getTicketTypeByTicketCode(String ticketCode) {
+        Tickets ticket = ticketRepository.findByTicketCode(ticketCode);
+        return mapToResponse(ticket.getTicketType());
     }
 
     private TicketTypeResponse mapToResponse(TicketTypes ticketTypes) {
