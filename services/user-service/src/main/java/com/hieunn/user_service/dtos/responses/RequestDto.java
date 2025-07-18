@@ -20,6 +20,7 @@ public class RequestDto {
     String title;
     String content;
     String rejectionReason;
+    String citizenIdNumber;
     String studentCardImage;
     String citizenIdentityCardImage;
     RequestStatus requestStatus;

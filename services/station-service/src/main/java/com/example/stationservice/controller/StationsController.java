@@ -88,11 +88,11 @@ public class StationsController {
         stationsService.deleteStation(id);
         return ApiResponse.success("Station deleted successfully");
     }
-//    @GetMapping("/{id}/exists")
-//    public ApiResponse<Boolean> checkStationExists(@PathVariable Long id) {
-//        boolean exists = stationsService.existsById(id);
-//        return ApiResponse.success(exists, "Station existence checked");
-//    }
+    @GetMapping("/{id}/exists")
+    public ApiResponse<Boolean> checkStationExists(@PathVariable Long id) {
+        boolean exists = stationsService.existsById(id);
+        return ApiResponse.success(exists, "Station existence checked");
+    }
 
 
 }
