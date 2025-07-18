@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: cronjob-service
+
+  profiles:
+    active: prod
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 4010
+  servlet:
+    context-path: /api
+
+service:
+  tickets:
+    url: http://localhost:${service.tickets.port}/api/ts
+    port: 4005
+  stations:
+    url: http://localhost:${service.stations.port}/api/stations
+    port: 4004
+
+security:
+  api:
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY

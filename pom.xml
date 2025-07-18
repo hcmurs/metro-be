@@ -21,6 +21,7 @@
     <module>services/auth-service</module>
     <module>services/order-service</module>
     <module>services/notification-service</module>
+    <module>services/cronjob-service</module>
   </modules>
 
   <groupId>org.com.hcmurs</groupId>
@@ -90,6 +91,7 @@
         <module>services/user-service</module>
         <module>services/auth-service</module>
         <module>services/notification-service</module>
+        <module>services/cronjob-service</module>
       </modules>
     </profile>
 
@@ -155,6 +157,13 @@
       <id>notification</id>
       <modules>
         <module>services/notification-service</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>cronjob</id>
+      <modules>
+        <module>services/cronjob-service</module>
       </modules>
     </profile>
   </profiles>
