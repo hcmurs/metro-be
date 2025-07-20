@@ -18,4 +18,6 @@ public interface TicketTypeService {
     List<TicketTypeResponse> getAllAdmin();
 
     void deleteTicketType(Long id);
+
+    TicketTypeResponse getTicketTypeByTicketCode(String ticketCode);
 }

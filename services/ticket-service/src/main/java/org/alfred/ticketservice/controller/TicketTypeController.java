@@ -32,8 +32,14 @@ public class TicketTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TicketTypeResponse>>> getAllTicketTypes() {
+    public ResponseEntity<ApiResponse<?>> getAllTicketTypes(
+            @RequestParam(required = false) String ticketCode) {
         log.info("Request to get all ticket types");
+
+        if (ticketCode != null && !ticketCode.isEmpty()) {
+            TicketTypeResponse ticketType = ticketTypeService.getTicketTypeByTicketCode(ticketCode);
+            return ResponseEntity.ok(ApiResponse.success(ticketType, "Ticket types retrieved successfully"));
+        }
         List<TicketTypeResponse> ticketTypes = ticketTypeService.getAll();
         return ResponseEntity.ok(ApiResponse.success(ticketTypes, "Ticket types retrieved successfully"));
     }

@@ -16,7 +16,6 @@ import java.util.Arrays;
 @EnableScheduling
 @EnableRabbit
 public class TicketServiceApplication {
-
     public static void main(String[] args) {
         var context = SpringApplication.run(TicketServiceApplication.class, args);
 

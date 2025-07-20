@@ -29,7 +29,7 @@ public class StationsController {
     private StationsService stationsService;
 
     @PostMapping
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<StationsResponse> createStation(@RequestBody StationsRequest request) {
         StationsResponse station = stationsService.createStation(request);
         return ApiResponse.success(station, "Station created successfully");

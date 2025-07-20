@@ -63,9 +63,14 @@ public class GatewayConfig {
                                 "/api/v1/notifications${segment}"
                         ))
                         .uri("http://localhost:4008"))
+
                 .route("order_service_route", r -> r
                         .path(API_PREFIX + "/orders/**", API_PREFIX + "/payment/**")
                         .uri("http://localhost:4009"))
+
+                .route("cronjob_service_route", r -> r
+                        .path(API_PREFIX + "/stat/**")
+                        .uri("http://localhost:4010"))
                 .build();
     }
 
