@@ -4,7 +4,7 @@ public record FarePricingResponse(
     Long id,
     int minDistanceKm,
     int maxDistanceKm,
-    float fare,
+    float price,
     boolean isActive
 ) {
 }
