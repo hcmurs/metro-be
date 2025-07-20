@@ -18,7 +18,7 @@ public interface StationClient {
     @GetMapping("/check-station-on-line")
     ApiResponse<Boolean> checkStationOnLine(@RequestParam("startStationId") Long startStationId,
                                              @RequestParam("endStationId") Long endStationId,
-                                             @RequestParam("thisStation") Long thisStationId);
+                                             @RequestParam("thisStationId") Long thisStationId);
 
     @GetMapping("{id}")
     ApiResponse<StationRouteResponse> getStationRouteById(@RequestParam("id") Long id);

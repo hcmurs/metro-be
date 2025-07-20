@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fare-pricing")
+@RequestMapping("/api/ts/fare-pricing")
 @RequiredArgsConstructor
 @Tag(name = "Fare Pricing", description = "Fare Pricing management APIs")
 public class FarePricingController {

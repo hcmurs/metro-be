@@ -133,7 +133,7 @@ public class FareMatrixServiceImpl implements FareMatrixService{
         long startStationId = fareMatrixEntity.getStartStationId();
         long endStationId = fareMatrixEntity.getEndStationId();
         ApiResponse<Boolean> isOnLine = stationClient.checkStationOnLine(startStationId, endStationId, stationId);
-        if(isOnLine.getData() == null) {
+        if(isOnLine.getData() == null|| !isOnLine.getData()) {
             throw new EntityNotFoundException(isOnLine.getMessage());
         }
         return stationClient.checkStationOnLine(startStationId,endStationId, stationId).getData();

@@ -97,7 +97,7 @@ public class TicketReactionServiceImpl implements TicketReactionService{
                 return;
             }
 
-            Long newStationId = stationRoute.stationsResponse().stationId();
+            Long newStationId = stationRoute.id();
 
             // Lấy tất cả stations trong cùng route
             List<StationRouteResponse> allStationsInRoute = stationClient.getStationRoutesByRouteId(stationRoute.RouteId()).getData();
@@ -108,20 +108,15 @@ public class TicketReactionServiceImpl implements TicketReactionService{
             }
 
             List<FareMatrixRequest> fareMatricesToCreate = new ArrayList<>();
-
-            // Tạo fare matrix giữa station mới và tất cả stations khác trong route
             for (StationRouteResponse otherStation : allStationsInRoute) {
-                // Bỏ qua chính station này
-                if (otherStation.stationsResponse().stationId().equals(newStationId)) {
+                if (otherStation.id().equals(newStationId)) {
                     continue;
                 }
-
-                // Bỏ qua station không active
                 if (otherStation.isDeleted() || otherStation.status() != StationStatus.active) {
                     continue;
                 }
 
-                Long otherStationId = otherStation.stationsResponse().stationId();
+                Long otherStationId = otherStation.id();
 
                 // Tạo fare matrix từ station mới đến station khác
 //                FareMatrixRequest.builder().name("NHTP-BXMD").startStationId(nhtpId).endStationId(bxmdId).isActive(true).build(),

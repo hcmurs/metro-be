@@ -292,7 +292,6 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
                         throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
                     }
-
                     if (!fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getFareMatrix().getFareMatrixId())) {
                         throw new TicketProcessingException("Ticket is not valid for exit at this station");
                     }
@@ -457,7 +456,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String nowStr = LocalDateTime.now().format(formatter);
-            String untilStr = LocalDateTime.now().plusMinutes(2).format(formatter);
+            String untilStr = LocalDateTime.now().plusMinutes(10).format(formatter);
             // First build without signature
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())

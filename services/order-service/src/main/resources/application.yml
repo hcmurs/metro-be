@@ -11,7 +11,7 @@ spring:
             defaultZone: http://eureka:8761/eureka/
 
   profiles:
-    active: prod
+    active: dev
 
 server:
   port: 4009

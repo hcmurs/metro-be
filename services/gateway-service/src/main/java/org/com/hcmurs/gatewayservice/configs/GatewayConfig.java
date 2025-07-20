@@ -20,7 +20,7 @@ public class GatewayConfig {
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("station_service_route", r -> r
-                        .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**", API_PREFIX + "/routes/**",
+                        .path(API_PREFIX + "/stations/**", API_PREFIX + "/schedules/**", API_PREFIX + "/routes/**",API_PREFIX +"/station-routes/**",
                               API_PREFIX + "/bus/**")
                         .uri("http://localhost:4004"))
 
