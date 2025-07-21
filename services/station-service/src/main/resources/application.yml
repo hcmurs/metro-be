@@ -18,7 +18,6 @@ server:
 
 security:
   api:
-
     key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
     header: X-API-KEY
   jwt:

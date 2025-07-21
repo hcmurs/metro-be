@@ -35,8 +35,9 @@ public class DataInitializer implements CommandLineRunner {
         if (stationsRepository.count() > 0) return;
 
         RoutesRequest routesRequest = new RoutesRequest(
-                "R1",
+
                 "Bến xe Miền Đông - Bến Thành",
+                "R1",
                 20
         );
 
