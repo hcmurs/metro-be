@@ -290,7 +290,8 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 throw new TicketProcessingException("Must enter before exit");
             }
             ticket.setInTrip(false);
-            if (ticket.getStatus() == TicketStatus.USED) {
+            if(ticket.getTicketType().getValidityDuration() == 0) {
+                if (ticket.getStatus() == TicketStatus.USED) {
                     // Single-use ticket: mark as expired after exit
                     if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
                         throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
@@ -301,13 +302,16 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     }
                     ticket.setStatus(TicketStatus.EXPIRED);
                 }
-               else {
+                else {
                     // Multi-day pass: keep status as USED for future entries
-                    if (ticket.getStatus() != TicketStatus.USED) {
-                        throw new TicketProcessingException("Ticket is not in a valid state for exit");
-                    }
+                    throw new TicketProcessingException("Ticket is not in a valid state for exit");
                     // Status remains USED - no change needed
                 }
+            } else {
+                if (ticket.getStatus() != TicketStatus.USED) {
+                    throw new TicketProcessingException("Ticket is not in a valid state for exit");
+                }
+            }
             saveTicketUsageLog(ticket, UsageTypes.EXIT, currentScanTime, ticketScanRequest.stationId());
             Tickets updatedTicket = ticketRepository.save(ticket);
             return mapToResponse(updatedTicket);
