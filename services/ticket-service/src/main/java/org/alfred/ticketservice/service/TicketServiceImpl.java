@@ -231,6 +231,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     if(ticket.getFareMatrix().getStartStationId() == null) {
                         throw new EntityNotFoundException("Start station not found for fare matrix of ticket with code: " + ticketQrData.ticketCode());
                     }
+                    if(!ticket.getFareMatrix().isActive()){
+                        throw new EntityNotFoundException("Fare matrix is not active for ticket with code: " + ticketQrData.ticketCode());
+                    }
                     if(ticket.getStatus()!= TicketStatus.NOT_USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for entry");
                     }

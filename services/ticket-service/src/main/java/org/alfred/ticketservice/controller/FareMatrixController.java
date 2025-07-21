@@ -90,4 +90,13 @@ public class FareMatrixController {
         FareMatrixResponse fare = fareMatrixService.getFareMatrixByStations(fareRequest);
         return ResponseEntity.ok(ApiResponse.success(fare, "Fare retrieved successfully"));
     }
+
+    @PutMapping("/update-status/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_STAFF')")
+    public ResponseEntity<ApiResponse<FareMatrixResponse>> updateStatusFare(
+            @PathVariable Long id, @RequestParam boolean status) {
+        log.info("Request to update status of fare matrix with ID: {}", id);
+        FareMatrixResponse updatedFareMatrix = fareMatrixService.updateStatusFare(id, status);
+        return ResponseEntity.ok(ApiResponse.success(updatedFareMatrix, "Fare matrix status updated successfully"));
+    }
 }
