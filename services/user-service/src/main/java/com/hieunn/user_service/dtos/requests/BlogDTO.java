@@ -4,6 +4,7 @@ import com.hieunn.user_service.models.Blog;
 import com.hieunn.user_service.models.Blog.BlogCategory;
 import com.hieunn.user_service.models.Blog.BlogTag;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class BlogDTO {
@@ -32,7 +33,7 @@ public class BlogDTO {
         BlogCategory category,
         String title,
         String author,
-        LocalDateTime date,
+        Date date,
         Integer comments,
         String image,
         String content,

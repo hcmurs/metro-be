@@ -27,32 +27,33 @@ import lombok.experimental.SuperBuilder;
 public class Blog extends BaseEntity {
 
     public enum BlogCategory {
-        SERVICE_UPDATE,        // Cập nhật dịch vụ
-        SAFETY_GUIDELINE,      // Hướng dẫn an toàn
-        RIDER_TIPS,            // Mẹo cho hành khách
-        TECH_BEHIND_METRO,     // Công nghệ trong hệ thống metro
-        SCHEDULE_INFO,         // Thông tin lịch trình
-        PROMOTION,             // Khuyến mãi / ưu đãi
-        PUBLIC_ANNOUNCEMENT    // Thông báo chung
+        NANG_CAP_DICH_VU,        // Cập nhật dịch vụ
+        HUONG_DAN_AN_TOAN,      // Hướng dẫn an toàn
+        MEO_CHO_HANH_KHACH,            // Mẹo cho hành khách
+        CONG_NGHE_TRONG_HE_THONG_METRO,     // Công nghệ trong hệ thống metro
+        THONG_TIN_LICH_TRINH,         // Thông tin lịch trình
+        KHUYEN_MAI,             // Khuyến mãi / ưu đãi
+        THONG_BAO_CHUNG    // Thông báo chung
     }
 
     public enum BlogTag {
-        STATION_GUIDE,         // Hướng dẫn nhà ga
-        ELECTRONIC_TICKETING,  // Hướng dẫn dùng vé điện tử
-        MAP_UPDATE,            // Cập nhật bản đồ tuyến
-        DISCOUNT,              // Ưu đãi vé
-        MAINTENANCE_NOTICE,    // Thông báo bảo trì
-        PEAK_HOUR_TIPS,        // Mẹo đi tàu giờ cao điểm
-        NEW_LINE_OPENING,      // Tuyến mới khai trương
-        MOBILE_APP,            // Hướng dẫn dùng app mobile
-        LOST_AND_FOUND,        // Thất lạc đồ
-        PUBLIC_ANNOUNCEMENT, ACCESSIBILITY          // Hỗ trợ người khuyết tật
+        KHAI_TRUONG_TUYEN_MOI,
+        HUONG_DAN_NHA_GA,
+        MẸO_GIO_CAO_DIEM,
+        UNG_DUNG_DI_DONG,
+        CAP_NHAT_BAN_DO,
+        THONG_BAO_BAO_TRI,
+        GIAM_GIA,
+        TIEN_NGHI_NGUOI_KHUYET_TAT,
+        DO_THAT_LAC,
+        THONG_BAO_CONG_CONG,
+        VE_DIEN_TU
     }
 
     @Id
     @SequenceGenerator(name = "blogs_seq", sequenceName = "blogs_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "blogs_seq")
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     Integer id;
 
     @Enumerated(EnumType.STRING)
