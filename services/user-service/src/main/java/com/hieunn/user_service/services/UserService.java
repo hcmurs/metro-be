@@ -19,4 +19,5 @@ public interface UserService {
     boolean isEmailExist(String email);
     void resetPassword(String email, String newPassword);
     UserDto findByUserId(Long userId);
+    UserDto findByEmail();
 }

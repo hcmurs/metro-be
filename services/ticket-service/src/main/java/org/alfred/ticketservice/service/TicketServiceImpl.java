@@ -7,7 +7,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.alfred.ticketservice.client.UserClient;
 import org.alfred.ticketservice.config.JwtUtil;
+import org.alfred.ticketservice.dto.UserDto;
 import org.alfred.ticketservice.exception.TicketProcessingException;
 import org.alfred.ticketservice.dto.ticket.TicketQrData;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
@@ -67,6 +69,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private UserClient userClient;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${app.ticket.secret-key}")
@@ -93,7 +98,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 throw new IllegalArgumentException("Ticket type must have a valid validity duration at least 0");
             }
             String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-            if(ticketType.isForStudent() && !jwtUtil.isStudent(token)){
+            UserDto data = userClient.getCurrentUserFromDB("Bearer " + token).getData();
+//            boolean test = jwtUtil.isStudent(token);
+            if(ticketType.isForStudent() && !data.isStudent()){
                 throw new IllegalArgumentException("This ticket only available for students");
             }
             String prefix = "MT";
