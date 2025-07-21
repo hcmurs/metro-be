@@ -8,6 +8,7 @@ import com.example.stationservice.service.StationRouteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -35,6 +36,7 @@ public class StationRouteController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Create new station route", description = "Creates a new station route")
     public ApiResponse<StationRouteResponse> saveStationRoute(@Valid @RequestBody StationRouteRequest stationRoute) {
         StationRouteResponse response = stationRouteService.saveStationRoute(stationRoute);
@@ -42,6 +44,7 @@ public class StationRouteController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Update station route", description = "Updates an existing station route")
     public ApiResponse<StationRouteResponse> updateStationRoute(@PathVariable Long id,
                                                                 @Valid @RequestBody StationRouteRequest stationRoute) {
@@ -50,6 +53,7 @@ public class StationRouteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Delete station route", description = "Deletes a station route and reorders remaining routes")
     public ApiResponse<Void> deleteStationRoute(@PathVariable Long id) {
         stationRouteService.deleteStationRoute(id);
@@ -57,6 +61,7 @@ public class StationRouteController {
     }
 
     @PutMapping("/reorder/route/{routeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Reorder station routes", description = "Reorders station routes after deletion")
     public ApiResponse<Void> reorderStationRouteAfterDelete(@PathVariable Long routeId) {
         stationRouteService.reorderStationRouteAfterDelete(routeId);
@@ -81,6 +86,7 @@ public class StationRouteController {
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Operation(summary = "Update station route status", description = "Updates the status of a station route")
     public ApiResponse<Void> updateStationRouteStatus(@PathVariable Long id,
                                                       @RequestParam Stations.Status status) {

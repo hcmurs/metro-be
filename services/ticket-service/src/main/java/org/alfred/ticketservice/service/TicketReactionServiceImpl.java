@@ -120,7 +120,7 @@ public class TicketReactionServiceImpl implements TicketReactionService{
 
                 // Tạo fare matrix từ station mới đến station khác
 //                FareMatrixRequest.builder().name("NHTP-BXMD").startStationId(nhtpId).endStationId(bxmdId).isActive(true).build(),
-                FareMatrixRequest fareMatrixFrom = FareMatrixRequest.builder().name(stationRoute.stationsResponse().stationCode()+"-"+ otherStation.stationsResponse().stationCode())
+                FareMatrixRequest fareMatrixFrom = FareMatrixRequest.builder().name(stationRoute.stationsResponse().name()+"-"+ otherStation.stationsResponse().name())
                         .startStationId(newStationId)
                         .endStationId(otherStationId)
                         .isActive(true)
@@ -130,7 +130,7 @@ public class TicketReactionServiceImpl implements TicketReactionService{
                 }
 
                 // Tạo fare matrix từ station khác đến station mới
-                FareMatrixRequest fareMatrixTo = FareMatrixRequest.builder().name(otherStation.stationsResponse().stationCode()+"-"+ stationRoute.stationsResponse().stationCode())
+                FareMatrixRequest fareMatrixTo = FareMatrixRequest.builder().name(otherStation.stationsResponse().name()+"-"+ stationRoute.stationsResponse().name())
                         .startStationId(otherStationId)
                         .endStationId(newStationId)
                         .isActive(true)

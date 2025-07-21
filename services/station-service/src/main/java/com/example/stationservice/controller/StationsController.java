@@ -69,21 +69,21 @@ public class StationsController {
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody @Valid StationsRequest station) {
         StationsResponse updatedStation = stationsService.updateStation(id, station);
         return ApiResponse.success(updatedStation, "Station updated successfully");
     }
 
     @PostMapping("/status/{id}")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<StationsResponse> updateStationStatus(@PathVariable Long id, @RequestParam Stations.Status status) {
         StationsResponse updatedStation = stationsService.updateStationStatus(id, status);
         return ApiResponse.success(updatedStation, "Station status updated successfully");
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ApiResponse<Void> deleteStation(@PathVariable Long id) {
         stationsService.deleteStation(id);
         return ApiResponse.success("Station deleted successfully");
