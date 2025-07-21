@@ -40,11 +40,11 @@ public class TicketReactionServiceImpl implements TicketReactionService{
             }
 
             List<FareMatrixResponse> fareMatrixResponses = fareMatrixService.getFareMatricesByEndStationIdorStartId(
-                    stationRoute.stationsResponse().stationId());
+                    stationRoute.id());
 
 
             if (fareMatrixResponses.isEmpty()) {
-                log.info("No fare matrices found for station: {}", stationRoute.stationsResponse().stationId());
+                log.info("No fare matrices found for station: {}", stationRoute.id());
                 return;
             }
 

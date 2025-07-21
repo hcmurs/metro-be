@@ -85,16 +85,9 @@ public class StationRouteServiceImpl implements  StationRouteService {
     @Transactional
     @Override
     public StationRouteResponse updateStationRoute(Long id, StationRouteRequest request) {
-        StationRoute stationRoute = stationRouteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("StationRoute not found"));
-        Routes route = routeRepository.findById(request.routeId())
-                .orElseThrow(() -> new EntityNotFoundException("Route not found"));
-        Stations station = stationsRepository.findById(request.stationId())
-                .orElseThrow(() -> new EntityNotFoundException("Station not found"));
-        stationRoute.setRoute(route);
-        stationRoute.setStation(station);
-        StationRoute updated = stationRouteRepository.save(stationRoute);
-        return mapToResponse(updated);
+        deleteStationRoute(id);
+        return saveStationRoute(request);
+
     }
 
     @Override
@@ -110,7 +103,7 @@ public class StationRouteServiceImpl implements  StationRouteService {
                 id,
                 LocalDateTime.now()
         );
-
+        stationEventPublisher.publishStationDeleted(event);
     }
 
     @Override
