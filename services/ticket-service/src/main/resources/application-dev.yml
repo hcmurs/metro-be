@@ -5,7 +5,7 @@ spring:
     password: 12345
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   rabbitmq:
     host: localhost
     port: 5672
