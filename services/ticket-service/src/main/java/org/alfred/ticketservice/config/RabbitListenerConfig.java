@@ -40,6 +40,15 @@ public class RabbitListenerConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter);
+
+        factory.setAdviceChain( // ✅ THÊM PHẦN NÀY ĐỂ BẮT LỖI ĐẨY DLQ
+                RetryInterceptorBuilder.stateless()
+                        .maxAttempts(3)
+                        .backOffOptions(1000, 1.5, 10000)
+                        .recoverer(new RejectAndDontRequeueRecoverer())
+                        .build()
+        );
+
         return factory;
     }
 
