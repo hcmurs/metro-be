@@ -47,7 +47,7 @@ public class DataInitializer implements CommandLineRunner {
 
         List<Stations> stations = List.of(
                 create("BXMD", "Bến xe Miền Đông", "Bến xe Miền Đông mới (Suối Tiên)", 10.879512241390108, 106.81409560253722),
-                create("NHTP", "Trường Đại học Quốc gia (National University)", "Linh Trung, Thủ Đức", 10.866291781126687, 106.80124945301374),
+                create("DHQG", "Trường Đại học Quốc gia (National University)", "Linh Trung, Thủ Đức", 10.866291781126687, 106.80124945301374),
                 create("HTP", "Khu Công nghệ cao (Hi-tech Park)", "Thủ Đức", 10.858999986669915, 106.78878017918157),
                 create("TDU", "Thủ Đức", "Bình Thọ, Thủ Đức", 10.846372121206313, 106.77159999068043),
                 create("BTH", "Bình Thái", "Trường Thọ, Thủ Đức", 10.832601114841145, 106.76384478331777),
