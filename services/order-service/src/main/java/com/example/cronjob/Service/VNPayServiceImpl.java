@@ -176,6 +176,7 @@ public class VNPayServiceImpl implements VNPayService {
                 result.put("responseCode", vnp_ResponseCode);
                 result.put("transactionStatus", vnp_TransactionStatus);
                 result.put("paymentTime", vnp_Params.get("vnp_PayDate"));
+                result.put("orderInfo", vnp_Params.get("vnp_OrderInfo"));
                 ordersService.updateTransactionSuccess(Long.parseLong(vnp_Params.get("vnp_OrderInfo")));
 
             } else {
@@ -183,6 +184,7 @@ public class VNPayServiceImpl implements VNPayService {
                 result.put("message", "Payment failed");
                 result.put("transactionId", vnp_TxnRef);
                 result.put("responseCode", vnp_ResponseCode);
+                result.put("orderInfo", vnp_Params.get("vnp_OrderInfo"));
                 result.put("transactionStatus", vnp_TransactionStatus);
                 ordersService.updateTransactionFailed(Long.parseLong(vnp_Params.get("vnp_OrderInfo")));
 
