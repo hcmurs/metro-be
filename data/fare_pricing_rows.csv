@@ -1,0 +1,7 @@
+is_active,max_distance_km,min_distance_km,price,id
+true,5,0,12000,1
+true,10,5,15000,2
+true,15,10,18000,3
+true,20,15,21000,4
+true,25,20,24000,5
+true,30,25,27000,6
