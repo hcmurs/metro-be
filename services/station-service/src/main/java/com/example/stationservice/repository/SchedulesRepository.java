@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface SchedulesRepository extends JpaRepository<Schedules, Long> {
-    List<Schedules> findByStationStationIdOrderByTimeArrival(Long stationId);
+    List<Schedules> findByStationRouteId(Long stationRouteId);
+    List<Schedules> findByStationRoute_IdOrderByTimeArrival(Long stationStationId);
     //List<Schedules> findByStationId(Integer stationId);
+
 }

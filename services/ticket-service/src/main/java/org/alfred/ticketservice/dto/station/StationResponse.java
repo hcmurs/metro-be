@@ -10,13 +10,12 @@ public record StationResponse(
          String stationCode,
          String name,
          String address,
-         BigDecimal latitude,
-         BigDecimal longitude,
-         Integer sequenceOrder,
+         Double latitude,
+         Double longitude,
+         boolean deleted,
          String status,
          LocalDateTime createdAt,
-         LocalDateTime updatedAt,
-         Long routeId
+         LocalDateTime updatedAt
 ) {
 
 }

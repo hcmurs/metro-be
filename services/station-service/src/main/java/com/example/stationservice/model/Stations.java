@@ -2,7 +2,9 @@ package com.example.stationservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "stations")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Stations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,24 +31,25 @@ public class Stations {
     private Double latitude;
     @Column(name = "longitude")
     private Double longitude;
-    @Column(name = "sequence_order")
-    private Integer sequenceOrder;
     @Enumerated(EnumType.STRING)
-    private Status status = Status.open;
+    private Status status = Status.active;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
 
-    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Schedules> schedules;
-
-    @ManyToOne
-    @JoinColumn(name = "route_id", nullable = false)
-    private Routes route;
-
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
     public enum Status {
-        open, closed
+        active, maintenance, decommissioned
     }
 }

@@ -13,9 +13,13 @@ public interface FareMatrixService {
 
     void deleteFareMatrix(Long id);
 
+    FareMatrixResponse updateStatusFare(Long id,boolean status);
+
     List<FareMatrixResponse> getAllFareMatrices();
 
     List<FareMatrixResponse> getFareMatricesByStartStationId(Long startStationId);
+
+    List<FareMatrixResponse> getFareMatricesByEndStationIdorStartId(Long StationId);
 
     boolean isStationInFareMatrix(Long stationId, Long fareMatrixId);
 

@@ -21,9 +21,9 @@ public interface StationsService {
 
     // Delete
     void deleteStation(Long id);
-    boolean checkStationOnLine(Long startStationId, Long endStationId,Long thisStation);
+//    boolean checkStationOnLine(Long startStationId, Long endStationId,Long thisStation);
     // Additional utility methods
     boolean existsById(Long id);
-    List<StationsResponse> getStationsByRouteId(Long routeId);
+//    List<StationsResponse> getStationsByRouteId(Long routeId);
     StationsResponse updateStationStatus( Long id, Stations.Status status);
 }

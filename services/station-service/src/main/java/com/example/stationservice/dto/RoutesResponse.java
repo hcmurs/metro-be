@@ -12,4 +12,5 @@ public class RoutesResponse {
     private float distanceInKm;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isDeleted;
 }

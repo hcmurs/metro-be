@@ -1,5 +1,6 @@
 package com.example.stationservice.Exception;
 import com.example.stationservice.config.ApiResponse;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ApiResponse<Void>> handleNotFound(RuntimeException ex) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.ok().body(response);
+    }
+
+    @ExceptionHandler({EntityExistsException.class})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<Void>> handleExist(RuntimeException ex) {
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return ResponseEntity.ok().body(response);
     }
 

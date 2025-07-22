@@ -3,10 +3,13 @@ package com.example.stationservice.controller;
 import com.example.stationservice.config.ApiResponse;
 import com.example.stationservice.dto.StationsRequest;
 import com.example.stationservice.dto.StationsResponse;
+import com.example.stationservice.model.Stations;
 import com.example.stationservice.service.StationsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.nio.file.Files;
+
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -65,17 +68,18 @@ public class StationsController {
         return ApiResponse.success(stations, "Stations found by name");
     }
 
-    @GetMapping("/route/{routeId}")
-    public ApiResponse<List<StationsResponse>> getStationsByRouteId(@PathVariable Long routeId) {
-        List<StationsResponse> stations = stationsService.getStationsByRouteId(routeId);
-        return ApiResponse.success(stations, "Stations found for route");
-    }
-
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody StationsRequest station) {
+    public ApiResponse<StationsResponse> updateStation(@PathVariable Long id, @RequestBody @Valid StationsRequest station) {
         StationsResponse updatedStation = stationsService.updateStation(id, station);
         return ApiResponse.success(updatedStation, "Station updated successfully");
+    }
+
+    @PostMapping("/status/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<StationsResponse> updateStationStatus(@PathVariable Long id, @RequestParam Stations.Status status) {
+        StationsResponse updatedStation = stationsService.updateStationStatus(id, status);
+        return ApiResponse.success(updatedStation, "Station status updated successfully");
     }
 
     @DeleteMapping("/{id}")
@@ -90,11 +94,5 @@ public class StationsController {
         return ApiResponse.success(exists, "Station existence checked");
     }
 
-    @GetMapping("/check-line")
-    public ApiResponse<Boolean> checkStationOnLine(@RequestParam Long startStationId,
-                                                    @RequestParam Long endStationId,
-                                                    @RequestParam Long thisStation) {
-        boolean isOnLine = stationsService.checkStationOnLine(startStationId, endStationId, thisStation);
-        return ApiResponse.success(isOnLine, "Checked if station is on line");
-    }
+
 }

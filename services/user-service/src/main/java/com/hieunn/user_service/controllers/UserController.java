@@ -95,5 +95,12 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/me/current")
+    public ResponseEntity<ApiResponse<UserDto>> getCurrentUserFromDB() {
+        UserDto userDto = userService.findByEmail();
+        ApiResponse<UserDto> response = ApiResponse.success(userDto, "Find successfully");
+        return ResponseEntity.ok(response);
+    }
+
 
 }

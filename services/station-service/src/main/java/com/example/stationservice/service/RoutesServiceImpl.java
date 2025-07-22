@@ -3,7 +3,9 @@ package com.example.stationservice.service;
 import com.example.stationservice.dto.RoutesRequest;
 import com.example.stationservice.dto.RoutesResponse;
 import com.example.stationservice.model.Routes;
+import com.example.stationservice.model.StationRoute;
 import com.example.stationservice.repository.RoutesRepository;
+import com.example.stationservice.repository.StationRouteRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -18,6 +20,10 @@ import java.util.Optional;
 public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesRepository routesRepository;
+    @Autowired
+    private StationRouteRepository stationRouteRepository;
+    @Autowired
+    private StationRouteService stationRouteService;
     @Autowired
     private ModelMapper modelMapper;
     @Transactional
@@ -110,11 +116,15 @@ public class RoutesServiceImpl implements RoutesService {
 
         // Check if route has stations before deleting
         Optional<Routes> route = routesRepository.findById(id);
-        if (route.isPresent() && route.get().getStations() != null && !route.get().getStations().isEmpty()) {
-            throw new RuntimeException("Cannot delete route with existing stations. Delete stations first.");
+        if (!route.isPresent()) {
+            throw  new EntityNotFoundException("Route not found with id: " + id);
         }
-
-        routesRepository.deleteById(id);
+        route.get().setDeleted(true);
+        List<StationRoute> stationRoutes = stationRouteRepository.findByRoute_RouteIdAndIsDeletedOrderBySequenceOrder(id, false);
+        for (StationRoute stationRoute : stationRoutes) {
+            stationRouteService.deleteStationRoute(stationRoute.getId());
+        }
+        routesRepository.save(route.get());
     }
 
     @Override

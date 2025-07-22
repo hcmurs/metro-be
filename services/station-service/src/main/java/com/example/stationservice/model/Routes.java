@@ -28,9 +28,18 @@ public class Routes {
     private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
-    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Stations> stations;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
     // Additional fields can be added as needed
 }

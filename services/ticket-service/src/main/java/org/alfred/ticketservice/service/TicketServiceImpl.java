@@ -7,7 +7,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.alfred.ticketservice.client.UserClient;
 import org.alfred.ticketservice.config.JwtUtil;
+import org.alfred.ticketservice.dto.UserDto;
 import org.alfred.ticketservice.exception.TicketProcessingException;
 import org.alfred.ticketservice.dto.ticket.TicketQrData;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
@@ -67,6 +69,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private UserClient userClient;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${app.ticket.secret-key}")
@@ -93,7 +98,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 throw new IllegalArgumentException("Ticket type must have a valid validity duration at least 0");
             }
             String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-            if(ticketType.isForStudent() && !jwtUtil.isStudent(token)){
+            UserDto data = userClient.getCurrentUserFromDB("Bearer " + token).getData();
+//            boolean test = jwtUtil.isStudent(token);
+            if(ticketType.isForStudent() && !data.isStudent()){
                 throw new IllegalArgumentException("This ticket only available for students");
             }
             String prefix = "MT";
@@ -147,7 +154,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 .build();
         newTicket.setValidFrom(LocalDateTime.now());
         newTicket.setValidUntil(LocalDateTime.now().plusDays(30));
-        newTicket.setActualPrice(fareMatrix.getPrice());
+        newTicket.setActualPrice(fareMatrix.getFarePricing().getPrice());
         newTicket.setName(fareMatrix.getName());
         Tickets savedTicket = ticketRepository.save(newTicket);
         return mapToResponse(savedTicket);
@@ -231,6 +238,9 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     if(ticket.getFareMatrix().getStartStationId() == null) {
                         throw new EntityNotFoundException("Start station not found for fare matrix of ticket with code: " + ticketQrData.ticketCode());
                     }
+                    if(!ticket.getFareMatrix().isActive()){
+                        throw new EntityNotFoundException("Fare matrix is not active for ticket with code: " + ticketQrData.ticketCode());
+                    }
                     if(ticket.getStatus()!= TicketStatus.NOT_USED) {
                         throw new TicketProcessingException("Ticket is not in a valid state for entry");
                     }
@@ -287,7 +297,8 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 throw new TicketProcessingException("Must enter before exit");
             }
             ticket.setInTrip(false);
-            if (ticket.getStatus() == TicketStatus.USED) {
+            if(ticket.getTicketType().getValidityDuration() == 0) {
+                if (ticket.getStatus() == TicketStatus.USED) {
                     // Single-use ticket: mark as expired after exit
                     if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
                         throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
@@ -298,13 +309,16 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     }
                     ticket.setStatus(TicketStatus.EXPIRED);
                 }
-               else {
+                else {
                     // Multi-day pass: keep status as USED for future entries
-                    if (ticket.getStatus() != TicketStatus.USED) {
-                        throw new TicketProcessingException("Ticket is not in a valid state for exit");
-                    }
+                    throw new TicketProcessingException("Ticket is not in a valid state for exit");
                     // Status remains USED - no change needed
                 }
+            } else {
+                if (ticket.getStatus() != TicketStatus.USED) {
+                    throw new TicketProcessingException("Ticket is not in a valid state for exit");
+                }
+            }
             saveTicketUsageLog(ticket, UsageTypes.EXIT, currentScanTime, ticketScanRequest.stationId());
             Tickets updatedTicket = ticketRepository.save(ticket);
             return mapToResponse(updatedTicket);
@@ -457,7 +471,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String nowStr = LocalDateTime.now().format(formatter);
-            String untilStr = LocalDateTime.now().plusMinutes(2).format(formatter);
+            String untilStr = LocalDateTime.now().plusMinutes(1).format(formatter);
             // First build without signature
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())

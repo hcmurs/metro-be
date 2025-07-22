@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
-        ApiResponse<Void> response = ApiResponse.error(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        ApiResponse<Void> response = ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "Lỗi rồi"+ ex.getMessage());
         return ResponseEntity.ok().body(response);
     }
 

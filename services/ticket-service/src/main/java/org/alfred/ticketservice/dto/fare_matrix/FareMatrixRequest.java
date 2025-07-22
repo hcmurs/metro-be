@@ -5,12 +5,10 @@ package org.alfred.ticketservice.dto.fare_matrix;
         import jakarta.validation.constraints.NotNull;
         import jakarta.validation.constraints.PositiveOrZero;
         import jakarta.validation.constraints.Size;
+        import lombok.Builder;
 
+@Builder
         public record FareMatrixRequest(
-                // Optional for creation, required for updates
-                @NotNull(message = "Price is required")
-                @PositiveOrZero(message = "Price must be zero or positive")
-                float price,
 
                 @NotNull(message = "Start station ID is required")
                 @PositiveOrZero(message = "Start station ID must be valid")

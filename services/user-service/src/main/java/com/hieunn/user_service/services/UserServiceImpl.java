@@ -207,6 +207,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userMapper.toUserDto(user);
     }
 
+    @Override
+    public UserDto findByEmail() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        User currentUser = (User) securityContext.getAuthentication().getPrincipal();
+        User userFetch = userRepository.findByEmail(currentUser.getEmail())
+                .orElseThrow(() -> new CustomException(
+                        ErrorMessage.USER_NOT_FOUND.getStatus(),
+                        ErrorMessage.USER_NOT_FOUND.getMessage()));
+
+        if (userFetch == null) {
+            throw new CustomException(
+                    ErrorMessage.UNAUTHENTICATED.getStatus(),
+                    ErrorMessage.UNAUTHENTICATED.getMessage());
+        }
+
+        return userMapper.toUserDto(userFetch);
+    }
+
     private User createNewUserFromLocal(RegisterRequest request) {
         return User.builder()
                 .email(request.getEmail())

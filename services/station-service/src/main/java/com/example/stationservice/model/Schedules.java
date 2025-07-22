@@ -17,6 +17,10 @@ public class Schedules {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Long scheduleId;
+    @ManyToOne
+    @JoinColumn(name = "station_route_id", nullable = false)
+    @JsonIgnore
+    private StationRoute stationRoute;
     @Column(name="description")
     private String description;
     @Column(name="time_arrival")
@@ -31,10 +35,17 @@ public class Schedules {
     private LocalDateTime createdAt;
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
-    @ManyToOne
-    @JoinColumn(name = "station_id", nullable = false)
-    @JsonIgnore
-    private Stations station;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
     public enum Direction {
         forward, backward
     }

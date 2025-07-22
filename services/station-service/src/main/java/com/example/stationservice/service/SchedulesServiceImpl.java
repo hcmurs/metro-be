@@ -3,8 +3,10 @@ package com.example.stationservice.service;
 import com.example.stationservice.dto.SchedulesRequest;
 import com.example.stationservice.dto.SchedulesResponse;
 import com.example.stationservice.model.Schedules;
+import com.example.stationservice.model.StationRoute;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.repository.SchedulesRepository;
+import com.example.stationservice.repository.StationRouteRepository;
 import com.example.stationservice.repository.StationsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -21,14 +23,14 @@ public class SchedulesServiceImpl implements SchedulesService {
     private SchedulesRepository schedulesRepository;
 
     @Autowired
-    private StationsRepository stationsRepository;
+    private StationRouteRepository stationRouteRepository;
 
     @Autowired
     private ModelMapper modelMapper;
     @Transactional
     @Override
     public SchedulesResponse createSchedule(SchedulesRequest request) {
-        Stations station = stationsRepository.findById(request.getStationId())
+        StationRoute stationRoute = stationRouteRepository.findById(request.getStationId())
                 .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + request.getStationId()));
         if (request.getTimeArrival() != null && request.getTimeDeparture() != null &&
                 request.getTimeArrival().isAfter(request.getTimeDeparture())) {
@@ -38,7 +40,7 @@ public class SchedulesServiceImpl implements SchedulesService {
         schedule.setDescription(request.getDescription());
         schedule.setTimeArrival(request.getTimeArrival());
         schedule.setTimeDeparture(request.getTimeDeparture());
-        schedule.setStation(station);
+        schedule.setStationRoute(stationRoute);
         schedule.setDirection(request.getDirection());
         schedule.setCreatedAt(LocalDateTime.now());
         schedule.setUpdatedAt(LocalDateTime.now());
@@ -70,7 +72,7 @@ public class SchedulesServiceImpl implements SchedulesService {
         if (stationId == null) {
             throw new IllegalArgumentException("Station ID cannot be null");
         }
-        List<Schedules> list = schedulesRepository.findByStationStationIdOrderByTimeArrival(stationId);
+        List<Schedules> list = schedulesRepository.findByStationRoute_IdOrderByTimeArrival(stationId);
         return list.stream()
                 .map(schedule -> modelMapper.map(schedule, SchedulesResponse.class))
                 .toList();
@@ -102,10 +104,10 @@ public class SchedulesServiceImpl implements SchedulesService {
         }
 
         if (scheduleUpdate.getStationId() != null &&
-                (existingSchedule.getStation().getStationId().equals(scheduleUpdate.getStationId()))) {
-            Stations station = stationsRepository.findById(scheduleUpdate.getStationId())
-                    .orElseThrow(() -> new RuntimeException("Station not found with id: " + scheduleUpdate.getStationId()));
-            existingSchedule.setStation(station);
+                (existingSchedule.getStationRoute().getId().equals(scheduleUpdate.getStationId()))) {
+            StationRoute station = stationRouteRepository.findById(scheduleUpdate.getStationId())
+                    .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + scheduleUpdate.getStationId()));
+            existingSchedule.setStationRoute(station);
         }
 
         if (scheduleUpdate.getDirection() != null) {

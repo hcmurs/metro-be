@@ -1,10 +1,13 @@
 package com.example.stationservice.service;
 
+import com.example.stationservice.dto.StationRouteRequest;
 import com.example.stationservice.dto.StationsRequest;
 import com.example.stationservice.dto.StationsResponse;
 import com.example.stationservice.model.Routes;
+import com.example.stationservice.model.StationRoute;
 import com.example.stationservice.model.Stations;
 import com.example.stationservice.repository.RoutesRepository;
+import com.example.stationservice.repository.StationRouteRepository;
 import com.example.stationservice.repository.StationsRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,40 +27,32 @@ public class StationsServiceImpl implements StationsService {
     @Autowired
     private RoutesRepository routesRepository;
     @Autowired
-    private ModelMapper modelMapper;
+    private  StationRouteService stationRouteService;
+    @Autowired
+    private StationRouteRepository stationRouteRepository;
     @Transactional
     @Override
     public StationsResponse createStation(StationsRequest request) {
-        Routes route = routesRepository.findById(request.getRouteId())
-                .orElseThrow(() -> new EntityNotFoundException("Route not found with id: " + request.getRouteId()));
-
         if (stationsRepository.existsByStationCode(request.getStationCode())) {
             throw new EntityExistsException("Station code already exists: " + request.getStationCode());
         }
-        if( request.getSequenceOrder() == null || request.getSequenceOrder() < 0 || stationsRepository.existsBySequenceOrder(request.getSequenceOrder())) {
-            throw new IllegalArgumentException("Invalid sequence order: " + request.getSequenceOrder());
-        }
-
         Stations station = new Stations();
         station.setStationCode(request.getStationCode());
         station.setName(request.getName());
         station.setAddress(request.getAddress());
         station.setLatitude(request.getLatitude());
         station.setLongitude(request.getLongitude());
-        station.setSequenceOrder(request.getSequenceOrder());
-        station.setCreatedAt(LocalDateTime.now());
-        station.setUpdatedAt(LocalDateTime.now());
-        station.setRoute(route);
-         stationsRepository.save(station);
-         return modelMapper.map(station, StationsResponse.class);
+        station.setDeleted(false);
+        System.out.println("Station created: " + station);
+         return mapToStationsResponse(stationsRepository.save(station));
     }
 
     @Override
     public List<StationsResponse> getAllStations() {
 
-        List<Stations> list = stationsRepository.findAll();
+        List<Stations> list = stationsRepository.findAllByIsDeletedFalse();
         return list.stream()
-                .map(station -> modelMapper.map(station, StationsResponse.class))
+                .map(this::mapToStationsResponse)
                 .toList();
     }
 
@@ -67,7 +62,7 @@ public class StationsServiceImpl implements StationsService {
             throw new EntityNotFoundException("Station ID cannot be null");
         }
         Optional<Stations> optional = stationsRepository.findById(id);
-    return optional.map(station -> modelMapper.map(station, StationsResponse.class));}
+    return optional.map(this::mapToStationsResponse);}
 
 
     @Override
@@ -77,7 +72,7 @@ public class StationsServiceImpl implements StationsService {
         }
         List<Stations> list =  stationsRepository.findByNameContainingIgnoreCase(name.trim());
         return list.stream()
-                .map(station -> modelMapper.map(station, StationsResponse.class))
+                .map(this::mapToStationsResponse)
                 .toList();
     }
     @Transactional
@@ -86,10 +81,8 @@ public class StationsServiceImpl implements StationsService {
         if (id == null) {
             throw new EntityNotFoundException("Station ID cannot be null");
         }
-
         Stations existingStation = stationsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + id));
-
         if (stationUpdate.getStationCode() != null) {
             if (!existingStation.getStationCode().equals(stationUpdate.getStationCode()) &&
                     stationsRepository.existsByStationCode(stationUpdate.getStationCode())) {
@@ -113,26 +106,8 @@ public class StationsServiceImpl implements StationsService {
         if (stationUpdate.getLongitude() != null) {
             existingStation.setLongitude(stationUpdate.getLongitude());
         }
-
-        if (stationUpdate.getSequenceOrder() != null) {
-            existingStation.setSequenceOrder(stationUpdate.getSequenceOrder());
-        }
-
-        if (stationUpdate.getRouteId() != null &&
-                (existingStation.getRoute() == null ||
-                        !existingStation.getRoute().getRouteId().equals(stationUpdate.getRouteId()))) {
-
-            Routes route = routesRepository.findById(stationUpdate.getRouteId())
-                    .orElseThrow(() -> new EntityNotFoundException("Route not found with id: " + stationUpdate.getRouteId()));
-            existingStation.setRoute(route);
-        }
-
-
-
         existingStation.setUpdatedAt(LocalDateTime.now());
-
-         stationsRepository.save(existingStation);
-         return modelMapper.map(existingStation, StationsResponse.class);
+         return mapToStationsResponse(stationsRepository.save(existingStation));
     }
     @Transactional
     @Override
@@ -140,46 +115,43 @@ public class StationsServiceImpl implements StationsService {
         if (id == null) {
             throw new IllegalArgumentException("Station ID cannot be null");
         }
-
-        if (!stationsRepository.existsById(id)) {
-            throw new EntityNotFoundException("Station not found with id: " + id);
+        Stations station = stationsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + id));
+        station.setDeleted(true);
+        List<StationRoute> stationRoutes = stationRouteRepository.findByStation_StationIdAndIsDeleted(id, false);
+        for (StationRoute stationRoute : stationRoutes) {
+            stationRouteService.deleteStationRoute(stationRoute.getId());
         }
-
-        Optional<Stations> station = stationsRepository.findById(id);
-        if (station.isPresent() && station.get().getSchedules() != null && !station.get().getSchedules().isEmpty()) {
-            throw new RuntimeException("Cannot delete station with existing schedules. Delete schedules first.");
-        }
-
-        stationsRepository.deleteById(id);
-
+        stationsRepository.save(station);
     }
 
-    @Override
-    public boolean checkStationOnLine(Long startStationId, Long endStationId, Long thisStation) {
-        if (startStationId == null || endStationId == null || thisStation == null) {
-            throw new IllegalArgumentException("Station IDs cannot be null");
-        }
-        Stations startStations = stationsRepository.findById(startStationId)
-                .orElseThrow(() -> new EntityNotFoundException("Start station not found with id: " + startStationId));
-        Stations endStations = stationsRepository.findById(endStationId)
-                .orElseThrow(() -> new EntityNotFoundException("End station not found with id: " + endStationId));
-        Stations thisStationObj = stationsRepository.findById(thisStation)
-                .orElseThrow(() -> new EntityNotFoundException("This station not found with id: " + thisStation));
-        if(startStations.getSequenceOrder() < endStations.getSequenceOrder()) {
-            if (thisStationObj.getSequenceOrder() >= startStations.getSequenceOrder() &&
-                    thisStationObj.getSequenceOrder() <= endStations.getSequenceOrder()) {
-                return true;
-            }
-        }
-        else if(startStations.getSequenceOrder() > endStations.getSequenceOrder()) {
-            if (thisStationObj.getSequenceOrder() >= endStations.getSequenceOrder() &&
-                    thisStationObj.getSequenceOrder() <= startStations.getSequenceOrder()) {
-                return true;
-            }
-        }
 
-        return false;
-    }
+//    @Override
+//    public boolean checkStationOnLine(Long startStationId, Long endStationId, Long thisStation) {
+//        if (startStationId == null || endStationId == null || thisStation == null) {
+//            throw new IllegalArgumentException("Station IDs cannot be null");
+//        }
+//        Stations startStations = stationsRepository.findById(startStationId)
+//                .orElseThrow(() -> new EntityNotFoundException("Start station not found with id: " + startStationId));
+//        Stations endStations = stationsRepository.findById(endStationId)
+//                .orElseThrow(() -> new EntityNotFoundException("End station not found with id: " + endStationId));
+//        Stations thisStationObj = stationsRepository.findById(thisStation)
+//                .orElseThrow(() -> new EntityNotFoundException("This station not found with id: " + thisStation));
+//        if(startStations.getSequenceOrder() < endStations.getSequenceOrder()) {
+//            if (thisStationObj.getSequenceOrder() >= startStations.getSequenceOrder() &&
+//                    thisStationObj.getSequenceOrder() <= endStations.getSequenceOrder()) {
+//                return true;
+//            }
+//        }
+//        else if(startStations.getSequenceOrder() > endStations.getSequenceOrder()) {
+//            if (thisStationObj.getSequenceOrder() >= endStations.getSequenceOrder() &&
+//                    thisStationObj.getSequenceOrder() <= startStations.getSequenceOrder()) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     @Override
     public boolean existsById(Long id) {
@@ -187,16 +159,16 @@ public class StationsServiceImpl implements StationsService {
             return false;
         }
         return stationsRepository.existsById(id);    }
-    @Override
-    public List<StationsResponse> getStationsByRouteId(Long routeId) {
-        if (routeId == null) {
-            throw new IllegalArgumentException("Route ID cannot be null");
-        }
-        List <Stations> list = stationsRepository.findByRouteRouteIdOrderBySequenceOrder(routeId);
-            return list.stream()
-                .map(station -> modelMapper.map(station, StationsResponse.class))
-                .toList();
-    }
+//    @Override
+//    public List<StationsResponse> getStationsByRouteId(Long routeId) {
+//        if (routeId == null) {
+//            throw new IllegalArgumentException("Route ID cannot be null");
+//        }
+//        List <Stations> list = stationsRepository.findByRouteRouteIdOrderBySequenceOrder(routeId);
+//            return list.stream()
+//                .map(station -> modelMapper.map(station, StationsResponse.class))
+//                .toList();
+//    }
     @Transactional
     @Override
     public StationsResponse updateStationStatus(Long id, Stations.Status status) {
@@ -208,10 +180,26 @@ public class StationsServiceImpl implements StationsService {
                 .orElseThrow(() -> new EntityNotFoundException("Station not found with id: " + id));
 
         existingStation.setStatus(status);
+        List<StationRoute> stationRoutes = stationRouteRepository.findByStation_StationIdAndIsDeleted(id, false);
+        for (StationRoute stationRoute : stationRoutes) {
+                stationRouteService.updateStationRouteStatus(stationRoute.getId(), status);
+            }
         existingStation.setUpdatedAt(LocalDateTime.now());
+         return mapToStationsResponse(stationsRepository.save(existingStation));
+    }
 
-         stationsRepository.save(existingStation);
-         return modelMapper.map(existingStation, StationsResponse.class);
+    private StationsResponse mapToStationsResponse(Stations stations) {
+        return StationsResponse.builder().stationId(stations.getStationId())
+                .stationCode(stations.getStationCode())
+                .name(stations.getName())
+                .address(stations.getAddress())
+                .latitude(stations.getLatitude())
+                .longitude(stations.getLongitude())
+                .status(stations.getStatus())
+                .createdAt(stations.getCreatedAt())
+                .updatedAt(stations.getUpdatedAt())
+                .isDeleted(stations.isDeleted())
+                .build();
     }
 
 }

@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 public record FareMatrixResponse(
         Long fareMatrixId,
         String name,
-        float price,
+        float distanceInKm,
         Long startStationId,
         Long endStationId,
+        Float price,
         boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt

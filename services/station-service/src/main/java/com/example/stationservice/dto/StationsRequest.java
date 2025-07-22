@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 
 @Data
 public class StationsRequest {
-    @NotNull(message = "Route ID cannot be null")
-    private Long routeId;
     @NotNull(message = "Station code cannot be null")
     private String stationCode;
     @NotNull(message = "Name cannot be null")
@@ -21,8 +19,5 @@ public class StationsRequest {
     private Double latitude;
     @NotNull(message = "Longitude cannot be null")
     private Double longitude;
-    @NotNull(message = "Sequence order cannot be null")
-    @PositiveOrZero(message = "Sequence order must be zero or positive")
-    private Integer sequenceOrder;
 }
 

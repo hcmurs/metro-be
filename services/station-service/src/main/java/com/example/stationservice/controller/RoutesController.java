@@ -25,7 +25,7 @@ public class RoutesController {
     @Autowired
     private RoutesService routesService;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
     public ApiResponse<RoutesResponse> createRoute(@RequestBody @Valid RoutesRequest request) {
         RoutesResponse route = routesService.createRoute(request);
@@ -72,7 +72,7 @@ public class RoutesController {
         return ApiResponse.success(updatedRoute, "Route updated successfully");
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteRoute(@PathVariable Long id) {
         routesService.deleteRoute(id);
