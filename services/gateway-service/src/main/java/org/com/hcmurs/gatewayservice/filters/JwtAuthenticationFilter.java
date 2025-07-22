@@ -64,6 +64,7 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/notifications/verify-otp",
             "/actuator/health",
             //Stations
+            "/api/station-routes/**",
             "/api/routes",
             "/api/routes/{id}",
             "/api/routes/search",
@@ -95,8 +96,9 @@ public class JwtAuthenticationFilter implements WebFilter {
             "/api/payment/stripe/**",
             "/api/ts/ticket-usage-logs/between",
             "/api/station-routes/route/{routeId}",
-            "/api/station-routes/{id}"
-            );
+            "/api/station-routes/{id}",
+            "/api/payment/payos/**"
+    );
 
     @NotNull
     @Override

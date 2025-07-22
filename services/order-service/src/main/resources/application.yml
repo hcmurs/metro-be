@@ -44,3 +44,10 @@ paypal:
   return-url: http://localhost:4008/api/payment/paypal/success
   cancel-url: http://localhost:4008/api/payment/paypal/cancel
 
+payos:
+  client-id: ${PROD_ClIENT_ID_PAYOS}
+  api-key: ${PROD_API_KEY_PAYOS}
+  checksum-key: ${PROD_CHECKSUMKEY_PAYOS}
+  return-url: http://localhost:4009/api/payment/payos/success
+  cancel-url: http://localhost:4009/api/payment/payos/cancel
+
