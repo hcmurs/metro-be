@@ -124,6 +124,14 @@
       <artifactId>stripe-java</artifactId>
       <version>29.3.0</version>
     </dependency>
+    <dependency>
+      <groupId>vn.payos</groupId>
+      <artifactId>payos-java</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+
+
+
 
   </dependencies>
 

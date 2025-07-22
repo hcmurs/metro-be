@@ -42,13 +42,14 @@ public class SecurityConfig {
             "/api/ts/tickets/generate-qr",
             "/api/ts/tickets/qr",
             "/api/bus/**",
-
+            "/api/station-routes/**",
             // User Service
             "/api/users/blogs/**",
             "/api/users/requests/**",
             "/api/users/feedbacks/**",
 
-            "/api/payment/stripe/**"
+            "/api/payment/stripe/**",
+            "/api/payment/payos/**"
     };
 
     @Bean
