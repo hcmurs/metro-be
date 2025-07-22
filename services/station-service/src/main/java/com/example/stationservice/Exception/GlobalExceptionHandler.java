@@ -61,14 +61,14 @@ public class GlobalExceptionHandler {
     // Handle custom exceptions (optional)
     @ExceptionHandler({EntityNotFoundException.class})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(RuntimeException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(EntityNotFoundException ex) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.NOT_FOUND.value(), ex.getMessage());
         return ResponseEntity.ok().body(response);
     }
 
     @ExceptionHandler({EntityExistsException.class})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ApiResponse<Void>> handleExist(RuntimeException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleExist(EntityExistsException ex) {
         ApiResponse<Void> response = ApiResponse.error(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return ResponseEntity.ok().body(response);
     }

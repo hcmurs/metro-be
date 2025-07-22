@@ -43,6 +43,16 @@ public class Transactions {
 
     private LocalDateTime updateAt;
 
+    @PrePersist
+    public void prePersist() {
+        createAt = updateAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updateAt = LocalDateTime.now();
+    }
+
     public Transactions() {
     }
 

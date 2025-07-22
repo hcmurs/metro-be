@@ -17,5 +17,6 @@ public interface StationRouteService {
     boolean checkStationOnLine(Long startStationId, Long endStationId, Long thisStationId);
     void updateStationRouteStatus(Long id, Stations.Status status);
     StationRouteResponse getStationRouteById(Long id);
+    List<StationRouteResponse> getStationForUpgradeTicket(Long startStationId, Long endStationId);
 
 }

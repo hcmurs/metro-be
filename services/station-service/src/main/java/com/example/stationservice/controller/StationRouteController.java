@@ -82,7 +82,11 @@ public class StationRouteController {
                                                    @RequestParam Long endStationId,
                                                    @RequestParam Long thisStationId) {
         boolean isOnLine = stationRouteService.checkStationOnLine(startStationId, endStationId, thisStationId);
-        return ApiResponse.success(isOnLine, "Station line check completed");
+        if(isOnLine)
+        return ApiResponse.success(true, "Station line check completed");
+        else {
+            return ApiResponse.success(false, "Station not in this line");
+        }
     }
 
     @PutMapping("/{id}/status")
@@ -92,5 +96,14 @@ public class StationRouteController {
                                                       @RequestParam Stations.Status status) {
         stationRouteService.updateStationRouteStatus(id, status);
         return ApiResponse.success(null, "Station route status updated successfully");
+    }
+
+    @GetMapping("/upgrade-ticket")
+    @Operation(summary = "Get stations for ticket upgrade", description = "Retrieves stations for upgrading tickets between two stations")
+    public ApiResponse<List<StationRouteResponse>> getStationForUpgradeTicket(
+            @RequestParam Long startStationId,
+            @RequestParam Long endStationId) {
+        List<StationRouteResponse> stations = stationRouteService.getStationForUpgradeTicket(startStationId, endStationId);
+        return ApiResponse.success(stations, "Stations for ticket upgrade retrieved successfully");
     }
 }

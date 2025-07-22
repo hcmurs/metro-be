@@ -11,7 +11,7 @@ public record TicketResponse(
         Long ticketTypeId,
         String name,
         String ticketCode,
-        float actualPrice,
+        double actualPrice,
         LocalDateTime validFrom,
         LocalDateTime validUntil,
         TicketStatus status,

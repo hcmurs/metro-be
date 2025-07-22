@@ -35,6 +35,10 @@ package org.alfred.ticketservice.model;
         @JoinColumn(name = "fare_matrix_id")
         private FareMatrix fareMatrix;
 
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "current_fare_matrix_id")
+        private FareMatrix currentFareMatrix;
+
         @NotBlank(message = "Ticket code is required")
         @Size(min = 5, max = 50, message = "Ticket code must be between 5 and 50 characters")
         @Column(name = "ticket_code", unique = true, nullable = false)
@@ -43,7 +47,7 @@ package org.alfred.ticketservice.model;
         @NotNull(message = "Actual price is required")
         @DecimalMin(value = "0.0", inclusive = false, message = "Actual price must be greater than zero")
         @Column(name = "actual_price", nullable = false)
-        private float actualPrice;
+        private double actualPrice;
 
         @NotNull(message = "Valid from date is required")
         @Column(name = "valid_from", nullable = false)

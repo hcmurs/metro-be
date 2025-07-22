@@ -6,26 +6,25 @@ import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.alfred.ticketservice.client.StationClient;
 import org.alfred.ticketservice.client.UserClient;
+import org.alfred.ticketservice.config.ApiResponse;
 import org.alfred.ticketservice.config.JwtUtil;
 import org.alfred.ticketservice.dto.UserDto;
+import org.alfred.ticketservice.dto.station.StationResponse;
+import org.alfred.ticketservice.dto.station.StationRouteResponse;
 import org.alfred.ticketservice.exception.TicketProcessingException;
 import org.alfred.ticketservice.dto.ticket.TicketQrData;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;
 import org.alfred.ticketservice.dto.ticket.TicketScanRequest;
-import org.alfred.ticketservice.model.FareMatrix;
-import org.alfred.ticketservice.model.TicketTypes;
-import org.alfred.ticketservice.model.TicketUsageLogs;
-import org.alfred.ticketservice.model.Tickets;
+import org.alfred.ticketservice.model.*;
 import org.alfred.ticketservice.model.enums.Duration;
 import org.alfred.ticketservice.model.enums.TicketStatus;
 import org.alfred.ticketservice.model.enums.UsageTypes;
-import org.alfred.ticketservice.repository.FareMatrixRepository;
-import org.alfred.ticketservice.repository.TicketRepository;
-import org.alfred.ticketservice.repository.TicketTypeRepository;
-import org.alfred.ticketservice.repository.TicketUsageLogRepository;
+import org.alfred.ticketservice.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Lock;
@@ -47,32 +46,26 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService,TicketCronJobService{
-    @Autowired
-    private TicketTypeRepository ticketTypeRepository;
+    private final TicketTypeRepository ticketTypeRepository;
 
-    @Autowired
-    private TicketUsageLogRepository ticketUsageLogRepository;
+    private final TicketUsageLogRepository ticketUsageLogRepository;
 
-    @Autowired
-    private TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
 
-    @Autowired
-    private FareMatrixRepository fareMatrixRepository;
+    private final FareMatrixRepository fareMatrixRepository;
 
-    @Autowired
-    private FareMatrixService fareMatrixService;
+    private final FareMatrixService fareMatrixService;
 
-    @Autowired
-    private QRService qrService;
+    private final QRService qrService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserClient userClient;
 
-    @Autowired
-    private UserClient userClient;
+    private final TicketUpgradeHistoryRepository ticketUpgradeHistoryRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final StationClient stationClient;
 
     @Value("${app.ticket.secret-key}")
     private String secretKey;
@@ -289,7 +282,6 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
             if (ticket == null) {
                 throw new EntityNotFoundException("Ticket not found with code: " + ticketQrData.ticketCode());
             }
-
             if (ticket.getTicketType() == null) {
                 throw new EntityNotFoundException("Ticket type not found for ticket with code: " + ticketQrData.ticketCode());
             }
@@ -303,10 +295,19 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                     if (ticket.getFareMatrix() == null || ticket.getFareMatrix().getEndStationId() == null) {
                         throw new EntityNotFoundException("Fare matrix or end station not found for ticket with code: " + ticketQrData.ticketCode());
                     }
-
-                    if (!fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getFareMatrix().getFareMatrixId())) {
-                        throw new TicketProcessingException("Ticket is not valid for exit at this station");
+                    boolean check = false;
+                    if(ticket.getCurrentFareMatrix()!=null && fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getCurrentFareMatrix().getFareMatrixId())) {
+                        check = true;
+                        System.out.println("Ticket is valid for exit at current fare matrix");
                     }
+                    else {
+                        if (!fareMatrixService.isStationInFareMatrix(ticketScanRequest.stationId(), ticket.getFareMatrix().getFareMatrixId())) {
+                            throw new TicketProcessingException("Ticket is not valid for exit at this station");
+                        }
+
+                    }
+
+
                     ticket.setStatus(TicketStatus.EXPIRED);
                 }
                 else {
@@ -405,6 +406,67 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
                 .toList();
     }
 
+    @Override
+    public TicketResponse upgradeTicket(Long ticketId, Long endStationId) {
+        Tickets ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + ticketId));
+
+        Long startStationId =  ticket.getFareMatrix().getStartStationId();
+        FareMatrix newFareMatrix = fareMatrixRepository.findByStartStationIdAndEndStationIdAndIsActiveTrue(startStationId, endStationId);
+        if(newFareMatrix== null) {
+            throw new EntityNotFoundException("No active fare matrix found for start station ID: " + startStationId + " and end station ID: " + endStationId);
+        }
+//        ApiResponse<StationRouteResponse> endStation = stationClient.getStationRouteById(ticket.getFareMatrix().getEndStationId());
+//        if (endStation == null || endStation.getData() == null) {
+//            throw new EntityNotFoundException("End station not found with ID: " + ticket.getFareMatrix().getEndStationId());
+//        }
+//        StationRouteResponse endStationData = endStation.getData();
+//
+//        ApiResponse<StationRouteResponse> newEndStation = stationClient.getStationRouteById(endStationId);
+//        if (newEndStation == null || newEndStation.getData() == null) {
+//            throw new EntityNotFoundException("End station not found with ID: " + endStationId);
+//        }
+//        StationRouteResponse newEndStationData = newEndStation.getData();
+
+        double newPrice = newFareMatrix.getFarePricing().getPrice() +10000;
+        ticket.setName(newFareMatrix.getName());
+        TicketUpgradeHistory ticketUpgradeHistory = new TicketUpgradeHistory();
+        ticketUpgradeHistory.setTicket(ticket);
+        ticketUpgradeHistory.setFromFareMatrix(ticket.getFareMatrix());
+        ticketUpgradeHistory.setToFareMatrix(newFareMatrix);
+        ticketUpgradeHistory.setUpgradeAmount(newPrice);
+        ticketUpgradeHistory.setUpgradedAt(LocalDateTime.now());
+        ticketUpgradeHistoryRepository.save(ticketUpgradeHistory);
+        ticket.setCurrentFareMatrix(newFareMatrix);
+        ticket.setActualPrice(newPrice);
+        return mapToResponse(ticketRepository.save(ticket));
+    }
+
+    @Override
+    public double getUpgradeAmount(Long ticketId, Long endStationId) {
+        Tickets ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + ticketId));
+        Long startStationId =  ticket.getFareMatrix().getStartStationId();
+        FareMatrix newFareMatrix = fareMatrixRepository.findByStartStationIdAndEndStationIdAndIsActiveTrue(startStationId, endStationId);
+        if(newFareMatrix== null) {
+            throw new EntityNotFoundException("No active fare matrix found for start station ID: " + startStationId + " and end station ID: " + endStationId);
+        }
+        return newFareMatrix.getFarePricing().getPrice() - ticket.getActualPrice()+10000;
+    }
+
+    @Override
+    public List<StationRouteResponse> getStationForUpgradeTicket(Long ticketId) {
+    Tickets ticket = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + ticketId));
+    Long startStationId =  ticket.getFareMatrix().getStartStationId();
+    Long endStationId = ticket.getFareMatrix().getEndStationId();
+    ApiResponse<List<StationRouteResponse>> response = stationClient.getStationForUpgradeTicket(startStationId, endStationId);
+    if(response.getStatus()!=200){
+        throw new TicketProcessingException("Failed to fetch stations for upgrade ticket: " + response.getMessage());
+    }
+       return  response.getData();
+    }
+
 
     private TicketResponse mapToResponse(Tickets ticket) {
         return TicketResponse.builder()
@@ -471,7 +533,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String nowStr = LocalDateTime.now().format(formatter);
-            String untilStr = LocalDateTime.now().plusMinutes(1).format(formatter);
+            String untilStr = LocalDateTime.now().plusMinutes(10).format(formatter);
             // First build without signature
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())
