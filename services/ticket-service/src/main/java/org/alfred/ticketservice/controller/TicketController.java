@@ -1,10 +1,13 @@
 package org.alfred.ticketservice.controller;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.alfred.ticketservice.config.ApiResponse;
+import org.alfred.ticketservice.dto.station.StationRouteResponse;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;
 import org.alfred.ticketservice.dto.ticket.TicketScanRequest;
@@ -154,5 +157,35 @@ public class TicketController {
         log.info("Request to get tickets by IDs: {}", ticketIds);
         List<TicketResponse> tickets = ticketService.getTicketsByIds(ticketIds);
         return ResponseEntity.ok(ApiResponse.success(tickets, "Tickets retrieved successfully"));
+    }
+
+    @GetMapping("/amount/{ticketId}/{endStationId}")
+    @Operation(summary = "Get upgrade amount for a ticket", description = "Tính tiền nâng cấp vé đến ga khác")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse<Double>> getUpgradeAmount(
+            @PathVariable Long ticketId,
+            @PathVariable Long endStationId) {
+        log.info("Request to get upgrade amount for ticket ID: {} to end station ID: {}", ticketId, endStationId);
+        double upgradeAmount = ticketService.getUpgradeAmount(ticketId, endStationId);
+        return ResponseEntity.ok(ApiResponse.success(upgradeAmount, "Upgrade amount retrieved successfully"));
+    }
+
+    @PutMapping("/upgrade/{ticketId}/{endStationId}")
+    @Operation(summary = "Upgrade ticket to a new end station", description = "Nâng cấp vé đến ga khác")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse<TicketResponse>> upgradeTicket(
+            @PathVariable Long ticketId,
+            @PathVariable Long endStationId) {
+        log.info("Request to upgrade ticket ID: {} to end station ID: {}", ticketId, endStationId);
+        TicketResponse upgradedTicket = ticketService.upgradeTicket(ticketId, endStationId);
+        return ResponseEntity.ok(ApiResponse.success(upgradedTicket, "Ticket upgraded successfully"));
+    }
+
+    @GetMapping("stations/upgrade/{ticketId}")
+    @Operation(summary = "Get stations for ticket upgrade", description = "Lấy danh sách ga cho nâng cấp vé giữa hai ga")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER') or hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<List<StationRouteResponse>> getStationsForUpgradeTicket(@PathVariable Long ticketId) {
+        List<StationRouteResponse> stations = ticketService.getStationForUpgradeTicket(ticketId);
+        return ApiResponse.success(stations, "Stations for ticket upgrade retrieved successfully");
     }
 }

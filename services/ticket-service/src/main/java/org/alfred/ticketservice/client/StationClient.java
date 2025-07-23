@@ -23,5 +23,10 @@ public interface StationClient {
     @GetMapping("{id}")
     ApiResponse<StationRouteResponse> getStationRouteById(@RequestParam("id") Long id);
 
+    @GetMapping("upgrade-ticket")
+    ApiResponse<List<StationRouteResponse>> getStationForUpgradeTicket(
+            @RequestParam("startStationId") Long startStationId,
+            @RequestParam("endStationId") Long endStationId
+    );
 
 }

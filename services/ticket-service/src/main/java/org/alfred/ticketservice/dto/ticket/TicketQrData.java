@@ -14,7 +14,7 @@ public record TicketQrData(
     String validFrom,
     String validUntil,
     String ticketCode,
-    float actualPrice,
+    double actualPrice,
     String signature
     
 ) {

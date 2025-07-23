@@ -43,4 +43,20 @@ public class VNPayController {
     public ApiResponse<Map<String, Object>> paymentCallback(HttpServletRequest req) {
         return vnPayService.paymentCallback(req);
     }
+
+    @PostMapping("/upgrade")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    public ApiResponse<Map<String, Object>> createPaymentUpgradeTicket(
+            HttpServletRequest req,
+            @RequestParam(value = "ticketId", defaultValue = "") Long ticketId,
+            @RequestParam(value = "endStationId", defaultValue = "") Long endStationId
+    ) throws UnsupportedEncodingException {
+        return vnPayService.createUrlUpgradeTicket(req, ticketId, endStationId);
+    }
+
+    @GetMapping("/callback/upgrade")
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    public ApiResponse<Map<String, Object>> paymentCallbackUpgrade(HttpServletRequest req) {
+        return vnPayService.paymentCallbackUpgradeTicket(req);
+    }
 }

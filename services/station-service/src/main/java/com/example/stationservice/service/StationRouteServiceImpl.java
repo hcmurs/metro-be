@@ -172,6 +172,24 @@ public class StationRouteServiceImpl implements  StationRouteService {
         return mapToResponse(stationRoute);
     }
 
+    @Override
+    public List<StationRouteResponse> getStationForUpgradeTicket(Long startStationId, Long endStationId) {
+        StationRoute startStation = stationRouteRepository.findById(startStationId)
+                .orElseThrow(() -> new EntityNotFoundException("Start station not found"));
+        StationRoute endStation = stationRouteRepository.findById(endStationId)
+                .orElseThrow(() -> new EntityNotFoundException("End station not found"));
+        if(startStation.getRoute() == null || endStation.getRoute() == null ||
+                !startStation.getRoute().getRouteId().equals(endStation.getRoute().getRouteId())) {
+            throw new IllegalArgumentException("Start and End stations must belong to the same route");
+        }
+        List<StationRouteResponse> stationRoutes = getStationRoutesByRouteId(startStation.getRoute().getRouteId());
+        if(startStation.getSequenceOrder() < endStation.getSequenceOrder()) {
+            return stationRoutes.stream().filter(s -> s.sequenceOrder()>endStation.getSequenceOrder()).toList();
+        } else {
+            return stationRoutes.stream().filter(s -> s.sequenceOrder() < endStation.getSequenceOrder()).toList();
+        }
+    }
+
     private StationRouteResponse mapToResponse(StationRoute stationRoute) {
         return  StationRouteResponse.builder(
                 ).id(stationRoute.getId())

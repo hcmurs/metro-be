@@ -30,4 +30,12 @@ public interface TicketClient {
     @GetMapping("/get-by-status")
     ApiResponse<List<TicketResponse>> getTicketsByStatus(@RequestParam List<Long> ticketIds,
                                                          @RequestParam TicketStatus status);
+
+    @GetMapping("/amount/{ticketId}/{endStationId}")
+    ApiResponse<Double> getUpgradeAmount(@PathVariable Long ticketId,
+                                         @PathVariable Long endStationId);
+
+    @PutMapping("/upgrade/{ticketId}/{endStationId}")
+    ApiResponse<TicketResponse> upgradeTicket(@PathVariable Long ticketId,
+                                              @PathVariable Long endStationId);
 }

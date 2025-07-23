@@ -1,6 +1,8 @@
 package org.alfred.ticketservice.service;
 
 
+import org.alfred.ticketservice.dto.station.StationResponse;
+import org.alfred.ticketservice.dto.station.StationRouteResponse;
 import org.alfred.ticketservice.dto.ticket.TicketRequest;
 import org.alfred.ticketservice.dto.ticket.TicketResponse;
 import org.alfred.ticketservice.dto.ticket.TicketScanRequest;
@@ -23,5 +25,7 @@ public interface TicketService {
     byte[] generateQrCodeData(String ticketCode);
     List<TicketResponse> getTicketsByIds(List<Long> ticketIds);
     List<TicketResponse> getTicketsByIdsAndStatus(List<Long> ticketIds, TicketStatus status);
-
+    TicketResponse upgradeTicket(Long ticketId, Long endStationId);
+    double getUpgradeAmount(Long ticketId, Long endStationId);
+    List<StationRouteResponse> getStationForUpgradeTicket(Long ticketId);
 }
