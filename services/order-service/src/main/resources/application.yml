@@ -48,6 +48,9 @@ payos:
   client-id: ${PROD_ClIENT_ID_PAYOS}
   api-key: ${PROD_API_KEY_PAYOS}
   checksum-key: ${PROD_CHECKSUMKEY_PAYOS}
-  return-url: http://localhost:4009/api/payment/payos/success
-  cancel-url: http://localhost:4009/api/payment/payos/cancel
+  return-url: "org.com.hcmurs://callback?status=success"
+  cancel-url: "org.com.hcmurs://callback?status=cancel"
+
+
+
 
