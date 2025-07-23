@@ -1,6 +1,7 @@
 package com.example.cronjob.Pojos;
 
 import com.example.cronjob.Enum.TransactionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;

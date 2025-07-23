@@ -269,6 +269,7 @@ public class OrdersServiceImpl implements OrdersService {
                         .status(order.getStatus())
                         .amount(order.getAmount())
                         .ticket(ticketMap.get(order.getTicketId()))
+                        .transaction(transactionMapping.toResponse(order.getTransaction()))
                         .build())
                 .toList();
         return ApiResponse.<List<OrderResponse.OrderDetailResponse>>builder()

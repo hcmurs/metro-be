@@ -22,6 +22,7 @@ public class OrderResponse {
             Long userId,
             OrderStatus status,
             BigDecimal amount,
+            TransactionResponse transaction,
             TicketResponse ticket
     ) {
     }
