@@ -539,7 +539,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             String nowStr = LocalDateTime.now().format(formatter);
-            String untilStr = LocalDateTime.now().plusMinutes(10).format(formatter);
+            String untilStr = LocalDateTime.now().plusMinutes(1).format(formatter);
             // First build without signature
             TicketQrData qrDataWithoutSignature = TicketQrData.builder()
                     .ticketId(ticket.getTicketId())
