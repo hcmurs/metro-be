@@ -24,7 +24,7 @@ public class VNPayConfig {
     // Your configuration
     public static String vnp_TmnCode = "T9QJX2XM";
     public static String vnp_SecretKey = "ILZT90XN6FD7C246ESIZZRUOXGQ9HXV1";
-    public static String vnp_ReturnUrl = "http://localhost:3000/payment/success";
+    public static String vnp_ReturnUrl = "http://localhost:3000/payment-result";
 
     // VNPay constants
     public static String vnp_Version = "2.1.0";

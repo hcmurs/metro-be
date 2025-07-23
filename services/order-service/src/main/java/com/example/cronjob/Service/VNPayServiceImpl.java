@@ -248,7 +248,7 @@ public class VNPayServiceImpl implements VNPayService {
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_OrderType", "other");
         vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_ReturnUrl);
-        vnp_Params.put("vnp_OrderInfo", orderId +"~"+ticketId+"~"+endStationId);
+        vnp_Params.put("vnp_OrderInfo", orderId +"~"+ticketId+"~"+endStationId+"~upgrade");
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
 

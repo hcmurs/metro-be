@@ -428,7 +428,7 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
 //        }
 //        StationRouteResponse newEndStationData = newEndStation.getData();
 
-        double newPrice = newFareMatrix.getFarePricing().getPrice() +10000;
+        double newPrice = newFareMatrix.getFarePricing().getPrice();
         ticket.setName(newFareMatrix.getName());
         TicketUpgradeHistory ticketUpgradeHistory = new TicketUpgradeHistory();
         ticketUpgradeHistory.setTicket(ticket);
@@ -459,7 +459,13 @@ public class TicketServiceImpl implements TicketService,TicketCronJobService{
     Tickets ticket = ticketRepository.findById(ticketId)
             .orElseThrow(() -> new EntityNotFoundException("Ticket not found with id: " + ticketId));
     Long startStationId =  ticket.getFareMatrix().getStartStationId();
-    Long endStationId = ticket.getFareMatrix().getEndStationId();
+        Long endStationId;
+    if(ticket.getCurrentFareMatrix()==null){
+        endStationId= ticket.getFareMatrix().getEndStationId();
+    }
+    else {
+         endStationId = ticket.getCurrentFareMatrix().getEndStationId();
+    }
     ApiResponse<List<StationRouteResponse>> response = stationClient.getStationForUpgradeTicket(startStationId, endStationId);
     if(response.getStatus()!=200){
         throw new TicketProcessingException("Failed to fetch stations for upgrade ticket: " + response.getMessage());
