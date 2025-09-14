@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/order-db
-    username: postgres
-    password: 12345
+    url: jdbc:postgresql://localhost:5432/metro_order_db?user=admin&password=admin
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

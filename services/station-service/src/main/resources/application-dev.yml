@@ -3,9 +3,7 @@ spring:
     mongodb:
       uri: mongodb+srv://sa:12345@mongocloud.7ts3d83.mongodb.net/Bus?retryWrites=true&w=majority&appName=MongoCloud
   datasource:
-    url: jdbc:postgresql://localhost:5432/station-db
-    username: postgres
-    password: 12345
+    url: jdbc:postgresql://localhost:5432/metro_station_db?user=admin&password=admin
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
