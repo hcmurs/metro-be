@@ -402,60 +402,7 @@
             </execution>
           </executions>
         </plugin>
-
-        <!-- Git Commit ID Plugin -->
-        <plugin>
-          <groupId>io.github.git-commit-id</groupId>
-          <artifactId>git-commit-id-maven-plugin</artifactId>
-          <version>6.0.0</version>
-          <executions>
-            <execution>
-              <id>get-the-git-infos</id>
-              <goals>
-                <goal>revision</goal>
-              </goals>
-              <phase>initialize</phase>
-            </execution>
-          </executions>
-          <configuration>
-            <generateGitPropertiesFile>true</generateGitPropertiesFile>
-            <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-            <includeOnlyProperties>
-              <includeOnlyProperty>^git.branch$</includeOnlyProperty>
-              <includeOnlyProperty>^git.commit.id$</includeOnlyProperty>
-              <includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
-            </includeOnlyProperties>
-          </configuration>
-        </plugin>
-
-        <!-- Git Hook Plugin -->
-        <plugin>
-          <groupId>com.rudikershaw.gitbuildhook</groupId>
-          <artifactId>git-build-hook-maven-plugin</artifactId>
-          <version>3.6.0</version>
-          <configuration>
-            <pre-commit>#!/bin/bash
-cd "$(git rev-parse --show-toplevel)"
-./spotless.sh apply</pre-commit>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>install</goal>
-              </goals>
-              <phase>initialize</phase>
-            </execution>
-          </executions>
-        </plugin>
       </plugins>
     </pluginManagement>
-
-    <plugins>
-      <!-- Git Hook Plugin - Install hooks at root level -->
-      <plugin>
-        <groupId>com.rudikershaw.gitbuildhook</groupId>
-        <artifactId>git-build-hook-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
   </build>
 </project>
