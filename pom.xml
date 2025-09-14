@@ -434,7 +434,9 @@
           <artifactId>git-build-hook-maven-plugin</artifactId>
           <version>3.6.0</version>
           <configuration>
-            <pre-commit>mvn spotless:apply</pre-commit>
+            <pre-commit>#!/bin/bash
+cd "$(git rev-parse --show-toplevel)"
+./spotless.sh apply</pre-commit>
           </configuration>
           <executions>
             <execution>
@@ -447,5 +449,13 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <!-- Git Hook Plugin - Install hooks at root level -->
+      <plugin>
+        <groupId>com.rudikershaw.gitbuildhook</groupId>
+        <artifactId>git-build-hook-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 </project>
