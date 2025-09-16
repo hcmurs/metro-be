@@ -18,14 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-        public class BeanConfig {
-              @Bean
-              public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-                RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-                redisTemplate.setConnectionFactory(factory);
-                redisTemplate.setDefaultSerializer(new StringRedisSerializer());
-                return redisTemplate;
-              }
+public class BeanConfig {
+  @Bean
+  public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+    RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setConnectionFactory(factory);
+    redisTemplate.setDefaultSerializer(new StringRedisSerializer());
+    return redisTemplate;
+  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
