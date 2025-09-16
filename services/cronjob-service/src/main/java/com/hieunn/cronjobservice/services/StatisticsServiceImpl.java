@@ -1,19 +1,13 @@
 /**
  * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Cronjob-Service
+ *
  * This software is the confidential and proprietary information of hcmurs.
  * You shall not disclose such confidential information and shall use it only in
  * accordance with the terms of the license agreement you entered into with hcmurs.
  */
 package com.hieunn.cronjobservice.services;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.hieunn.cronjobservice.dtos.StationDto;
 import com.hieunn.cronjobservice.dtos.TicketTypeDto;
@@ -26,11 +20,17 @@ import com.hieunn.cronjobservice.models.TicketTypeStatistic;
 import com.hieunn.cronjobservice.repositories.HourUsageStatRepository;
 import com.hieunn.cronjobservice.repositories.StationUsageStatRepository;
 import com.hieunn.cronjobservice.repositories.TicketTypeStatRepository;
-
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service

@@ -1,19 +1,13 @@
 /**
  * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Auth-Service
+ *
  * This software is the confidential and proprietary information of hcmurs.
  * You shall not disclose such confidential information and shall use it only in
  * accordance with the terms of the license agreement you entered into with hcmurs.
  */
 package com.hieunn.auth_service.services;
-
-import java.util.Map;
-
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Service;
 
 import com.hieunn.auth_service.dtos.requests.SocialLoginUserRequest;
 import com.hieunn.auth_service.dtos.responses.UserDto;
@@ -22,10 +16,16 @@ import com.hieunn.auth_service.exceptions.ErrorMessage;
 import com.hieunn.auth_service.feignClients.UserServiceClient;
 import com.hieunn.auth_service.models.AuthProvider;
 import com.hieunn.auth_service.models.CustomOAuth2User;
-
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

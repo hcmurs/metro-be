@@ -1,11 +1,20 @@
 /**
  * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Auth-Service
+ *
  * This software is the confidential and proprietary information of hcmurs.
  * You shall not disclose such confidential information and shall use it only in
  * accordance with the terms of the license agreement you entered into with hcmurs.
  */
 package com.hieunn.auth_service.configs;
 
+import com.hieunn.auth_service.handlers.CustomOAuth2FailureHandler;
+import com.hieunn.auth_service.handlers.CustomOAuth2SuccessHandler;
+import com.hieunn.auth_service.services.CustomOAuth2UserService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,14 +22,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.hieunn.auth_service.handlers.CustomOAuth2FailureHandler;
-import com.hieunn.auth_service.handlers.CustomOAuth2SuccessHandler;
-import com.hieunn.auth_service.services.CustomOAuth2UserService;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Configuration
 @EnableWebSecurity

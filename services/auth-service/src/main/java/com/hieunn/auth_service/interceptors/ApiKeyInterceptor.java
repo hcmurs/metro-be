@@ -1,26 +1,27 @@
 /**
  * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Auth-Service
+ *
  * This software is the confidential and proprietary information of hcmurs.
  * You shall not disclose such confidential information and shall use it only in
  * accordance with the terms of the license agreement you entered into with hcmurs.
  */
 package com.hieunn.auth_service.interceptors;
 
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hieunn.auth_service.dtos.responses.ApiResponse;
 import com.hieunn.auth_service.exceptions.ErrorMessage;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)

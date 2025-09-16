@@ -4,13 +4,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.com.hcmurs</groupId>
-    <artifactId>metro-be</artifactId>
-    <version>1.0.0</version>
-    <relativePath>../../pom.xml</relativePath>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.4</version>
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
+  <groupId>org.com.hcmurs</groupId>
   <artifactId>auth-service</artifactId>
+  <version>1.0.0</version>
+  <name>auth-service</name>
+  <description>Authentication service</description>
 
   <dependencies>
     <dependency>
@@ -24,6 +28,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <version>4.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -44,22 +49,27 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
+      <version>0.11.5</version>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-impl</artifactId>
+      <version>0.11.5</version>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-jackson</artifactId>
+      <version>0.11.5</version>
     </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
+      <version>1.5.5.Final</version>
     </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct-processor</artifactId>
+      <version>1.5.5.Final</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -76,18 +86,22 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+      <version>4.2.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.lcaohoanq</groupId>
       <artifactId>brlc</artifactId>
+      <version>1.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
+      <version>9.0.0.CR1</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.7.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.api-client</groupId>
@@ -97,6 +111,7 @@
     <dependency>
       <groupId>io.github.cdimascio</groupId>
       <artifactId>dotenv-java</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
 
@@ -108,10 +123,96 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.46.1</version>
+        <configuration>
+          <!-- Java files formatting (if any) -->
+          <java>
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+            </includes>
+            <excludes>
+              <exclude>src/main/java/**/package-info.kt</exclude>
+              <exclude>src/test/java/**/package-info.kt</exclude>
+            </excludes>
+            <!-- Use Google Java format -->
+            <googleJavaFormat>
+              <version>1.28.0</version>
+              <style>GOOGLE</style>
+            </googleJavaFormat>
+            <removeUnusedImports />
+            <trimTrailingWhitespace />
+            <endWithNewline />
+            <licenseHeader>
+              <file>${project.basedir}/src/main/resources/license-header.txt</file>
+            </licenseHeader>
+          </java>
+
+          <!-- XML files formatting -->
+          <formats>
+            <format>
+              <includes>
+                <include>src/**/*.xml</include>
+                <include>pom.xml</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+            </format>
+
+            <!-- Properties files -->
+            <format>
+              <includes>
+                <include>src/**/*.properties</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+            </format>
+
+            <!-- YAML files -->
+            <format>
+              <includes>
+                <include>src/**/*.yml</include>
+                <include>src/**/*.yaml</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+            </format>
+
+            <!-- JSON files -->
+            <format>
+              <includes>
+                <include>src/**/*.json</include>
+              </includes>
+              <prettier>
+                <devDependencyProperties>
+                  <property>
+                    <name>prettier</name>
+                    <value>3.0.3</value>
+                  </property>
+                </devDependencyProperties>
+                <config>
+                  <tabWidth>2</tabWidth>
+                  <useTabs>false</useTabs>
+                </config>
+              </prettier>
+            </format>
+          </formats>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+              <goal>apply</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
       </plugin>
+
     </plugins>
   </build>
 

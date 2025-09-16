@@ -1,0 +1,31 @@
+name: Format Check
+
+on:
+  pull_request:
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Run your format check script
+      - name: Run format check
+        id: format
+        run: |
+          chmod +x ./format-all.sh
+          ./format-all.sh check
+
+      # If format fails, post a sticky comment on PR
+      - name: Comment on PR if format fails
+        if: failure()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: format-check
+          message: |
+            ❌ Formatting check failed in one or more services.
+            Please run:
+            ```bash
+            ./format-all.sh fix
+            ```

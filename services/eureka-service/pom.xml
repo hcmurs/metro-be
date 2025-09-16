@@ -66,6 +66,95 @@
 					</layers>
 				</configuration>
 			</plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.46.1</version>
+        <configuration>
+          <!-- Java files formatting (if any) -->
+          <java>
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+            </includes>
+            <excludes>
+              <exclude>src/main/java/**/package-info.kt</exclude>
+              <exclude>src/test/java/**/package-info.kt</exclude>
+            </excludes>
+            <!-- Use Google Java format -->
+            <googleJavaFormat>
+              <version>1.28.0</version>
+              <style>GOOGLE</style>
+            </googleJavaFormat>
+            <removeUnusedImports />
+            <trimTrailingWhitespace />
+            <endWithNewline />
+            <licenseHeader>
+              <file>${project.basedir}/src/main/resources/license-header.txt</file>
+            </licenseHeader>
+          </java>
+
+          <!-- XML files formatting -->
+          <formats>
+            <format>
+              <includes>
+                <include>src/**/*.xml</include>
+                <include>pom.xml</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+            </format>
+
+            <!-- Properties files -->
+            <format>
+              <includes>
+                <include>src/**/*.properties</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+            </format>
+
+            <!-- YAML files -->
+            <format>
+              <includes>
+                <include>src/**/*.yml</include>
+                <include>src/**/*.yaml</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+            </format>
+
+            <!-- JSON files -->
+            <format>
+              <includes>
+                <include>src/**/*.json</include>
+              </includes>
+              <prettier>
+                <devDependencyProperties>
+                  <property>
+                    <name>prettier</name>
+                    <value>3.0.3</value>
+                  </property>
+                </devDependencyProperties>
+                <config>
+                  <tabWidth>2</tabWidth>
+                  <useTabs>false</useTabs>
+                </config>
+              </prettier>
+            </format>
+          </formats>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+              <goal>apply</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 	</build>
 </project>

@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Gateway-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package org.com.hcmurs.gatewayservice.utils;
 
 import io.jsonwebtoken.Claims;
@@ -5,51 +14,45 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import java.security.Key;
+import java.util.Date;
+import java.util.function.Function;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.function.Function;
-
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtUtil {
-    @Value("${jwt.secretKey}")
-    String secretKey;
+  @Value("${jwt.secretKey}")
+  String secretKey;
 
-    @Value("${jwt.expiration}")
-    long jwtExpiration;
+  @Value("${jwt.expiration}")
+  long jwtExpiration;
 
-    Key signingKey;
+  Key signingKey;
 
-    @PostConstruct
-    public void init() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        signingKey = Keys.hmacShaKeyFor(keyBytes);
-    }
+  @PostConstruct
+  public void init() {
+    byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+    signingKey = Keys.hmacShaKeyFor(keyBytes);
+  }
 
-    public String extractJti(String token) {
-        return extractClaim(token, Claims::getId);
-    }
+  public String extractJti(String token) {
+    return extractClaim(token, Claims::getId);
+  }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
+  public Date extractExpiration(String token) {
+    return extractClaim(token, Claims::getExpiration);
+  }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
+  public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    final Claims claims = extractAllClaims(token);
+    return claimsResolver.apply(claims);
+  }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(signingKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+  private Claims extractAllClaims(String token) {
+    return Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token).getBody();
+  }
 }
