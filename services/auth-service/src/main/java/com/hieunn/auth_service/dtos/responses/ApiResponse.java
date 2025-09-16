@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Auth-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.hieunn.auth_service.dtos.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,30 +19,23 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    int status;
-    String message;
-    T data;
+  int status;
+  String message;
+  T data;
 
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return ApiResponse.<T>builder()
-                .status(200)
-                .data(data)
-                .message(message)
-                .build();
-    }
+  public static <T> ApiResponse<T> success(T data, String message) {
+    return ApiResponse.<T>builder().status(200).data(data).message(message).build();
+  }
 
-    public static <T> ApiResponse<T> success(T data) {
-        return success(data, "Success");
-    }
+  public static <T> ApiResponse<T> success(T data) {
+    return success(data, "Success");
+  }
 
-    public static <T> ApiResponse<T> success(String message) {
-        return success(null, message);
-    }
+  public static <T> ApiResponse<T> success(String message) {
+    return success(null, message);
+  }
 
-    public static ApiResponse<Void> error(int status, @NonNull String message) {
-        return ApiResponse.<Void>builder()
-                .status(status)
-                .message(message)
-                .build();
-    }
+  public static ApiResponse<Void> error(int status, @NonNull String message) {
+    return ApiResponse.<Void>builder().status(status).message(message).build();
+  }
 }

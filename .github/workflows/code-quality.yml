@@ -1,0 +1,44 @@
+name: Format Check
+
+on:
+  pull_request:
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+      
+    steps:
+      - uses: actions/checkout@v3
+
+      # Run your format check script
+      - name: Run format check
+        id: format
+        run: |
+          chmod +x ./format-all.sh
+          ./format-all.sh check
+
+      # If format fails, post a sticky comment on PR
+      - name: Comment on PR if format fails
+        if: failure()
+        uses: marocchino/sticky-pull-request-comment@v2.9.4
+        with:
+          header: format-check
+          message: |
+            ❌ Formatting check failed in one or more services.
+
+            - Please run the below command locally at the project root to fix formatting issues:
+            ```bash
+            ./format-all.sh apply
+            ```
+
+            - In case you want to check local first, you can run:
+            ```bash
+            ./format-all.sh check
+            ```
+
+            After applying the formatting, the CI should pass. Commit and push the changes to update this PR.
+            If you have any questions, please reach out to [@lcaohoanq](https://github.com/lcaohoanq).

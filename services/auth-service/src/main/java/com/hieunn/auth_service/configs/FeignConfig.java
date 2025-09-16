@@ -1,5 +1,13 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Auth-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.hieunn.auth_service.configs;
-
 
 import feign.RequestInterceptor;
 import lombok.AccessLevel;
@@ -11,16 +19,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FeignConfig {
-    @Value("${security.api.header}")
-    String header;
+  @Value("${security.api.header}")
+  String header;
 
-    @Value("${security.api.key}")
-    String apiKey;
+  @Value("${security.api.key}")
+  String apiKey;
 
-    @Bean
-    public RequestInterceptor addHeaderBeforeRequest() {
-        return requestTemplate -> {
-            requestTemplate.header(header, apiKey);
-        };
-    }
+  @Bean
+  public RequestInterceptor addHeaderBeforeRequest() {
+    return requestTemplate -> {
+      requestTemplate.header(header, apiKey);
+    };
+  }
 }

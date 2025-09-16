@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Notification-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.hieunn.notificationservice;
 
 import org.springframework.boot.SpringApplication;
@@ -6,8 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class NotificationServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(NotificationServiceApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(NotificationServiceApplication.class, args);
+  }
 }

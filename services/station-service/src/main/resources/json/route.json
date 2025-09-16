@@ -2603,7 +2603,7 @@
     "direction": "Khu dân cư Thạnh Mỹ Lợi",
     "trip_spacing": "NULL"
   },
-   {
+  {
     "_id": "237",
     "name": "Ga Metro Bình Thái - Đại học Sư phạm kỹ thuật Thành phố - Nhà Thiếu nhi Thành phố Thủ Đức",
     "distance": 6.3,
@@ -2615,7 +2615,7 @@
     "direction": "Nhà Thiếu nhi Thành phố Thủ Đức",
     "trip_spacing": "NULL"
   },
-   {
+  {
     "_id": "238",
     "name": "Ga Metro Bình Thái - Đại học Sư phạm kỹ thuật Thành phố - Nhà Thiếu nhi Thành phố Thủ Đức",
     "distance": 6.3,
@@ -2627,7 +2627,7 @@
     "direction": "Ga Metro Bình Thái",
     "trip_spacing": "NULL"
   },
-   {
+  {
     "_id": "239",
     "name": "Ga Metro Bình Thái - Trường Trung học cơ sở Phước Bình - Cao đẳng Công Thương",
     "distance": 8,
@@ -2639,7 +2639,7 @@
     "direction": "Ga Metro Bình Thái",
     "trip_spacing": "NULL"
   },
-   {
+  {
     "_id": "240",
     "name": "Ga Metro Bình Thái - Trường Trung học cơ sở Phước Bình - Cao đẳng Công Thương",
     "distance": 8,

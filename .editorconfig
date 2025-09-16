@@ -1,0 +1,50 @@
+# EditorConfig helps maintain consistent coding styles
+# https://editorconfig.org
+
+root = true
+
+# Global defaults
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 120
+
+# --------------------------
+# Java
+# --------------------------
+[*.java]
+indent_size = 4
+
+# --------------------------
+# XML / HTML / JSX
+# --------------------------
+[*.{xml,html,jsx,tsx}]
+indent_size = 2
+
+# --------------------------
+# YAML
+# --------------------------
+[*.{yml,yaml}]
+indent_size = 2
+
+# --------------------------
+# JSON
+# --------------------------
+[*.json]
+indent_size = 2
+
+# --------------------------
+# Properties files
+# --------------------------
+[*.properties]
+indent_size = 4
+
+# --------------------------
+# Markdown
+# --------------------------
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off   # allow long paragraphs

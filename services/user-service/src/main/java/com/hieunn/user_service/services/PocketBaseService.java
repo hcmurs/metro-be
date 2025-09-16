@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: User-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.hieunn.user_service.services;
 
 import com.hieunn.user_service.configs.PocketBaseProperties;
@@ -19,45 +28,42 @@ import org.springframework.web.client.RestTemplate;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PocketBaseService {
 
-    RestTemplate restTemplate;
-    PocketBaseAuthService authService;
-    PocketBaseProperties pocketBaseProperties;
+  RestTemplate restTemplate;
+  PocketBaseAuthService authService;
+  PocketBaseProperties pocketBaseProperties;
 
-    public BlogDTO.BlogPageResPB getBlogs(int page, int perPage) {
-        String token = authService.getSuperUserToken();
-        String url = String.format(
-            "%s/api/collections/blogs/records?page=%d&perPage=%d", pocketBaseProperties.getUrl(),
-            page,
-            perPage);
+  public BlogDTO.BlogPageResPB getBlogs(int page, int perPage) {
+    String token = authService.getSuperUserToken();
+    String url =
+        String.format(
+            "%s/api/collections/blogs/records?page=%d&perPage=%d",
+            pocketBaseProperties.getUrl(), page, perPage);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(token);
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        // Use ParameterizedTypeReference for proper type handling
-        ParameterizedTypeReference<BlogPageResPB> responseType =
-            new ParameterizedTypeReference<>() {
-            };
+    // Use ParameterizedTypeReference for proper type handling
+    ParameterizedTypeReference<BlogPageResPB> responseType = new ParameterizedTypeReference<>() {};
 
-        return restTemplate.exchange(url, HttpMethod.GET, entity, responseType).getBody();
-    }
+    return restTemplate.exchange(url, HttpMethod.GET, entity, responseType).getBody();
+  }
 
+  public BlogDTO.BlogRes getById(String id) {
+    String token = authService.getSuperUserToken();
+    String url =
+        String.format("%s/api/collections/blogs/records/%s", pocketBaseProperties.getUrl(), id);
 
-    public BlogDTO.BlogRes getById(String id) {
-        String token = authService.getSuperUserToken();
-        String url = String.format("%s/api/collections/blogs/records/%s", pocketBaseProperties.getUrl(), id);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(token);
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
+    // Use ParameterizedTypeReference for proper type handling
+    ParameterizedTypeReference<BlogDTO.BlogRes> responseType =
+        new ParameterizedTypeReference<BlogDTO.BlogRes>() {};
 
-        // Use ParameterizedTypeReference for proper type handling
-        ParameterizedTypeReference<BlogDTO.BlogRes> responseType =
-            new ParameterizedTypeReference<BlogDTO.BlogRes>() {
-            };
-
-        return restTemplate.exchange(url, HttpMethod.GET, entity, responseType).getBody();
-    }
+    return restTemplate.exchange(url, HttpMethod.GET, entity, responseType).getBody();
+  }
 }
