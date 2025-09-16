@@ -9,6 +9,7 @@ jobs:
     permissions:
       checks: write
       contents: read
+      pull-requests: write
       
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +24,7 @@ jobs:
       # If format fails, post a sticky comment on PR
       - name: Comment on PR if format fails
         if: failure()
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v2.9.4
         with:
           header: format-check
           message: |
