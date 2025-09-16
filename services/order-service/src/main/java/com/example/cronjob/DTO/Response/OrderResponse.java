@@ -1,97 +1,105 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Order-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.example.cronjob.DTO.Response;
 
 import com.example.cronjob.Enum.OrderStatus;
-import com.example.cronjob.Pojos.Transactions;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.*;
 
 @Builder
 public class OrderResponse {
-    private Long orderId;
-    private Long userId;
-    private Long ticketId;
-    private OrderStatus status;
-    private BigDecimal amount;
-    private LocalDateTime createdAt;
-    private TransactionResponse transaction;
-    @Builder
-    public record OrderDetailResponse(
-            Long orderId,
-            Long userId,
-            OrderStatus status,
-            BigDecimal amount,
-            TicketResponse ticket
-    ) {
-    }
+  private Long orderId;
+  private Long userId;
+  private Long ticketId;
+  private OrderStatus status;
+  private BigDecimal amount;
+  private LocalDateTime createdAt;
+  private TransactionResponse transaction;
 
-    public OrderResponse() {
-    }
+  @Builder
+  public record OrderDetailResponse(
+      Long orderId, Long userId, OrderStatus status, BigDecimal amount, TicketResponse ticket) {}
 
-    public OrderResponse(Long orderId, Long userId, Long ticketId, OrderStatus status, BigDecimal amount, LocalDateTime createdAt, TransactionResponse transaction) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.ticketId = ticketId;
-        this.status = status;
-        this.amount = amount;
-        this.createdAt = createdAt;
-        this.transaction = transaction;
-    }
+  public OrderResponse() {}
 
-    public Long getOrderId() {
-        return orderId;
-    }
+  public OrderResponse(
+      Long orderId,
+      Long userId,
+      Long ticketId,
+      OrderStatus status,
+      BigDecimal amount,
+      LocalDateTime createdAt,
+      TransactionResponse transaction) {
+    this.orderId = orderId;
+    this.userId = userId;
+    this.ticketId = ticketId;
+    this.status = status;
+    this.amount = amount;
+    this.createdAt = createdAt;
+    this.transaction = transaction;
+  }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
+  public Long getOrderId() {
+    return orderId;
+  }
 
-    public Long getUserId() {
-        return userId;
-    }
+  public void setOrderId(Long orderId) {
+    this.orderId = orderId;
+  }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+  public Long getUserId() {
+    return userId;
+  }
 
-    public Long getTicketId() {
-        return ticketId;
-    }
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
 
-    public void setTicketId(Long ticketId) {
-        this.ticketId = ticketId;
-    }
+  public Long getTicketId() {
+    return ticketId;
+  }
 
-    public OrderStatus getStatus() {
-        return status;
-    }
+  public void setTicketId(Long ticketId) {
+    this.ticketId = ticketId;
+  }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
+  public OrderStatus getStatus() {
+    return status;
+  }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+  public void setStatus(OrderStatus status) {
+    this.status = status;
+  }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 
-    public TransactionResponse getTransaction() {
-        return transaction;
-    }
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
 
-    public void setTransaction(TransactionResponse transaction) {
-        this.transaction = transaction;
-    }
+  public TransactionResponse getTransaction() {
+    return transaction;
+  }
+
+  public void setTransaction(TransactionResponse transaction) {
+    this.transaction = transaction;
+  }
 }

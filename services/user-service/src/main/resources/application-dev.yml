@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/user_db
-    username: postgres
-    password: 12345
+    url: jdbc:postgresql://localhost:5432/metro_user_db?user=admin&password=admin
   jpa:
     hibernate:
       ddl-auto: create

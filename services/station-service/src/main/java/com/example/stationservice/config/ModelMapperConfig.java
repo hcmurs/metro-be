@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Station-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.example.stationservice.config;
 
 import org.modelmapper.ModelMapper;
@@ -6,12 +15,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ModelMapperConfig {
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setSkipNullEnabled(true)
-                .setAmbiguityIgnored(true);
-        return modelMapper;
-    }
+  @Bean
+  public ModelMapper modelMapper() {
+    ModelMapper modelMapper = new ModelMapper();
+    modelMapper.getConfiguration().setSkipNullEnabled(true).setAmbiguityIgnored(true);
+    return modelMapper;
+  }
 }

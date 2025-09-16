@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: Ticket-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package org.alfred.ticketservice.service;
 
 import com.google.zxing.BarcodeFormat;
@@ -24,38 +33,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class QRServiceImpl implements QRService {
 
-    @Override
-    public byte[] generateQrCode(String content) {
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+  @Override
+  public byte[] generateQrCode(String content) {
+    try {
+      QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
-            // Add error correction and encoding hints
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
-            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            hints.put(EncodeHintType.MARGIN, 2);
+      // Add error correction and encoding hints
+      Map<EncodeHintType, Object> hints = new HashMap<>();
+      hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+      hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+      hints.put(EncodeHintType.MARGIN, 2);
 
-            BitMatrix bitMatrix = qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 400, 400,
-                    hints);
-            ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-            return pngOutputStream.toByteArray();
-        } catch (Exception e) {
-            throw new QrProcessingException("Failed to generate QR code", e);
-        }
+      BitMatrix bitMatrix = qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 400, 400, hints);
+      ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+      MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+      return pngOutputStream.toByteArray();
+    } catch (Exception e) {
+      throw new QrProcessingException("Failed to generate QR code", e);
     }
+  }
 
-    @Override
-    public String readQrCode(byte[] imageBytes) {
-        try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
-            BufferedImage bufferedImage = ImageIO.read(bais);
-            LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-            Result result = new MultiFormatReader().decode(bitmap);
-            return result.getText();
-        } catch (Exception e) {
-            throw new QrProcessingException("Failed to read QR code", e);
-        }
+  @Override
+  public String readQrCode(byte[] imageBytes) {
+    try {
+      ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
+      BufferedImage bufferedImage = ImageIO.read(bais);
+      LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
+      BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+      Result result = new MultiFormatReader().decode(bitmap);
+      return result.getText();
+    } catch (Exception e) {
+      throw new QrProcessingException("Failed to read QR code", e);
     }
+  }
 }

@@ -43,4 +43,3 @@ paypal:
   base-url: https://api-m.sandbox.paypal.com
   return-url: http://localhost:4008/api/payment/paypal/success
   cancel-url: http://localhost:4008/api/payment/paypal/cancel
-
