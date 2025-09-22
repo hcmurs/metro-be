@@ -26,4 +26,5 @@ jobs:
       service_name: ticket
       service_path: services/ticket-service
       run_sonar: false
+      publish_test_report: 'true'
     secrets: inherit
