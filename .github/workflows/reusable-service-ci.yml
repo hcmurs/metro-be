@@ -29,7 +29,11 @@ on:
 
 jobs:
   test:
+    name: Test ${{ inputs.service_name }} Service
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
