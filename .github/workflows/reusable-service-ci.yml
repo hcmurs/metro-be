@@ -28,12 +28,19 @@ on:
         description: "Java version to use"
 
 jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run format check
+        run: |
+          chmod +x ./format-all.sh
+          ./format-all.sh check
+
   test:
     name: Test ${{ inputs.service_name }} Service
+    needs: format-check
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
