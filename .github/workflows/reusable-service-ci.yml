@@ -49,7 +49,7 @@ jobs:
       # Optional - Generate and publish test report
       - name: Publish test report
         uses: dorny/test-reporter@v1
-        if: ${{ inputs.publish_test_report == true }}
+        if: always() && inputs.publish_test_report == true
         with:
           name: ${{ inputs.service_name }} Tests
           path: ${{ inputs.service_path }}/target/surefire-reports/*.xml
