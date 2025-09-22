@@ -7,14 +7,24 @@
  * You shall not disclose such confidential information and shall use it only in
  * accordance with the terms of the license agreement you entered into with hcmurs.
  */
-package com.hieunn.auth_service;
+package com.hieunn.authservice;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class AuthServiceImplApplicationTests {
+public class DummyTest {
 
   @Test
-  void contextLoads() {}
+  void sum() {
+    // arrange
+    var number1 = 1;
+    var number2 = 2;
+
+    // act
+    var result = number1 + number2;
+
+    // assert
+    assertEquals(3, result);
+  }
 }

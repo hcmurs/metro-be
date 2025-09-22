@@ -15,6 +15,10 @@ on:
 #       - ".github/workflows/user-service-ci.yml"
 #       - "pom.xml"
 
+permissions:
+  checks: write
+  contents: read
+
 jobs:
   test:
     uses: ./.github/workflows/reusable-service-ci.yml
@@ -22,4 +26,5 @@ jobs:
       service_name: user
       service_path: services/user-service
       run_sonar: false
+      publish_test_report: true
     secrets: inherit

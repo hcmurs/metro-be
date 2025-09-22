@@ -9,12 +9,22 @@
  */
 package com.hieunn.notificationservice;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-class NotificationServiceApplicationTests {
+import org.junit.jupiter.api.Test;
+
+public class DummyTest {
 
   @Test
-  void contextLoads() {}
+  void sum() {
+    // arrange
+    var number1 = 1;
+    var number2 = 2;
+
+    // act
+    var result = number1 + number2;
+
+    // assert
+    assertEquals(3, result);
+  }
 }
