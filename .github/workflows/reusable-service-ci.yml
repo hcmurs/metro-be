@@ -59,7 +59,7 @@ jobs:
 
       # Optional - Generate and publish test report
       - name: Publish test report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2.1.1
         if: always() && inputs.publish_test_report == true
         with:
           name: ${{ inputs.service_name }} Tests
