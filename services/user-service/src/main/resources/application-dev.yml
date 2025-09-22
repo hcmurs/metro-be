@@ -1,6 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/metro_user_db?user=admin&password=admin
+#    url: jdbc:postgresql://localhost:5432/metro_user_db?user=admin&password=admin
+    url: jdbc:postgresql://ep-twilight-shadow-a11pttu7-pooler.ap-southeast-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_3neJ2yQARfrV&sslmode=require&channelBinding=require&currentSchema=metro_user_db
+
   jpa:
     hibernate:
       ddl-auto: create

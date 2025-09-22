@@ -3,11 +3,11 @@ spring:
     mongodb:
       uri: mongodb+srv://sa:12345@mongocloud.7ts3d83.mongodb.net/Bus?retryWrites=true&w=majority&appName=MongoCloud
   datasource:
-    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_TRANSACTION_POOLER_PORT}/postgres?currentSchema=${PROD_STATION_DB_NAME}&user=${PROD_SPRING_DATASOURCE_USERNAME}&password=${PROD_SPRING_DATASOURCE_PASSWORD}&prepareThreshold=0
+    url: jdbc:postgresql://${PROD_DB_NEON_HOST}/neondb?user=${PROD_SPRING_NEON_DATASOURCE_USERNAME}&password=${PROD_SPRING_NEON_DATASOURCE_PASSWORD}&sslmode=require&channelBinding=require&currentSchema=${PROD_STATION_NEON_SCHEMA_NAME}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

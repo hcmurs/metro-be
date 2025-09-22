@@ -1,10 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_TRANSACTION_POOLER_PORT}/postgres?currentSchema=${PROD_TICKET_DB_NAME}&user=${PROD_SPRING_DATASOURCE_USERNAME}&password=${PROD_SPRING_DATASOURCE_PASSWORD}&prepareThreshold=0
+    url: jdbc:postgresql://${PROD_DB_NEON_HOST}/neondb?user=${PROD_SPRING_NEON_DATASOURCE_USERNAME}&password=${PROD_SPRING_NEON_DATASOURCE_PASSWORD}&sslmode=require&channelBinding=require&currentSchema=${PROD_TICKET_NEON_SCHEMA_NAME}
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 
   rabbitmq:
     host: localhost

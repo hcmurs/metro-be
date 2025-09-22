@@ -3,7 +3,7 @@ spring:
     name: user-service
 
   profiles:
-    active: dev
+    active: prod
 
   datasource:
     driver-class-name: org.postgresql.Driver

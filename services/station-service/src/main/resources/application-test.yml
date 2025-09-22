@@ -11,16 +11,17 @@ spring:
             defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
 
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
-    username: sa
-    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
     driver-class-name: org.h2.Driver
+    username: sa
+    password: password
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
   h2:
     console:
@@ -35,7 +36,6 @@ spring:
 
 security:
   api:
-
     key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
     header: X-API-KEY
   jwt:

@@ -26,12 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
 
   private final StationsRepository stationsRepository;
   private final StationRouteRepository stationRouteRepository;
@@ -39,8 +40,9 @@ public class DataInitializer implements CommandLineRunner {
   private final RoutesService routesService;
   private final SchedulesService schedulesService;
 
-  @Override
-  public void run(String... args) throws Exception {
+  @EventListener(ApplicationReadyEvent.class)
+  public void initializeData() {
+    // Check if data already exists
     if (stationsRepository.count() > 0) return;
 
     RoutesRequest routesRequest = new RoutesRequest("Bến xe Miền Đông - Bến Thành", "R1", 20);
