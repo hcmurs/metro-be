@@ -14,9 +14,9 @@
   <appender name="FILE-AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${DEV_HOME}/debug.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <Pattern>
+      <pattern>
         %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
-      </Pattern>
+      </pattern>
     </encoder>
 
     <rollingPolicy
@@ -33,9 +33,9 @@
   <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${DEV_HOME}/error.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <Pattern>
+      <pattern>
         %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
-      </Pattern>
+      </pattern>
     </encoder>
 
     <rollingPolicy
@@ -50,7 +50,7 @@
 
   </appender>
 
-  <logger name="org.com.hcmurs.notificationservice" level="debug" additivity="false">
+  <logger name="com.hieunn.notificationservice" level="debug" additivity="false">
     <appender-ref ref="FILE-AUDIT" />
     <appender-ref ref="STDOUT" />
   </logger>
