@@ -14,10 +14,7 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import java.time.LocalTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,8 +23,6 @@ public class OpenAPIConfig {
 
   @Bean
   public OpenAPI customOpenAPI() {
-    final String apiKeyName = "X-API-KEY";
-
     return new OpenAPI()
         .info(
             new Info()
@@ -42,15 +37,10 @@ public class OpenAPIConfig {
         .components(
             new Components()
                 .addSecuritySchemes(
-                    apiKeyName,
+                    "bearer-key",
                     new SecurityScheme()
-                        .type(SecurityScheme.Type.APIKEY)
-                        .in(SecurityScheme.In.HEADER)
-                        .name(apiKeyName))
-                .addSchemas(
-                    "LocalTime",
-                    new Schema<LocalTime>().type("string").pattern("HH:mm").example("00:00")))
-        .addSecurityItem(new SecurityRequirement().addList(apiKeyName))
-        .addSecurityItem(new SecurityRequirement().addList("bearer-key"));
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")));
   }
 }

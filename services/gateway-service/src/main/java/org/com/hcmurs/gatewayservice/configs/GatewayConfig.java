@@ -82,6 +82,16 @@ public class GatewayConfig {
                                 "/api/v1/notifications${segment}"))
                     .uri("http://localhost:4008"))
         .route(
+            "user_device_token_service_route",
+            r ->
+                r.path(API_PREFIX + "/user-device-tokens/**")
+                    .filters(
+                        f ->
+                            f.rewritePath(
+                                "/api/user-device-tokens(?<segment>/?.*)",
+                                "/api/v1/user-device-tokens${segment}"))
+                    .uri("http://localhost:4008"))
+        .route(
             "order_service_route",
             r ->
                 r.path(API_PREFIX + "/orders/**", API_PREFIX + "/payment/**")

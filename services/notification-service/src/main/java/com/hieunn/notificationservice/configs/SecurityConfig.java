@@ -38,16 +38,14 @@ public class SecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers(
-                        "/api/ts/fare-matrices/{id}",
-                        "/api/ts/fare-matrices",
-                        "/api/ts/fare-matrices/by-station/{stationId}",
-                        "/api/ts/fare-matrices/get-fare")
+                auth.requestMatchers("/api/v1/user-device-tokens", "/api/v1/user-device-tokens/**")
+                    .permitAll()
+                    .requestMatchers("/api/v1/notifications", "/api/v1/notifications/**")
                     .permitAll()
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "swagger-ui.html/**")
                     .permitAll()
                     .anyRequest()
-                    .authenticated())
+                    .permitAll())
         // Handle exceptions for unauthorized access and access denied filters
         // if use the rule url
         .exceptionHandling(

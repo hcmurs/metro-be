@@ -69,8 +69,7 @@ public class JwtAuthenticationFilter implements WebFilter {
           "/api/users/requests/**",
           "/api/users/feedbacks/**",
           // Notification
-          "/api/notifications/send-otp",
-          "/api/notifications/verify-otp",
+          "/api/notifications/**",
           "/actuator/health",
           // Stations
           "/api/routes",

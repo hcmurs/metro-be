@@ -38,6 +38,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
+    // Skip JWT validation for notification endpoints
+    String requestPath = request.getRequestURI();
+    if (requestPath.startsWith("/api/v1/notifications")
+        || requestPath.startsWith("/api/v1/user-device-tokens")
+        || requestPath.startsWith("/notifications")
+        || requestPath.startsWith("/user-device-tokens")) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     final String authHeader = request.getHeader("Authorization");
 
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
