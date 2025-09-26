@@ -14,9 +14,11 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import java.io.InputStream;
 import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class FirebaseInitializer {
 
   @PostConstruct
@@ -33,6 +35,7 @@ public class FirebaseInitializer {
 
       if (FirebaseApp.getApps().isEmpty()) {
         FirebaseApp.initializeApp(options);
+        log.info("FirebaseApp initialized successfully");
       }
     } catch (Exception e) {
       throw new RuntimeException(

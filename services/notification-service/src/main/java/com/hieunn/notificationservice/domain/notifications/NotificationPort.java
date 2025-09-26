@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationColor;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationIcon;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationType;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public interface NotificationPort {
 
@@ -24,22 +24,24 @@ public interface NotificationPort {
       NotificationType type,
       String title,
       String description,
-      LocalDateTime time,
       @JsonProperty("isRead") Boolean read,
       NotificationIcon iconName,
       NotificationColor iconColorHex,
-      String email) {
+      String email,
+      ZonedDateTime createdOn,
+      ZonedDateTime lastModifiedOn) {
     public static NotificationRes from(NotificationEntity notificationEntity) {
       return new NotificationRes(
           notificationEntity.getId(),
           notificationEntity.getType(),
           notificationEntity.getTitle(),
           notificationEntity.getDescription(),
-          notificationEntity.getTime(),
           notificationEntity.isRead(),
           notificationEntity.getIconName(),
           notificationEntity.getIconColorHex(),
-          notificationEntity.getEmail());
+          notificationEntity.getEmail(),
+          notificationEntity.getCreatedOn(),
+          notificationEntity.getLastModifiedOn());
     }
 
     public static NotificationRes fromWithoutEmail(NotificationEntity notificationEntity) {
@@ -48,12 +50,12 @@ public interface NotificationPort {
           notificationEntity.getType(),
           notificationEntity.getTitle(),
           notificationEntity.getDescription(),
-          notificationEntity.getTime(),
           notificationEntity.isRead(),
           notificationEntity.getIconName(),
           notificationEntity.getIconColorHex(),
-          null // explicitly null for email
-          );
+          null, // explicitly null for email
+          notificationEntity.getCreatedOn(),
+          notificationEntity.getLastModifiedOn());
     }
   }
 }

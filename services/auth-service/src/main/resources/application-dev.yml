@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: auth-service
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cloud:
+    discovery:
+      enabled: true
+      eureka:
+        client:
+          serviceUrl:
+            defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+  jackson:
+    date-format: dd/MM/yyyy HH:mm:ss
+    time-zone: Asia/Ho_Chi_Minh
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${PROD_CLIENT_ID:642093341387-4ts23qfc08ukhfkifq7k2d2a2nr928t5.apps.googleusercontent.com}
+            client-secret: ${PROD_CLIENT_SECRET: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}
+            client-name: Google
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:4006/api/v1/login/oauth2/code/google
+            scope:
+              - email
+              - profile
+            provider: google_custom
+            #url to login: "http://localhost:port/{context-path}/oauth2/authorization/google"
+          facebook:
+            client-id: 1279639400250791
+            client-secret: 2f7a84fc5fd5c6ab4d0a1b5c87097d72
+            client-name: Facebook
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:4006/api/v1/login/oauth2/code/facebook
+            scope:
+              - email
+              - public_profile
+            provider: facebook-custom
+        provider:
+          google_custom:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+          facebook-custom:
+            authorization-uri: https://www.facebook.com/v17.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v17.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+            user-name-attribute: id
+
+server:
+  port: 4006
+  servlet:
+    context-path: /api/${app.version}
+
+security:
+  jwt:
+    secret-key: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
+    expiration: 86400000 # 1 day in milliseconds
+  api:
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY
+  oauth2:
+    authorized-redirect-url-frontend: http://localhost:3000/login
+
+service:
+  users:
+    url: http://localhost:${service.users.port}/api/${service.users.version}/users
+    port: 4007
+    version: v1
+
+app:
+  version: v1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs

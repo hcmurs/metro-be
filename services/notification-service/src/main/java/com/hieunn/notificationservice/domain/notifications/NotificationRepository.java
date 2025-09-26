@@ -16,5 +16,5 @@ public interface NotificationRepository extends JpaRepository<NotificationEntity
 
   List<NotificationEntity> findByEmail(String email);
 
-  List<NotificationEntity> findByEmailOrderByTimeDesc(String email);
+  List<NotificationEntity> findByEmailOrderByCreatedOnDesc(String email);
 }

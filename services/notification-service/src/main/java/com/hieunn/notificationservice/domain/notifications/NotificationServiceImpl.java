@@ -15,7 +15,6 @@ import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import com.hieunn.notificationservice.domain.notifications.NotificationPort.NotificationRes;
 import com.hieunn.notificationservice.domain.token.FcmTokenService;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,29 +36,25 @@ public class NotificationServiceImpl implements NotificationService {
   }
 
   @Override
-  public Page<NotificationEntity> getAllNotifications(Pageable pageable) {
-    return repository.findAll(pageable);
+  public Page<NotificationRes> getAllNotifications(Pageable pageable) {
+    return repository.findAll(pageable).map(NotificationRes::fromWithoutEmail);
   }
 
   @Override
   public List<NotificationRes> getNotificationByEmail(String email) {
-    return repository.findByEmailOrderByTimeDesc(email).stream()
+    return repository.findByEmailOrderByCreatedOnDesc(email).stream()
         .map(NotificationRes::fromWithoutEmail)
         .toList();
   }
 
   @Override
   public void addNotification(NotificationEntity notification) {
-
-    var existingUserId = "3f77c248-042e-4824-9d8f-c8b9ee17db17";
-
     var newNotification =
         NotificationEntity.builder()
             .title(notification.getTitle())
             .type(notification.getType())
             .description(notification.getDescription())
-            .time(LocalDateTime.now())
-            .email(existingUserId)
+            .email("hoangclw@gmail.com")
             .iconName(notification.getIconName())
             .iconColorHex(notification.getIconColorHex())
             .build();
@@ -79,7 +74,10 @@ public class NotificationServiceImpl implements NotificationService {
   @Override
   public void sendNotification(String token) throws Exception {
     Notification notification =
-        Notification.builder().setTitle("Hello").setBody("This is a test notification").build();
+        Notification.builder()
+            .setTitle("Hello from HCMURS")
+            .setBody("This is a test notification")
+            .build();
 
     Message message = Message.builder().setToken(token).setNotification(notification).build();
 
@@ -146,7 +144,6 @@ public class NotificationServiceImpl implements NotificationService {
             .title(title)
             .type(type)
             .description(description)
-            .time(LocalDateTime.now())
             .email(email)
             .iconName(icon)
             .iconColorHex(color)

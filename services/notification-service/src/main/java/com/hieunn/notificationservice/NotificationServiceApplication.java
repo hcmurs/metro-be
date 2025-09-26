@@ -18,8 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
 
+@EnableFeignClients
 @SpringBootApplication
 public class NotificationServiceApplication {
 
@@ -47,6 +49,9 @@ public class NotificationServiceApplication {
         Optional.ofNullable(env.getProperty("server.servlet.context-path"))
             .filter(StringUtils::isNotBlank)
             .orElse("/");
+    String swaggerUIPath =
+        Optional.ofNullable(env.getProperty("springdoc.swagger-ui.path"))
+            .orElse("/swagger-ui.html");
     String hostAddress = "localhost";
     try {
       hostAddress = InetAddress.getLocalHost().getHostAddress();
@@ -62,7 +67,7 @@ public class NotificationServiceApplication {
             \tLocal: \t\t{}://localhost:{}{}
             \tExternal: \t{}://{}:{}{}
             \tProfile(s): \t{}
-            \tSwagger UI: \t{}://localhost:{}{}/swagger-ui.html
+            \tSwagger UI: \t{}://localhost:{}{}{}
             ----------------------------------------------------------""",
         applicationName,
         protocol,
@@ -75,6 +80,7 @@ public class NotificationServiceApplication {
         env.getActiveProfiles().length == 0 ? env.getDefaultProfiles() : env.getActiveProfiles(),
         protocol,
         serverPort,
-        contextPath);
+        contextPath,
+        swaggerUIPath);
   }
 }

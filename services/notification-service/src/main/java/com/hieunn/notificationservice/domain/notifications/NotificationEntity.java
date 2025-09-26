@@ -12,7 +12,6 @@ package com.hieunn.notificationservice.domain.notifications;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hieunn.notificationservice.models.AbstractTimeAuditEntity;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,9 +64,6 @@ public class NotificationEntity extends AbstractTimeAuditEntity {
 
   @Column(name = "description", columnDefinition = "TEXT", nullable = false)
   private String description;
-
-  @Column(name = "time", nullable = false)
-  private LocalDateTime time;
 
   @Column(name = "isRead", columnDefinition = "boolean default false")
   @JsonProperty(value = "isRead")

@@ -9,6 +9,7 @@
  */
 package com.hieunn.notificationservice.domain.notifications;
 
+import com.hieunn.notificationservice.domain.notifications.NotificationPort.NotificationRes;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ public interface NotificationService {
 
   List<NotificationEntity> getAllNotifications();
 
-  Page<NotificationEntity> getAllNotifications(Pageable pageable);
+  Page<NotificationRes> getAllNotifications(Pageable pageable);
 
   List<NotificationPort.NotificationRes> getNotificationByEmail(String email);
 

@@ -9,6 +9,7 @@
  */
 package com.hieunn.notificationservice.domain.notifications;
 
+import com.hieunn.notificationservice.domain.notifications.NotificationPort.NotificationRes;
 import com.hieunn.notificationservice.dtos.requests.OtpRequest;
 import com.hieunn.notificationservice.dtos.responses.ApiResponse;
 import com.hieunn.notificationservice.services.OtpService;
@@ -43,20 +44,21 @@ public class NotificationController {
   private final NotificationService service;
   private final OtpService otpService;
 
-  @GetMapping
-  public List<NotificationEntity> getAll() {
-    return service.getAllNotifications();
-  }
-
   @GetMapping("/page")
-  public Page<NotificationEntity> getAllPageable(
+  public ApiResponse<Page<NotificationRes>> getAllPageable(
       @ParameterObject
           @Parameter(
               description = "Pagination information",
               schema = @Schema(defaultValue = "{\"page\":0,\"size\":2,\"sort\":[\"id,desc\"]}"))
           @PageableDefault(size = 20)
           Pageable pageable) {
-    return service.getAllNotifications(pageable);
+    return ApiResponse.success(service.getAllNotifications(pageable));
+  }
+
+  @Deprecated(since = "Use pageable version instead", forRemoval = true)
+  @GetMapping
+  public List<NotificationEntity> getAll() {
+    return service.getAllNotifications();
   }
 
   @GetMapping("/{email}")
@@ -85,13 +87,18 @@ public class NotificationController {
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/send")
-  @Deprecated
-  public ResponseEntity<?> send() throws Exception {
-    String token =
-        "fHbU6NCiTkWw-JqPNWI5Y7:APA91bH4zrWYQrm0xXzputlOCx-2OI8DoA8EntQ9haXGu8aIpBKDpfyoMPRRR7hmjuzU8lFHhDoz_P68KwqgChvD3Hwwyn3A2lde18MnUBgn28SBqTVrGVU"; // 👈 Replace this with your real device token
-    service.sendNotification(token);
-    return ResponseEntity.ok("Sent!");
+  @Operation(
+      summary = "[DEBUG] Send notification to a specific device",
+      description = "Sends a push notification to a specific device using its FCM token.")
+  @GetMapping("/send-to-mobile/{token}")
+  public ResponseEntity<?> send(
+      @PathVariable @Schema(defaultValue = "fcm_device_token_here") String token) throws Exception {
+    try {
+      service.sendNotification(token);
+      return ResponseEntity.ok("Sent!");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+    }
   }
 
   @PostMapping("/send-to-user")
