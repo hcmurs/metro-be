@@ -7,7 +7,7 @@
  * You shall not disclose such confidential information and shall use it only in
  * accordance with the terms of the license agreement you entered into with hcmurs.
  */
-package com.hieunn.notificationservice.Configs;
+package com.hieunn.notificationservice.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

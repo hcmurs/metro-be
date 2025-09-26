@@ -1,0 +1,4 @@
+### GET
+GET http://localhost:4008/api/v1/notifications/send-to-mobile/
+Content-Type: application/json
+
