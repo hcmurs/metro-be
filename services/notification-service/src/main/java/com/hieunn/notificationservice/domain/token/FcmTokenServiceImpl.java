@@ -11,7 +11,7 @@ package com.hieunn.notificationservice.domain.token;
 
 import com.hieunn.notificationservice.domain.token.FcmTokenPort.CreateUserDeviceTokenReq;
 import com.hieunn.notificationservice.domain.token.FcmTokenPort.UpdateUserDeviceTokenReq;
-import com.hieunn.notificationservice.domain.token.FcmTokenPort.UserDeviceTokenDto;
+import com.hieunn.notificationservice.domain.token.FcmTokenPort.UserDeviceTokenResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,17 +27,17 @@ public class FcmTokenServiceImpl implements FcmTokenService {
   private final UserDeviceTokenRepository repository;
 
   @Override
-  public Page<UserDeviceTokenDto> getAll(Pageable pageable) {
+  public Page<UserDeviceTokenResponse> getAll(Pageable pageable) {
     return repository.findAll(pageable).map(this::toDto);
   }
 
   @Override
-  public UserDeviceTokenDto getById(Long id) {
+  public UserDeviceTokenResponse getById(Long id) {
     return toDto(repository.findById(id).orElseThrow(() -> new RuntimeException("Not found")));
   }
 
   @Override
-  public UserDeviceTokenDto create(CreateUserDeviceTokenReq req) {
+  public UserDeviceTokenResponse create(CreateUserDeviceTokenReq req) {
     var entity =
         UserDeviceTokenEntity.builder()
             .email(req.email())
@@ -50,7 +50,7 @@ public class FcmTokenServiceImpl implements FcmTokenService {
   }
 
   @Override
-  public UserDeviceTokenDto update(Long id, UpdateUserDeviceTokenReq req) {
+  public UserDeviceTokenResponse update(Long id, UpdateUserDeviceTokenReq req) {
     var entity = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
 
     if (req.fcmToken() != null) entity.setFcmToken(req.fcmToken());
@@ -61,7 +61,7 @@ public class FcmTokenServiceImpl implements FcmTokenService {
   }
 
   @Override
-  public UserDeviceTokenDto createOrUpdate(CreateUserDeviceTokenReq req) {
+  public UserDeviceTokenResponse createOrUpdate(CreateUserDeviceTokenReq req) {
     // Try to find existing token for this user and device
     Optional<UserDeviceTokenEntity> existingToken =
         repository.findByEmailAndDeviceId(req.email(), req.deviceId());
@@ -86,8 +86,8 @@ public class FcmTokenServiceImpl implements FcmTokenService {
         .collect(Collectors.toList());
   }
 
-  private UserDeviceTokenDto toDto(UserDeviceTokenEntity entity) {
-    return new UserDeviceTokenDto(
+  private UserDeviceTokenResponse toDto(UserDeviceTokenEntity entity) {
+    return new UserDeviceTokenResponse(
         entity.getId(),
         entity.getEmail(),
         entity.getDeviceId(),

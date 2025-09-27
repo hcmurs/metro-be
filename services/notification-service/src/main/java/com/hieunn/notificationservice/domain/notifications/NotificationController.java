@@ -103,7 +103,7 @@ public class NotificationController {
 
   @PostMapping("/send-to-user")
   @Operation(
-      summary = "Send notification to all user devices",
+      summary = "[PRODUCTION] Send notification to all user devices",
       description =
           "Send push notification to all registered devices of a user and save to database")
   public ResponseEntity<?> sendToUser(

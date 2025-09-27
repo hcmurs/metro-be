@@ -35,11 +35,25 @@ public class ApiResponse<T> {
     return success(data, "Success");
   }
 
+  public static <T> ApiResponse<T> created(T data, String message) {
+    return ApiResponse.<T>builder().status(201).data(data).message(message).build();
+  }
+
+  public static <T> ApiResponse<T> created(T data) {
+    return created(data, "Created");
+  }
+
   public static <T> ApiResponse<T> success(String message) {
     return success(null, message);
   }
 
   public static ApiResponse<Void> error(int status, @NonNull String message) {
     return ApiResponse.<Void>builder().status(status).message(message).build();
+  }
+
+  // validationError(Map<String, String> errors)
+
+  public static <T> ApiResponse<T> validationError(T data, @NonNull String message) {
+    return ApiResponse.<T>builder().status(400).data(data).message(message).build();
   }
 }
