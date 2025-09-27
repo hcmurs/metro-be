@@ -11,21 +11,21 @@ package com.hieunn.notificationservice.domain.token;
 
 import com.hieunn.notificationservice.domain.token.FcmTokenPort.CreateUserDeviceTokenReq;
 import com.hieunn.notificationservice.domain.token.FcmTokenPort.UpdateUserDeviceTokenReq;
-import com.hieunn.notificationservice.domain.token.FcmTokenPort.UserDeviceTokenDto;
+import com.hieunn.notificationservice.domain.token.FcmTokenPort.UserDeviceTokenResponse;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface FcmTokenService {
-  Page<UserDeviceTokenDto> getAll(Pageable pageable);
+  Page<UserDeviceTokenResponse> getAll(Pageable pageable);
 
-  UserDeviceTokenDto getById(Long id);
+  UserDeviceTokenResponse getById(Long id);
 
-  UserDeviceTokenDto create(CreateUserDeviceTokenReq req);
+  UserDeviceTokenResponse create(CreateUserDeviceTokenReq req);
 
-  UserDeviceTokenDto update(Long id, UpdateUserDeviceTokenReq req);
+  UserDeviceTokenResponse update(Long id, UpdateUserDeviceTokenReq req);
 
-  UserDeviceTokenDto createOrUpdate(CreateUserDeviceTokenReq req);
+  UserDeviceTokenResponse createOrUpdate(CreateUserDeviceTokenReq req);
 
   List<String> getFcmTokensByEmail(String email);
 }

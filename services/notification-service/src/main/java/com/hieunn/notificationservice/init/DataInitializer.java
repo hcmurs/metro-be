@@ -14,6 +14,8 @@ import com.hieunn.notificationservice.domain.notifications.NotificationEntity.No
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationIcon;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationType;
 import com.hieunn.notificationservice.domain.notifications.NotificationRepository;
+import com.hieunn.notificationservice.domain.token.UserDeviceTokenEntity;
+import com.hieunn.notificationservice.domain.token.UserDeviceTokenRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -27,9 +29,12 @@ import org.springframework.stereotype.Component;
 public class DataInitializer {
 
   private final NotificationRepository notificationRepository;
+  private final UserDeviceTokenRepository userDeviceTokenRepository;
 
   @EventListener(ApplicationReadyEvent.class)
   public void initializeData() {
+
+    var email = "hoangclw@gmail.com";
 
     if (notificationRepository.count() > 0) return;
 
@@ -39,7 +44,7 @@ public class DataInitializer {
                 .title("Notification 1")
                 .description("This is the first notification")
                 .type(NotificationType.WARNING)
-                .email("hoangclw@gmail.com")
+                .email(email)
                 .iconName(NotificationIcon.ERROR)
                 .iconColorHex(NotificationColor.RED)
                 .build(),
@@ -47,11 +52,38 @@ public class DataInitializer {
                 .title("Notification 2")
                 .description("This is the second notification")
                 .type(NotificationType.INFO)
-                .email("hoangclw@gmail.com")
+                .email(email)
                 .iconName(NotificationIcon.MESSAGE)
                 .iconColorHex(NotificationColor.BLUE)
                 .build());
 
     notificationRepository.saveAll(notificationList);
+
+    if (userDeviceTokenRepository.count() > 0) return;
+
+    var userDeviceTokenList =
+        List.of(
+            UserDeviceTokenEntity.builder()
+                .email(email)
+                .fcmToken("123")
+                .deviceId("device-1")
+                .deviceName("iPhone 12")
+                .platform("iOS")
+                .build(),
+            UserDeviceTokenEntity.builder()
+                .email(email)
+                .fcmToken("345")
+                .deviceId("device-1")
+                .deviceName("iPhone 12")
+                .platform("iOS")
+                .build(),
+            UserDeviceTokenEntity.builder()
+                .email(email)
+                .fcmToken("6576")
+                .deviceId("device-1")
+                .deviceName("iPhone 12")
+                .platform("iOS")
+                .build());
+    userDeviceTokenRepository.saveAll(userDeviceTokenList);
   }
 }
