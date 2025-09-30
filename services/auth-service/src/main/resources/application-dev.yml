@@ -5,13 +5,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-  cloud:
-    discovery:
-      enabled: true
-      eureka:
-        client:
-          serviceUrl:
-            defaultZone: http://eureka:8761/eureka/ # Eureka Server URL
+
   jackson:
     date-format: dd/MM/yyyy HH:mm:ss
     time-zone: Asia/Ho_Chi_Minh
@@ -83,3 +77,18 @@ springdoc:
     tags-sorter: alpha
   api-docs:
     path: /v3/api-docs
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
+    instance-id: localhost:${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
