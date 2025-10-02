@@ -45,7 +45,7 @@ public class GatewayConfig {
                         API_PREFIX + "/routes/**",
                         API_PREFIX + "/station-routes/**",
                         API_PREFIX + "/bus/**")
-                    .uri("http://localhost:4004"))
+                    .uri(STATION_SERVICE))
 //        .route(
 //            "ticket_service_route", r -> r.path(API_PREFIX + "/ts/**").uri("http://localhost:4005"))
         .route(

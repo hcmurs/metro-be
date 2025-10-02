@@ -20,6 +20,15 @@ spring:
       host: localhost
       port: 6379
 
+  ai:
+    openai:
+      api-key: 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
+      chat:
+        options:
+          model: gpt-3.5-turbo
+          temperature: 0.7
+          max-tokens: 1000
+
 logging:
   level:
     com.netflix.discovery: DEBUG
