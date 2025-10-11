@@ -68,6 +68,7 @@ public class JwtAuthenticationFilter implements WebFilter {
           "/api/users/reset-password",
           "/api/users/requests/**",
           "/api/users/feedbacks/**",
+//          "/api/users/chatbot/**",
           // Notification
           "/api/notifications/**",
           "/api/user-device-tokens/**",

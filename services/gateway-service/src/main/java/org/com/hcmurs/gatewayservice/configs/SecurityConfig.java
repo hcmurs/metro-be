@@ -56,7 +56,8 @@ public class SecurityConfig {
     "/api/users/blogs/**",
     "/api/users/requests/**",
     "/api/users/feedbacks/**",
-    "/api/payment/stripe/**"
+    "/api/payment/stripe/**",
+//    "/api/users/chatbot/**",
   };
 
   @Bean
