@@ -46,7 +46,7 @@ public class ChatBotServiceImpl implements ChatBotService {
 
             // Get response from OpenAI
             var response = chatModel.call(prompt);
-            String assistantResponse = response.getResult().getOutput().toString();
+            String assistantResponse = response.getResult().getOutput().getText();
 
             // Save both user message and assistant response to memory
             // Note: We don't save the system message to avoid duplication
