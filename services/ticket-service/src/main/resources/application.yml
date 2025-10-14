@@ -7,6 +7,12 @@ spring:
   application:
     name: ticket-service
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
   profiles:
     active: prod
 

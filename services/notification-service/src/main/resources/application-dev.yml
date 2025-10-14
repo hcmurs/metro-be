@@ -34,6 +34,22 @@ spring:
           starttls:
             enable: true
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  listener:
+    simple:
+      acknowledge-mode: manual   # auto ack khi xử lý thành công
+      concurrency: 2
+      max-concurrency: 5
+      prefetch: 5
+    # Cho phép retry nếu consumer fail
+    template:
+      mandatory: true
+
 security:
   api:
 
@@ -72,4 +88,6 @@ eureka:
     instance-id: localhost:${spring.application.name}:${server.port}
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
+
+
 

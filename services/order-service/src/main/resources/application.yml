@@ -2,6 +2,17 @@ spring:
   application:
     name: order-service
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirm-type: correlated
+    publisher-returns: true
+      # 👉 Giới hạn số lần reconnect nếu RabbitMQ down
+    connection-timeout: 10s
+    template:
+      mandatory: true  # bắt buộc phải có consumer (nếu không -> trigger callback)
   profiles:
     active: prod
 

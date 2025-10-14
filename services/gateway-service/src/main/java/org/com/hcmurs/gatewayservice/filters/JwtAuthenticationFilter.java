@@ -68,7 +68,7 @@ public class JwtAuthenticationFilter implements WebFilter {
           "/api/users/reset-password",
           "/api/users/requests/**",
           "/api/users/feedbacks/**",
-//          "/api/users/chatbot/**",
+          "/api/users/chatbot/**",
           // Notification
           "/api/notifications/**",
           "/api/user-device-tokens/**",
@@ -125,7 +125,7 @@ public class JwtAuthenticationFilter implements WebFilter {
     ServerHttpRequest modifiedRequest = requestBuilder.build();
     ServerWebExchange modifiedExchange = exchange.mutate().request(modifiedRequest).build();
 
-    if (isPublicPath(path)) {
+    if (isPublicPath(path) ) {
       return chain.filter(modifiedExchange);
     }
 

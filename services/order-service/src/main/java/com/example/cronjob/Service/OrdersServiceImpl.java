@@ -10,6 +10,7 @@
 package com.example.cronjob.Service;
 
 import com.example.cronjob.Config.JwtUtil;
+import com.example.cronjob.Config.RabbitMQConfig;
 import com.example.cronjob.DTO.Request.OrderTicketDaysRequest;
 import com.example.cronjob.DTO.Request.OrderTicketSingleRequest;
 import com.example.cronjob.DTO.Response.ApiResponse;
@@ -27,6 +28,7 @@ import com.example.cronjob.Pojos.Transactions;
 import com.example.cronjob.Repository.OrdersRepository;
 import com.example.cronjob.Repository.TransactionsRepository;
 import com.example.cronjob.client.TicketClient;
+import com.example.cronjob.event.OrderCompletedEvent;
 import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -37,26 +39,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
-  @Autowired private OrdersRepository ordersRepository;
+   private final OrdersRepository ordersRepository;
 
-  @Autowired private TransactionsRepository transactionsRepository;
+   private final TransactionsRepository transactionsRepository;
 
-  @Autowired private PaymentMethodService paymentMethodService;
+   private final PaymentMethodService paymentMethodService;
 
-  @Autowired private TransactionMapping transactionMapping;
+   private final TransactionMapping transactionMapping;
 
-  @Autowired private OrderMapping orderMapping;
+   private final OrderMapping orderMapping;
 
-  @Autowired private TicketClient ticketClient;
+   private final TicketClient ticketClient;
 
-  @Autowired private JwtUtil jwtUtil;
+   private final JwtUtil jwtUtil;
+
+    private final RabbitTemplate rabbitTemplate;
 
   @Override
   @Transactional
@@ -169,6 +179,11 @@ public class OrdersServiceImpl implements OrdersService {
   @Override
   public ApiResponse<OrderResponse> updateOrder(Long orderId) {
     Orders orders = ordersRepository.findByOrderId(orderId);
+    String name = "";
+    float price = 0;
+    String type = "";
+     String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+      log.info(token);
     if (orders == null) {
       throw new EntityNotFoundException("Order not found with ID: " + orderId);
     }
@@ -179,6 +194,9 @@ public class OrdersServiceImpl implements OrdersService {
       if (res.getData() == null) {
         throw new EntityNotFoundException(res.getMessage());
       }
+      type = "Buy ticket success";
+      name =res.getData().name();
+      price = res.getData().actualPrice();
     } else if (orders.getTransaction().getTransactionStatus() == TransactionStatus.FAILED) {
       orders.setStatus(OrderStatus.FAILED);
       ApiResponse<TicketResponse> res =
@@ -186,9 +204,20 @@ public class OrdersServiceImpl implements OrdersService {
       if (res.getData() == null) {
         throw new EntityNotFoundException(res.getMessage());
       }
+        type = "Buy ticket failed";
+      name =  res.getData().name();
+      price = res.getData().actualPrice();
     } else {
       orders.setStatus(OrderStatus.PENDING);
     }
+      OrderCompletedEvent event =
+          new OrderCompletedEvent(orders.getOrderId(), jwtUtil.extractEmail(token), type,name, price);
+      rabbitTemplate.convertAndSend(
+          RabbitMQConfig.ORDER_EXCHANGE,
+          RabbitMQConfig.ORDER_COMPLETED_ROUTING_KEY,
+          event
+      );
+      log.info("Order completed successfully event sent to RabbitMQ : {}", event);
     orders.setUpdatedAt(LocalDateTime.now());
     Orders updatedOrder = ordersRepository.save(orders);
     OrderResponse orderResponse = orderMapping.toResponse(updatedOrder);
