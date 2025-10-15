@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: notification-service
+
+  datasource:
+    url: jdbc:postgresql://${PROD_DB_NEON_HOST}/neondb?user=${PROD_SPRING_NEON_DATASOURCE_USERNAME}&password=${PROD_SPRING_NEON_DATASOURCE_PASSWORD}&sslmode=require&channelBinding=require&currentSchema=${PROD_NOTIFICATION_NEON_SCHEMA_NAME}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hieunnse183474@fpt.edu.vn
+    password: ynbm jzuo vxsh nphj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+security:
+  api:
+
+    key: c761c9f0bb379612afbfd6ffeca90261db961bb93bce17728bc2a74430a66c0a
+    header: X-API-KEY
+  jwt:
+    secret-key: e2bd3b3c7af3861cc4b5eeeeba79892a25739cc44a56eef4c38b92d9b5a39159
+    expiration: 3600000 # 1 hour in milliseconds
+
+server:
+  servlet:
+    context-path: /api/${app.version}
+  port: 4008
+
+app:
+  version: v1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs

@@ -16,6 +16,14 @@
   <name>notification-service</name>
   <description>notification-service</description>
 
+  <properties>
+    <!-- https://mvnrepository.com/artifact/com.github.gavlyukovskiy/p6spy-spring-boot-starter -->
+    <p6spy-springboot.version>1.12.0</p6spy-springboot.version>
+
+    <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+    <springdoc.openapi.version>2.8.13</springdoc.openapi.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -28,6 +36,18 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.gavlyukovskiy</groupId>
+      <artifactId>p6spy-spring-boot-starter</artifactId>
+      <version>${p6spy-springboot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-scalar</artifactId>
+      <version>${springdoc.openapi.version}</version>
     </dependency>
 
     <dependency>
@@ -62,7 +82,7 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-      <version>2.7.0</version>
+      <version>${springdoc.openapi.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

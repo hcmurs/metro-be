@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Totally Serious Website</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Comic Sans MS, cursive;
+      background: linear-gradient(45deg, pink, cyan);
+      color: #111;
+      text-align: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-top: 50px;
+      font-size: 2.5rem;
+      animation: wiggle 0.4s infinite;
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+      100% { transform: rotate(-3deg); }
+    }
+
+    button {
+      margin: 20px;
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background-color: yellow;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: red;
+      color: white;
+      transform: scale(1.2);
+    }
+
+    #annoying, #game, #choice {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      display: none;
+    }
+
+    #game input {
+      margin-top: 10px;
+      padding: 5px;
+      font-size: 1.1rem;
+    }
+
+    #choice button {
+      display: block;
+      margin: 10px auto;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+<h1>Welcome to a Totally Normal Website 😇</h1>
+<button id="startBtn">Click Me!</button>
+<button id="gameBtn">Play Game 🎮</button>
+
+<p id="annoying">Why did you click that?! 😈</p>
+
+<div id="game">
+  <p>Quick! What’s 2 + 2 × 2 ?</p>
+  <input type="text" id="answer" placeholder="Enter your answer">
+  <button id="submitAnswer">Submit</button>
+</div>
+
+<div id="choice">
+  <p>🎉 You passed! Where do you want to go?</p>
+  <button id="toScalar">👉 Take me to Scalar</button>
+  <button id="toSwagger">👉 Take me to Swagger UI</button>
+</div>
+
+<script>
+  const btn = document.getElementById("startBtn");
+  const gameBtn = document.getElementById("gameBtn");
+  const text = document.getElementById("annoying");
+  const game = document.getElementById("game");
+  const choice = document.getElementById("choice");
+  const submit = document.getElementById("submitAnswer");
+  const answer = document.getElementById("answer");
+
+  // --- Troll button ---
+  btn.addEventListener("click", () => {
+    text.style.display = "block";
+    btn.textContent = "Click again?";
+    alert("Oops! You broke the internet.");
+    setTimeout(() => alert("Just kidding... or am I?"), 1000);
+  });
+
+  // Button runs away from mouse
+  btn.addEventListener("mousemove", () => {
+    const randX = Math.random() * (window.innerWidth - 150);
+    const randY = Math.random() * (window.innerHeight - 100);
+    btn.style.position = "absolute";
+    btn.style.left = randX + "px";
+    btn.style.top = randY + "px";
+  });
+
+  // --- Game logic ---
+  gameBtn.addEventListener("click", () => {
+    game.style.display = "block";
+    btn.style.display = "none";
+    gameBtn.style.display = "none";
+    text.style.display = "none";
+  });
+
+  submit.addEventListener("click", () => {
+    const val = answer.value.trim();
+    if (val === "6") {
+      game.style.display = "none";
+      choice.style.display = "block";
+    } else {
+      alert("❌ Wrong! Try again...");
+    }
+  });
+
+  // --- Redirect choices ---
+  document.getElementById("toScalar").addEventListener("click", () => {
+    alert("Redirecting to /scalar...");
+    window.location.href = "/api/v1/scalar";
+  });
+
+  document.getElementById("toSwagger").addEventListener("click", () => {
+    alert("Redirecting to /swagger-ui/index.html...");
+    window.location.href = "/api/v1/swagger-ui/index.html";
+  });
+
+  // --- Chaos mode after 10s ---
+  setTimeout(() => {
+    document.title = "😈 You’re still here?";
+    setInterval(() => {
+      document.body.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    }, 200);
+  }, 10000);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      alert("There is no escape 😈");
+    }
+  });
+</script>
+</body>
+</html>
