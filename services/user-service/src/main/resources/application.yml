@@ -75,4 +75,3 @@ eureka:
     instance-id: localhost:${spring.application.name}:${server.port}
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 30
-

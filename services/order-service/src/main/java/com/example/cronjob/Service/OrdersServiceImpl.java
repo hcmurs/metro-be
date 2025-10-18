@@ -38,12 +38,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -52,21 +49,21 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
-   private final OrdersRepository ordersRepository;
+  private final OrdersRepository ordersRepository;
 
-   private final TransactionsRepository transactionsRepository;
+  private final TransactionsRepository transactionsRepository;
 
-   private final PaymentMethodService paymentMethodService;
+  private final PaymentMethodService paymentMethodService;
 
-   private final TransactionMapping transactionMapping;
+  private final TransactionMapping transactionMapping;
 
-   private final OrderMapping orderMapping;
+  private final OrderMapping orderMapping;
 
-   private final TicketClient ticketClient;
+  private final TicketClient ticketClient;
 
-   private final JwtUtil jwtUtil;
+  private final JwtUtil jwtUtil;
 
-    private final RabbitTemplate rabbitTemplate;
+  private final RabbitTemplate rabbitTemplate;
 
   @Override
   @Transactional
@@ -182,8 +179,9 @@ public class OrdersServiceImpl implements OrdersService {
     String name = "";
     float price = 0;
     String type = "";
-     String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-      log.info(token);
+    String token =
+        SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+    log.info(token);
     if (orders == null) {
       throw new EntityNotFoundException("Order not found with ID: " + orderId);
     }
@@ -195,7 +193,7 @@ public class OrdersServiceImpl implements OrdersService {
         throw new EntityNotFoundException(res.getMessage());
       }
       type = "Buy ticket success";
-      name =res.getData().name();
+      name = res.getData().name();
       price = res.getData().actualPrice();
     } else if (orders.getTransaction().getTransactionStatus() == TransactionStatus.FAILED) {
       orders.setStatus(OrderStatus.FAILED);
@@ -204,20 +202,18 @@ public class OrdersServiceImpl implements OrdersService {
       if (res.getData() == null) {
         throw new EntityNotFoundException(res.getMessage());
       }
-        type = "Buy ticket failed";
-      name =  res.getData().name();
+      type = "Buy ticket failed";
+      name = res.getData().name();
       price = res.getData().actualPrice();
     } else {
       orders.setStatus(OrderStatus.PENDING);
     }
-      OrderCompletedEvent event =
-          new OrderCompletedEvent(orders.getOrderId(), jwtUtil.extractEmail(token), type,name, price);
-      rabbitTemplate.convertAndSend(
-          RabbitMQConfig.ORDER_EXCHANGE,
-          RabbitMQConfig.ORDER_COMPLETED_ROUTING_KEY,
-          event
-      );
-      log.info("Order completed successfully event sent to RabbitMQ : {}", event);
+    OrderCompletedEvent event =
+        new OrderCompletedEvent(
+            orders.getOrderId(), jwtUtil.extractEmail(token), type, name, price);
+    rabbitTemplate.convertAndSend(
+        RabbitMQConfig.ORDER_EXCHANGE, RabbitMQConfig.ORDER_COMPLETED_ROUTING_KEY, event);
+    log.info("Order completed successfully event sent to RabbitMQ : {}", event);
     orders.setUpdatedAt(LocalDateTime.now());
     Orders updatedOrder = ordersRepository.save(orders);
     OrderResponse orderResponse = orderMapping.toResponse(updatedOrder);

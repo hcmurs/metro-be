@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PromptTemplateService {
 
-    public SystemMessage getDefaultSystemPrompt() {
-        String systemPromptText = """
+  public SystemMessage getDefaultSystemPrompt() {
+    String systemPromptText =
+        """
             You are MetroBot, an intelligent assistant for the Metro Transit System. Your primary role is to help users with:
 
             **CORE RESPONSIBILITIES:**
@@ -52,11 +53,12 @@ public class PromptTemplateService {
             Remember: You're here to make metro travel easier and more convenient for everyone!
             """;
 
-        return new SystemMessage(systemPromptText);
-    }
+    return new SystemMessage(systemPromptText);
+  }
 
-    public SystemMessage getNewUserPrompt() {
-        String newUserPromptText = """
+  public SystemMessage getNewUserPrompt() {
+    String newUserPromptText =
+        """
             You are MetroBot, a friendly guide for new metro users. Focus on:
 
             **FOR NEW USERS:**
@@ -76,11 +78,12 @@ public class PromptTemplateService {
             Remember: Make their first metro experience positive and confidence-building!
             """;
 
-        return new SystemMessage(newUserPromptText);
-    }
+    return new SystemMessage(newUserPromptText);
+  }
 
-    public SystemMessage getEmergencyPrompt() {
-        String emergencyPromptText = """
+  public SystemMessage getEmergencyPrompt() {
+    String emergencyPromptText =
+        """
             You are MetroBot in EMERGENCY MODE. Priority actions:
 
             **EMERGENCY RESPONSE:**
@@ -98,17 +101,20 @@ public class PromptTemplateService {
             Stay calm and focused on user safety!
             """;
 
-        return new SystemMessage(emergencyPromptText);
-    }
+    return new SystemMessage(emergencyPromptText);
+  }
 
-    public SystemMessage getCustomPromptWithContext(String userContext) {
-        String customPromptText = String.format("""
+  public SystemMessage getCustomPromptWithContext(String userContext) {
+    String customPromptText =
+        String.format(
+            """
             You are MetroBot, specialized for this user context: %s
 
             Adapt your responses based on this context while maintaining your core metro assistance capabilities.
             Always be helpful, accurate, and focused on metro transit solutions.
-            """, userContext);
+            """,
+            userContext);
 
-        return new SystemMessage(customPromptText);
-    }
+    return new SystemMessage(customPromptText);
+  }
 }

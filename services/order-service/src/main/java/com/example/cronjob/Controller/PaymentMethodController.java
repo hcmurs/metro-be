@@ -31,7 +31,7 @@ public class PaymentMethodController {
   }
 
   @PostMapping("/create-payment-method")
-//  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  //  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   public ApiResponse<PaymentMethodResponse> createPaymentMethod(
       @RequestBody PaymentMethodRequest paymentMethodRequest) {
     return paymentMethodService.createPaymentMethod(paymentMethodRequest);

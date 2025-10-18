@@ -27,10 +27,10 @@ public class GatewayConfig {
   private final String STATION_SERVICE = "lb://station-service";
   private final String TICKET_SERVICE = "lb://ticket-service";
   private final String ORDER_SERVICE = "lb://order-service";
-    private final String USER_SERVICE = "lb://user-service";
-    private final String AUTH_SERVICE = "lb://auth-service";
-    private final String NOTIFICATION_SERVICE = "lb://notification-service";
-    private final String CRONJOB_SERVICE = "lb://cronjob-service";
+  private final String USER_SERVICE = "lb://user-service";
+  private final String AUTH_SERVICE = "lb://auth-service";
+  private final String NOTIFICATION_SERVICE = "lb://notification-service";
+  private final String CRONJOB_SERVICE = "lb://cronjob-service";
 
   @Bean
   public RouteLocator routeLocator(RouteLocatorBuilder builder) {
@@ -46,26 +46,24 @@ public class GatewayConfig {
                         API_PREFIX + "/station-routes/**",
                         API_PREFIX + "/bus/**")
                     .uri(STATION_SERVICE))
-//        .route(
-//            "ticket_service_route", r -> r.path(API_PREFIX + "/ts/**").uri("http://localhost:4005"))
-        .route(
-            "ticket_service_route",
-            r -> r.path(API_PREFIX + "/ts/**")
-                .uri(TICKET_SERVICE))
-//        .route(
-//            "order_service_route",
-//            r -> r.path(API_PREFIX + "/user/orders/**").uri("http://localhost:4009"))
+        //        .route(
+        //            "ticket_service_route", r -> r.path(API_PREFIX +
+        // "/ts/**").uri("http://localhost:4005"))
+        .route("ticket_service_route", r -> r.path(API_PREFIX + "/ts/**").uri(TICKET_SERVICE))
+        //        .route(
+        //            "order_service_route",
+        //            r -> r.path(API_PREFIX + "/user/orders/**").uri("http://localhost:4009"))
         .route(
             "user_order_service_route",
-            r -> r.path(API_PREFIX + "/user/orders/**")
-                .uri(ORDER_SERVICE))
-//        .route(
-//            "user_service_route",
-//            r ->
-//                r.path(API_PREFIX + "/users/**")
-//                    .filters(
-//                        f -> f.rewritePath("/api/users(?<segment>/?.*)", "/api/v1/users${segment}"))
-//                    .uri("http://localhost:4007"))
+            r -> r.path(API_PREFIX + "/user/orders/**").uri(ORDER_SERVICE))
+        //        .route(
+        //            "user_service_route",
+        //            r ->
+        //                r.path(API_PREFIX + "/users/**")
+        //                    .filters(
+        //                        f -> f.rewritePath("/api/users(?<segment>/?.*)",
+        // "/api/v1/users${segment}"))
+        //                    .uri("http://localhost:4007"))
         .route(
             "user_service_route",
             r ->
@@ -73,13 +71,14 @@ public class GatewayConfig {
                     .filters(
                         f -> f.rewritePath("/api/users(?<segment>/?.*)", "/api/v1/users${segment}"))
                     .uri(USER_SERVICE))
-//        .route(
-//            "auth_service_route",
-//            r ->
-//                r.path(API_PREFIX + "/auth/**")
-//                    .filters(
-//                        f -> f.rewritePath("/api/auth(?<segment>/?.*)", "/api/v1/auth${segment}"))
-//                    .uri("http://localhost:4006"))
+        //        .route(
+        //            "auth_service_route",
+        //            r ->
+        //                r.path(API_PREFIX + "/auth/**")
+        //                    .filters(
+        //                        f -> f.rewritePath("/api/auth(?<segment>/?.*)",
+        // "/api/v1/auth${segment}"))
+        //                    .uri("http://localhost:4006"))
         .route(
             "auth_service_route",
             r ->
@@ -96,7 +95,7 @@ public class GatewayConfig {
                             f.rewritePath(
                                 "/api/oauth2/authorization(?<segment>/?.*)",
                                 "/api/v1/oauth2/authorization${segment}"))
-//                    .uri("http://localhost:4006"))
+                    //                    .uri("http://localhost:4006"))
                     .uri(AUTH_SERVICE))
         .route(
             "notification_service_route",
@@ -107,7 +106,7 @@ public class GatewayConfig {
                             f.rewritePath(
                                 "/api/notifications(?<segment>/?.*)",
                                 "/api/v1/notifications${segment}"))
-//                    .uri("http://localhost:4008"))
+                    //                    .uri("http://localhost:4008"))
                     .uri(NOTIFICATION_SERVICE))
         .route(
             "user_device_token_service_route",
@@ -118,23 +117,22 @@ public class GatewayConfig {
                             f.rewritePath(
                                 "/api/user-device-tokens(?<segment>/?.*)",
                                 "/api/v1/user-device-tokens${segment}"))
-//                    .uri("http://localhost:4008"))
+                    //                    .uri("http://localhost:4008"))
                     .uri(NOTIFICATION_SERVICE))
         .route(
             "order_service_route",
             r ->
                 r.path(API_PREFIX + "/orders/**", API_PREFIX + "/payment/**")
-//                    .uri("http://localhost:4009"))
+                    //                    .uri("http://localhost:4009"))
                     .uri(ORDER_SERVICE))
         .route(
             "cronjob_service_route",
             r -> r.path(API_PREFIX + "/stat/**").uri("http://localhost:4010"))
-//        .route(
-//            "cronjob_service_route",
-//            r -> r.path(API_PREFIX + "/stat/**")
-//                .uri(CRONJOB_SERVICE))
+        //        .route(
+        //            "cronjob_service_route",
+        //            r -> r.path(API_PREFIX + "/stat/**")
+        //                .uri(CRONJOB_SERVICE))
         .build();
-
   }
 
   @Bean

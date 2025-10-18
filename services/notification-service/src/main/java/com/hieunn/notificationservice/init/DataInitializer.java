@@ -9,6 +9,7 @@
  */
 package com.hieunn.notificationservice.init;
 
+import com.github.javafaker.Faker;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationColor;
 import com.hieunn.notificationservice.domain.notifications.NotificationEntity.NotificationIcon;
@@ -16,7 +17,11 @@ import com.hieunn.notificationservice.domain.notifications.NotificationEntity.No
 import com.hieunn.notificationservice.domain.notifications.NotificationRepository;
 import com.hieunn.notificationservice.domain.token.UserDeviceTokenEntity;
 import com.hieunn.notificationservice.domain.token.UserDeviceTokenRepository;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
@@ -30,34 +35,59 @@ public class DataInitializer {
 
   private final NotificationRepository notificationRepository;
   private final UserDeviceTokenRepository userDeviceTokenRepository;
+  private static final int NUM_NOTIFICATIONS = 100;
+
+  private static final Random random = new Random();
+  private static final Faker faker = new Faker(new Locale("vi"));
 
   @EventListener(ApplicationReadyEvent.class)
   public void initializeData() {
 
     var email = "hoangclw@gmail.com";
 
-    if (notificationRepository.count() > 0) return;
+    if (notificationRepository.count() == 0) {
+      List<NotificationEntity> notifications = new ArrayList<>();
 
-    var notificationList =
-        List.of(
-            NotificationEntity.builder()
-                .title("Notification 1")
-                .description("This is the first notification")
-                .type(NotificationType.WARNING)
-                .email(email)
-                .iconName(NotificationIcon.ERROR)
-                .iconColorHex(NotificationColor.RED)
-                .build(),
-            NotificationEntity.builder()
-                .title("Notification 2")
-                .description("This is the second notification")
-                .type(NotificationType.INFO)
-                .email(email)
-                .iconName(NotificationIcon.MESSAGE)
-                .iconColorHex(NotificationColor.BLUE)
-                .build());
+      for (int i = 0; i < NUM_NOTIFICATIONS; i++) {
+        NotificationType type =
+            NotificationType.values()[random.nextInt(NotificationType.values().length)];
+        NotificationIcon icon =
+            NotificationIcon.values()[random.nextInt(NotificationIcon.values().length)];
+        NotificationColor color =
+            NotificationColor.values()[random.nextInt(NotificationColor.values().length)];
 
-    notificationRepository.saveAll(notificationList);
+        NotificationEntity notification =
+            NotificationEntity.builder()
+                .title(faker.book().title())
+                .description(faker.lorem().sentence(10))
+                .type(type)
+                .email(email)
+                .iconName(icon)
+                .iconColorHex(color)
+                .read(random.nextBoolean())
+                .build();
+
+        // 🔥 Random time range: within the last 60 days
+        long randomDaysAgo = random.nextInt(60); // 0–59 days ago
+        long randomHoursAgo = random.nextInt(24);
+        long randomMinutesAgo = random.nextInt(60);
+
+        notification.setCreatedOn(
+            ZonedDateTime.now()
+                .minusDays(randomDaysAgo)
+                .minusHours(randomHoursAgo)
+                .minusMinutes(randomMinutesAgo));
+
+        // sometimes modified later, sometimes not
+        notification.setLastModifiedOn(notification.getCreatedOn().plusHours(random.nextInt(24)));
+
+        notifications.add(notification);
+      }
+
+      notificationRepository.saveAll(notifications);
+      System.out.println(
+          "✅ Inserted " + NUM_NOTIFICATIONS + " fake notifications with time variance");
+    }
 
     if (userDeviceTokenRepository.count() > 0) return;
 
