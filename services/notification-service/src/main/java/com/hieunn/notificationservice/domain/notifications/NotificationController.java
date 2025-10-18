@@ -26,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -131,4 +132,11 @@ public class NotificationController {
         ? ResponseEntity.ok(ApiResponse.success("OTP verified"))
         : ResponseEntity.ok(ApiResponse.error(401, "Invalid or expired OTP"));
   }
+
+  @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteNotification(@PathVariable Long id) {
+        // Assuming a delete method exists in the service
+        service.deleteNotification(id);
+        return ResponseEntity.ok(ApiResponse.success("Notification deleted successfully"));
+    }
 }

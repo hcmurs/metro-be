@@ -39,4 +39,6 @@ public interface NotificationService {
       NotificationEntity.NotificationType type,
       NotificationEntity.NotificationIcon icon,
       NotificationEntity.NotificationColor color);
+
+  void deleteNotification(Long id);
 }

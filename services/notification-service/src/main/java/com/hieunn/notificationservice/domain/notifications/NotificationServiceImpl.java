@@ -35,19 +35,20 @@ public class NotificationServiceImpl implements NotificationService {
     return repository.findAll();
   }
 
-  @Override
-  public Page<NotificationRes> getAllNotifications(Pageable pageable) {
-    return repository.findAll(pageable).map(NotificationRes::fromWithoutEmail);
-  }
+@Override
+public Page<NotificationRes> getAllNotifications(Pageable pageable) {
+    return repository.findAllByActiveTrue(pageable)
+        .map(NotificationRes::fromWithoutEmail);
+}
 
-  @Override
-  public List<NotificationRes> getNotificationByEmail(String email) {
-    return repository.findByEmailOrderByCreatedOnDesc(email).stream()
+@Override
+public List<NotificationRes> getNotificationByEmail(String email) {
+    return repository.findByEmailAndActiveTrueOrderByCreatedOnDesc(email).stream()
         .map(NotificationRes::fromWithoutEmail)
         .toList();
-  }
+}
 
-  @Override
+    @Override
   public void addNotification(NotificationEntity notification) {
     var newNotification =
         NotificationEntity.builder()
@@ -152,4 +153,13 @@ public class NotificationServiceImpl implements NotificationService {
 
     return repository.save(notification);
   }
+
+    @Override
+    public void deleteNotification(Long id) {
+      var notification = repository.findById(id).orElseThrow(
+        () -> new IllegalArgumentException("Notification not found with id: " + id)
+      );
+      notification.setActive(false);
+      repository.save(notification);
+    }
 }

@@ -28,6 +28,7 @@ public interface NotificationPort {
       NotificationIcon iconName,
       NotificationColor iconColorHex,
       String email,
+      boolean active,
       ZonedDateTime createdOn,
       ZonedDateTime lastModifiedOn) {
     public static NotificationRes from(NotificationEntity notificationEntity) {
@@ -40,6 +41,7 @@ public interface NotificationPort {
           notificationEntity.getIconName(),
           notificationEntity.getIconColorHex(),
           notificationEntity.getEmail(),
+          notificationEntity.getActive(),
           notificationEntity.getCreatedOn(),
           notificationEntity.getLastModifiedOn());
     }
@@ -54,6 +56,7 @@ public interface NotificationPort {
           notificationEntity.getIconName(),
           notificationEntity.getIconColorHex(),
           null, // explicitly null for email
+          notificationEntity.getActive(),
           notificationEntity.getCreatedOn(),
           notificationEntity.getLastModifiedOn());
     }

@@ -77,4 +77,8 @@ public class NotificationEntity extends AbstractTimeAuditEntity {
 
   @Column(name = "email", nullable = false)
   private String email;
+
+  @Column(name = "active", nullable = false)
+  @Builder.Default
+  private Boolean active = true;
 }
