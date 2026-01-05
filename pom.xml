@@ -46,7 +46,7 @@
 
 
     <!-- Database -->
-    <postgres.version>42.7.3</postgres.version>
+    <postgres.version>42.7.8</postgres.version>
     <h2.version>2.2.224</h2.version>
     <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
