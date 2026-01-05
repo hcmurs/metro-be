@@ -9,21 +9,21 @@
  */
 package com.hieunn.user_service.dtos.responses;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatResponse {
-    private String sessionId;
-    private String response;
-    private long timestamp;
+  private String sessionId;
+  private String response;
+  private long timestamp;
 
-    public ChatResponse(String sessionId, String response) {
-        this.sessionId = sessionId;
-        this.response = response;
-        this.timestamp = System.currentTimeMillis();
-    }
+  public ChatResponse(String sessionId, String response) {
+    this.sessionId = sessionId;
+    this.response = response;
+    this.timestamp = System.currentTimeMillis();
+  }
 }

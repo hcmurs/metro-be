@@ -10,12 +10,11 @@
 package com.hieunn.user_service.models;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "chat_messages")
@@ -25,14 +24,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ChatMessage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String conversationId;   // sessionId hoặc userId
-    private String role;             // user / assistant / system
-    @Column(columnDefinition = "TEXT")
-    private String content;
+  private String conversationId; // sessionId hoặc userId
+  private String role; // user / assistant / system
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+  @Column(columnDefinition = "TEXT")
+  private String content;
+
+  private LocalDateTime createdAt = LocalDateTime.now();
 }

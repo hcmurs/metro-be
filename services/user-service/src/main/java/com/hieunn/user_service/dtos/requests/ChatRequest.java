@@ -9,14 +9,14 @@
  */
 package com.hieunn.user_service.dtos.requests;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRequest {
-    private String sessionId;
-    private String message;
+  private String sessionId;
+  private String message;
 }

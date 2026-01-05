@@ -57,7 +57,7 @@ public class SecurityConfig {
     "/api/users/requests/**",
     "/api/users/feedbacks/**",
     "/api/payment/stripe/**",
-//    "/api/users/chatbot/**",
+    //    "/api/users/chatbot/**",
   };
 
   @Bean

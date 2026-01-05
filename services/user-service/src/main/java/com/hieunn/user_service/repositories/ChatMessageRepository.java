@@ -10,17 +10,17 @@
 package com.hieunn.user_service.repositories;
 
 import com.hieunn.user_service.models.ChatMessage;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
-    List<ChatMessage> findByConversationIdOrderByCreatedAtAsc(String conversationId);
+  List<ChatMessage> findByConversationIdOrderByCreatedAtAsc(String conversationId);
 
-    @Query("SELECT DISTINCT c.conversationId FROM ChatMessage c")
-    List<String> findDistinctConversationIds();
+  @Query("SELECT DISTINCT c.conversationId FROM ChatMessage c")
+  List<String> findDistinctConversationIds();
 
-    void deleteByConversationId(String conversationId);
+  void deleteByConversationId(String conversationId);
 }

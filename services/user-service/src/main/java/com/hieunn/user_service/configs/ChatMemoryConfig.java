@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2025 hcmurs. All rights reserved.
+ *
+ * Service: User-Service
+ *
+ * This software is the confidential and proprietary information of hcmurs.
+ * You shall not disclose such confidential information and shall use it only in
+ * accordance with the terms of the license agreement you entered into with hcmurs.
+ */
 package com.hieunn.user_service.configs;
 
 import com.hieunn.user_service.repositories.ChatMessageRepository;
@@ -13,22 +22,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ChatMemoryConfig {
 
-    @Bean
-    public ChatMemoryRepository chatMemoryRepository(ChatMessageRepository jpaRepo) {
-        return new PostgresChatMemoryRepository(jpaRepo);
-    }
+  @Bean
+  public ChatMemoryRepository chatMemoryRepository(ChatMessageRepository jpaRepo) {
+    return new PostgresChatMemoryRepository(jpaRepo);
+  }
 
-    @Bean
-    public ChatMemory chatMemory(@Qualifier("chatMemoryRepository") ChatMemoryRepository repository) {
-        return MessageWindowChatMemory.builder()
-            .chatMemoryRepository(repository)
-            .maxMessages(20)
-            .build();
-    }
+  @Bean
+  public ChatMemory chatMemory(@Qualifier("chatMemoryRepository") ChatMemoryRepository repository) {
+    return MessageWindowChatMemory.builder()
+        .chatMemoryRepository(repository)
+        .maxMessages(20)
+        .build();
+  }
 
-    @Bean
-    public SystemMessage systemPrompt(ChatBotPromptProperties promptProperties) {
-        String jsonMetadata = """
+  @Bean
+  public SystemMessage systemPrompt(ChatBotPromptProperties promptProperties) {
+    String jsonMetadata =
+        """
             {
               "system": "Metro HCM official fare data (Line 1 as reference)",
               "stations": [
@@ -976,7 +986,9 @@ public class ChatMemoryConfig {
             }
             """;
 
-        String systemPromptText = String.format("""
+    String systemPromptText =
+        String.format(
+            """
             You are %s, an AI assistant for the %s.
 
             METRO FARE AND ROUTE DATA:
@@ -1024,9 +1036,8 @@ public class ChatMemoryConfig {
             promptProperties.getBehavior().getResponseStyle(),
             promptProperties.getCustomerServiceContact(),
             promptProperties.getEmergencyContact(),
-            promptProperties.getMetroSecurityContact()
-        );
+            promptProperties.getMetroSecurityContact());
 
-        return new SystemMessage(systemPromptText);
-    }
+    return new SystemMessage(systemPromptText);
+  }
 }

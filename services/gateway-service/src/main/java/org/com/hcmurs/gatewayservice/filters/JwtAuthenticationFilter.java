@@ -125,7 +125,7 @@ public class JwtAuthenticationFilter implements WebFilter {
     ServerHttpRequest modifiedRequest = requestBuilder.build();
     ServerWebExchange modifiedExchange = exchange.mutate().request(modifiedRequest).build();
 
-    if (isPublicPath(path) ) {
+    if (isPublicPath(path)) {
       return chain.filter(modifiedExchange);
     }
 

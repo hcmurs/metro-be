@@ -10,5 +10,5 @@
 package com.hieunn.user_service.services;
 
 public interface ChatBotService {
-    String ask(String sessionId, String userMessage);
+  String ask(String sessionId, String userMessage);
 }
