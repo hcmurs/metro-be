@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      java-frameworks:
+        patterns:
+          - "org.springframework*"
+          - "io.quarkus*"
+          - "com.fasterxml.jackson*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
