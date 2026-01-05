@@ -51,7 +51,7 @@
     <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
     <!-- Security & JWT -->
-    <jwt.version>0.11.5</jwt.version>
+    <jwt.version>0.13.0</jwt.version>
 
     <!-- Documentation -->
     <springdoc.version>2.7.0</springdoc.version>
