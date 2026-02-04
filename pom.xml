@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.4.4</version>
+    <version>3.5.10</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -38,11 +38,11 @@
     <kotlin.logging.version>3.0.5</kotlin.logging.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>3.4.4</spring-boot.version>
-    <spring-cloud.version>2024.0.1</spring-cloud.version>
-    <spring-cloud.loadbalancer.version>4.2.0</spring-cloud.loadbalancer.version>
-    <spring-cloud.feign.version>4.2.1</spring-cloud.feign.version>
-    <spring-data-redis.version>3.1.5</spring-data-redis.version>
+    <spring-boot.version>3.5.10</spring-boot.version>
+    <spring-cloud.version>2024.0.3</spring-cloud.version>
+    <spring-cloud.loadbalancer.version>4.3.1</spring-cloud.loadbalancer.version>
+    <spring-cloud.feign.version>4.3.1</spring-cloud.feign.version>
+    <spring-data-redis.version>3.5.8</spring-data-redis.version>
 
 
     <!-- Database -->
@@ -65,7 +65,7 @@
     <dotenv.spring.version>4.0.0</dotenv.spring.version>
     <dotenv.java.version>3.0.1</dotenv.java.version>
     <google.zxing.version>3.5.3</google.zxing.version>
-    <jackson.version>2.15.2</jackson.version>
+    <jackson.version>2.21.0</jackson.version>
 
     <!-- Service Discovery -->
     <eureka.client.version>3.1.5</eureka.client.version>
