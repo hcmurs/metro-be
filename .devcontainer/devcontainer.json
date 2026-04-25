@@ -1,0 +1,99 @@
+{
+  "name": "Metro Backend",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/maven:1": {
+      "version": "3.9.9"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "JAVA_HOME": "/usr/local/sdkman/candidates/java/current",
+    "SPRING_PROFILES_ACTIVE": "dev"
+  },
+  "mounts": [
+    "source=metro-be-m2,target=/home/vscode/.m2,type=volume"
+  ],
+  "forwardPorts": [
+    4003,
+    4004,
+    4005,
+    4006,
+    4007,
+    4008,
+    4009,
+    4010,
+    5050,
+    5432,
+    5672,
+    6379,
+    8761
+  ],
+  "portsAttributes": {
+    "4003": {
+      "label": "Gateway Service"
+    },
+    "4004": {
+      "label": "Station Service"
+    },
+    "4005": {
+      "label": "Ticket Service"
+    },
+    "4006": {
+      "label": "Auth Service"
+    },
+    "4007": {
+      "label": "User Service"
+    },
+    "4008": {
+      "label": "Order/Notification Service"
+    },
+    "4009": {
+      "label": "Order/Notification Service"
+    },
+    "4010": {
+      "label": "Cronjob Service"
+    },
+    "5050": {
+      "label": "pgAdmin"
+    },
+    "5432": {
+      "label": "PostgreSQL"
+    },
+    "5672": {
+      "label": "RabbitMQ"
+    },
+    "6379": {
+      "label": "Redis"
+    },
+    "8761": {
+      "label": "Eureka"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-spring-boot",
+        "vscjava.vscode-spring-initializr",
+        "redhat.vscode-yaml",
+        "humao.rest-client",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "java.compile.nullAnalysis.mode": "automatic",
+        "maven.executable.path": "/usr/local/sdkman/candidates/maven/current/bin/mvn",
+        "rest-client.environmentVariables": {
+          "$shared": {
+            "gatewayUrl": "http://localhost:4003"
+          }
+        }
+      }
+    }
+  },
+  "postCreateCommand": "chmod +x mvnw format-all.sh spotless.sh setup-hooks.sh services/*/mvnw services/*/format.sh && if [ ! -f .env ] && [ -f .env.sample ]; then cp .env.sample .env; fi && mvn -version",
+  "postAttachCommand": "git status --short",
+  "postStartCommand": "docker compose version"
+}
