@@ -1,10 +1,10 @@
 {
   "name": "Metro Backend",
-  "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
   "features": {
-    "ghcr.io/devcontainers/features/maven:1": {
-      "version": "3.9.9"
-    },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
   "remoteUser": "vscode",
@@ -84,7 +84,6 @@
       "settings": {
         "java.configuration.updateBuildConfiguration": "automatic",
         "java.compile.nullAnalysis.mode": "automatic",
-        "maven.executable.path": "/usr/local/sdkman/candidates/maven/current/bin/mvn",
         "rest-client.environmentVariables": {
           "$shared": {
             "gatewayUrl": "http://localhost:4003"
@@ -93,7 +92,7 @@
       }
     }
   },
-  "postCreateCommand": "chmod +x mvnw format-all.sh spotless.sh setup-hooks.sh services/*/mvnw services/*/format.sh && if [ ! -f .env ] && [ -f .env.sample ]; then cp .env.sample .env; fi && mvn -version",
+  "postCreateCommand": "chmod +x mvnw format-all.sh spotless.sh setup-hooks.sh services/*/mvnw services/*/format.sh && if [ ! -f .env ] && [ -f .env.sample ]; then cp .env.sample .env; fi && ./mvnw -version",
   "postAttachCommand": "git status --short",
   "postStartCommand": "docker compose version"
 }
