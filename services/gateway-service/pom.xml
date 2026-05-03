@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.4.4</version>
+    <version>3.5.10</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -27,20 +27,20 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-gateway</artifactId>
-      <version>4.2.0</version>
+      <version>4.3.3</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-      <version>4.2.0</version>
+      <version>4.3.1</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-      <version>4.2.0</version>
+      <version>4.3.1</version>
     </dependency>
 
     <dependency>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
-      <version>6.2.2</version>
+      <version>6.2.15</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
