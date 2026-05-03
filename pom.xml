@@ -57,7 +57,7 @@
     <springdoc.version>2.7.0</springdoc.version>
 
     <!-- Validation -->
-    <hibernate-validator.version>9.0.0.CR1</hibernate-validator.version>
+    <hibernate-validator.version>9.1.0.Final</hibernate-validator.version>
 
     <!-- Utilities -->
     <lombok.version>1.18.30</lombok.version>
