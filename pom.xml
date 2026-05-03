@@ -63,7 +63,7 @@
     <lombok.version>1.18.30</lombok.version>
     <mapstruct.version>1.5.5.Final</mapstruct.version>
     <dotenv.spring.version>4.0.0</dotenv.spring.version>
-    <dotenv.java.version>3.0.1</dotenv.java.version>
+    <dotenv.java.version>3.2.0</dotenv.java.version>
     <google.zxing.version>3.5.3</google.zxing.version>
     <jackson.version>2.15.2</jackson.version>
 
