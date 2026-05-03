@@ -16,36 +16,36 @@ import lombok.*;
 
 @Builder
 public class OrderResponse {
-  private Long orderId;
-  private Long userId;
-  private Long ticketId;
-  private OrderStatus status;
-  private BigDecimal amount;
-  private LocalDateTime createdAt;
-  private TransactionResponse transaction;
+    private Long orderId;
+    private Long userId;
+    private Long ticketId;
+    private OrderStatus status;
+    private BigDecimal amount;
+    private LocalDateTime createdAt;
+    private TransactionResponse transaction;
+    @Builder
+    public record OrderDetailResponse(
+            Long orderId,
+            Long userId,
+            OrderStatus status,
+            BigDecimal amount,
+            TransactionResponse transaction,
+            TicketResponse ticket
+    ) {
+    }
 
-  @Builder
-  public record OrderDetailResponse(
-      Long orderId, Long userId, OrderStatus status, BigDecimal amount, TicketResponse ticket) {}
+    public OrderResponse() {
+    }
 
-  public OrderResponse() {}
-
-  public OrderResponse(
-      Long orderId,
-      Long userId,
-      Long ticketId,
-      OrderStatus status,
-      BigDecimal amount,
-      LocalDateTime createdAt,
-      TransactionResponse transaction) {
-    this.orderId = orderId;
-    this.userId = userId;
-    this.ticketId = ticketId;
-    this.status = status;
-    this.amount = amount;
-    this.createdAt = createdAt;
-    this.transaction = transaction;
-  }
+    public OrderResponse(Long orderId, Long userId, Long ticketId, OrderStatus status, BigDecimal amount, LocalDateTime createdAt, TransactionResponse transaction) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.ticketId = ticketId;
+        this.status = status;
+        this.amount = amount;
+        this.createdAt = createdAt;
+        this.transaction = transaction;
+    }
 
   public Long getOrderId() {
     return orderId;

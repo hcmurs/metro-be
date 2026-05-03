@@ -98,27 +98,34 @@ public class StationRouteController {
     return ApiResponse.success(null, "Station routes swapped successfully");
   }
 
-  @GetMapping("/check-station-on-line")
-  @Operation(
-      summary = "Check if station is on line",
-      description = "Checks if a station is between start and end stations on the route")
-  public ApiResponse<Boolean> checkStationOnLine(
-      @RequestParam Long startStationId,
-      @RequestParam Long endStationId,
-      @RequestParam Long thisStationId) {
-    boolean isOnLine =
-        stationRouteService.checkStationOnLine(startStationId, endStationId, thisStationId);
-    return ApiResponse.success(isOnLine, "Station line check completed");
-  }
+    @GetMapping("/check-station-on-line")
+    @Operation(summary = "Check if station is on line", description = "Checks if a station is between start and end stations on the route")
+    public ApiResponse<Boolean> checkStationOnLine(@RequestParam Long startStationId,
+                                                   @RequestParam Long endStationId,
+                                                   @RequestParam Long thisStationId) {
+        boolean isOnLine = stationRouteService.checkStationOnLine(startStationId, endStationId, thisStationId);
+        if(isOnLine)
+        return ApiResponse.success(true, "Station line check completed");
+        else {
+            return ApiResponse.success(false, "Station not in this line");
+        }
+    }
 
-  @PutMapping("/{id}/status")
-  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-  @Operation(
-      summary = "Update station route status",
-      description = "Updates the status of a station route")
-  public ApiResponse<Void> updateStationRouteStatus(
-      @PathVariable Long id, @RequestParam Stations.Status status) {
-    stationRouteService.updateStationRouteStatus(id, status);
-    return ApiResponse.success(null, "Station route status updated successfully");
-  }
+    @PutMapping("/{id}/status")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Operation(summary = "Update station route status", description = "Updates the status of a station route")
+    public ApiResponse<Void> updateStationRouteStatus(@PathVariable Long id,
+                                                      @RequestParam Stations.Status status) {
+        stationRouteService.updateStationRouteStatus(id, status);
+        return ApiResponse.success(null, "Station route status updated successfully");
+    }
+
+    @GetMapping("/upgrade-ticket")
+    @Operation(summary = "Get stations for ticket upgrade", description = "Retrieves stations for upgrading tickets between two stations")
+    public ApiResponse<List<StationRouteResponse>> getStationForUpgradeTicket(
+            @RequestParam Long startStationId,
+            @RequestParam Long endStationId) {
+        List<StationRouteResponse> stations = stationRouteService.getStationForUpgradeTicket(startStationId, endStationId);
+        return ApiResponse.success(stations, "Stations for ticket upgrade retrieved successfully");
+    }
 }

@@ -10,126 +10,135 @@
 package com.example.cronjob.Pojos;
 
 import com.example.cronjob.Enum.TransactionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import lombok.Builder;
 
 @Entity
 @Table(name = "transactions")
 @Builder
 public class Transactions {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "transaction_id")
-  private Long transactionId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_id")
+    private Long transactionId;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
-  private Orders order;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
+    private Orders order;
 
-  @Column(nullable = false, name = "user_id")
-  private Long userId;
+    @Column(nullable = false, name = "user_id")
+    private Long userId;
 
-  @Column(precision = 10, scale = 2, name = "amount")
-  private BigDecimal amount;
+    @Column(precision = 10, scale = 2, name = "amount")
+    private BigDecimal amount;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, name = "status")
-  private TransactionStatus transactionStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "status")
+    private TransactionStatus transactionStatus;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "payment_method_id", nullable = false)
-  private PaymentMethod paymentMethod;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id", nullable = false)
+    private PaymentMethod paymentMethod;
 
-  @Column(nullable = false, updatable = false, name = "created_at")
-  private LocalDateTime createAt = LocalDateTime.now();
+    @Column(nullable = false, updatable = false, name = "created_at")
+    private LocalDateTime createAt = LocalDateTime.now();
 
-  private LocalDateTime updateAt;
+    private LocalDateTime updateAt;
 
-  public Transactions() {}
+    @PrePersist
+    public void prePersist() {
+        createAt = updateAt = LocalDateTime.now();
+    }
 
-  public Transactions(
-      Long transactionId,
-      Orders order,
-      Long userId,
-      BigDecimal amount,
-      TransactionStatus transactionStatus,
-      PaymentMethod paymentMethod,
-      LocalDateTime createAt,
-      LocalDateTime updateAt) {
-    this.transactionId = transactionId;
-    this.order = order;
-    this.userId = userId;
-    this.amount = amount;
-    this.transactionStatus = transactionStatus;
-    this.paymentMethod = paymentMethod;
-    this.createAt = createAt;
-    this.updateAt = updateAt;
-  }
+    @PreUpdate
+    public void preUpdate() {
+        updateAt = LocalDateTime.now();
+    }
 
-  public Long getUserId() {
-    return userId;
-  }
+    public Transactions() {
+    }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
+    public Transactions(Long transactionId, Orders order, Long userId, BigDecimal amount, TransactionStatus transactionStatus, PaymentMethod paymentMethod, LocalDateTime createAt, LocalDateTime updateAt) {
+        this.transactionId = transactionId;
+        this.order = order;
+        this.userId = userId;
+        this.amount = amount;
+        this.transactionStatus = transactionStatus;
+        this.paymentMethod = paymentMethod;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
+    }
 
-  public Long getTransactionId() {
-    return transactionId;
-  }
+    public Long getUserId() {
+        return userId;
+    }
 
-  public void setTransactionId(Long transactionId) {
-    this.transactionId = transactionId;
-  }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-  public Orders getOrder() {
-    return order;
-  }
+    public Long getTransactionId() {
+        return transactionId;
+    }
 
-  public void setOrder(Orders order) {
-    this.order = order;
-  }
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
+    }
 
-  public BigDecimal getAmount() {
-    return amount;
-  }
+    public Orders getOrder() {
+        return order;
+    }
 
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
-  }
+    public void setOrder(Orders order) {
+        this.order = order;
+    }
 
-  public TransactionStatus getTransactionStatus() {
-    return transactionStatus;
-  }
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-  public void setTransactionStatus(TransactionStatus transactionStatus) {
-    this.transactionStatus = transactionStatus;
-  }
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
-  public PaymentMethod getPaymentMethod() {
-    return paymentMethod;
-  }
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
 
-  public void setPaymentMethod(PaymentMethod paymentMethod) {
-    this.paymentMethod = paymentMethod;
-  }
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
 
-  public LocalDateTime getCreateAt() {
-    return createAt;
-  }
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
 
-  public void setCreateAt(LocalDateTime createAt) {
-    this.createAt = createAt;
-  }
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
-  public LocalDateTime getUpdateAt() {
-    return updateAt;
-  }
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
 
-  public void setUpdateAt(LocalDateTime updateAt) {
-    this.updateAt = updateAt;
-  }
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
 }
+
